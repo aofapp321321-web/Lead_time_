@@ -146,6 +146,42 @@
   .kpi-substat-lbl{font-size:11px; color:var(--ink-500); text-transform:uppercase; letter-spacing:.04em; font-weight:600;}
   .kpi-substat-divider{width:1px; align-self:stretch; background:var(--line);}
 
+  /* ===== Hero KPI (primary metric — Lead Time เฉลี่ย) ===== */
+  .kpi-hero{
+    background: var(--card);
+    border:1.5px solid var(--teal-400);
+    animation: heroGlow 2.8s ease-in-out infinite;
+  }
+  .kpi-hero:hover{ transform:translateY(-3px); }
+  .kpi-hero .bar{background:linear-gradient(180deg, var(--teal-400), var(--teal-500)) !important; width:5px;}
+  .kpi-hero .kpi-label{color:var(--teal-500); display:flex; align-items:center; gap:7px;}
+  .kpi-hero .kpi-label::before{
+    content:""; width:7px; height:7px; border-radius:50%; background:var(--teal-400);
+    box-shadow:0 0 0 4px rgba(23,179,164,.2); flex-shrink:0;
+    animation: heroDot 1.8s ease-in-out infinite;
+  }
+  .kpi-hero .kpi-value{color:var(--navy-900); font-size:36px;}
+  .kpi-hero .kpi-unit{color:var(--teal-500); font-weight:600;}
+  .kpi-hero .kpi-sub{color:var(--ink-500);}
+  .kpi-hero > *{position:relative; z-index:1;}
+  .kpi-hero-badge{
+    position:absolute; top:14px; right:14px; z-index:2;
+    font-family:'Kanit',sans-serif; font-size:10.5px; font-weight:600; letter-spacing:.03em;
+    color:#fff; background:linear-gradient(120deg, var(--teal-500), var(--teal-400));
+    padding:4px 10px 4px 8px; border-radius:999px; display:flex; align-items:center; gap:4px;
+    box-shadow:0 2px 8px rgba(14,148,136,.35);
+  }
+  .kpi-hero-badge svg{width:11px; height:11px; flex-shrink:0;}
+  .kpi-hero-watermark{
+    position:absolute; right:-14px; bottom:-18px; width:120px; height:120px;
+    color:var(--teal-500); opacity:.07; pointer-events:none; z-index:0;
+  }
+  @keyframes heroGlow{
+    0%,100%{ box-shadow:var(--shadow), 0 0 0 1px rgba(23,179,164,.1), 0 14px 30px -16px rgba(23,179,164,.35); }
+    50%{ box-shadow:var(--shadow), 0 0 0 1px rgba(23,179,164,.26), 0 18px 38px -14px rgba(23,179,164,.6); }
+  }
+  @keyframes heroDot{0%,100%{opacity:1;} 50%{opacity:.4;}}
+
   .grid2{display:grid; grid-template-columns:1.3fr 1fr; gap:16px; margin-bottom:16px;}
   .grid2b{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;}
   .card{
@@ -1124,11 +1160,6 @@ function render(){
         <div class="kpi-substat"><div class="kpi-substat-val" style="color:#6d5bd0;font-size:22px">${fmtInt(totalPkg)}</div><div class="kpi-substat-lbl">ห่อ</div></div>
       </div>
     </div>
-    <div class="kpi-card"><div class="bar" style="background:#233a63"></div>
-      <div class="kpi-label">Lead Time เฉลี่ย</div>
-      <div class="kpi-value">${fmt1(avgLT)}<span class="kpi-unit">วัน</span></div>
-      <div class="kpi-sub">ตามช่วงที่เลือก</div>
-    </div>
     <div class="kpi-card"><div class="bar" style="background:#2f9e6e"></div>
       <div class="kpi-label">ส่งภายใน 3 วัน</div>
       <div class="kpi-value">${fmt1(pctOn3)}<span class="kpi-unit">%</span></div>
@@ -1155,6 +1186,20 @@ function render(){
         <div class="kpi-substat-divider"></div>
         <div class="kpi-substat"><div class="kpi-substat-val" style="color:#d9564a">${fmtInt(byStatusPkg['เกิน 7 วัน'])}</div><div class="kpi-substat-lbl">ห่อ</div></div>
       </div>
+    </div>
+    <div class="kpi-card kpi-hero">
+      <svg class="kpi-hero-watermark" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="12" cy="13" r="8" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M12 8v5l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M9 2h6M12 2v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div class="kpi-hero-badge">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l2.9 6.6 7.1.7-5.4 4.8 1.7 7-6.3-3.8-6.3 3.8 1.7-7L2 9.3l7.1-.7z" fill="currentColor"/></svg>
+        ตัวชี้วัดหลัก
+      </div>
+      <div class="kpi-label">Lead Time เฉลี่ย</div>
+      <div class="kpi-value">${fmt1(avgLT)}<span class="kpi-unit">วัน</span></div>
+      <div class="kpi-sub">ตามช่วงที่เลือก</div>
     </div>
   `;
 
