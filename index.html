@@ -540,6 +540,13 @@ function daysBetween(a, b){
   return Math.round((a - b) / 86400000);
 }
 
+// ป้ายเดือนแบบสั้น + ปี เช่น "ก.ค. 25" ใช้แยกกรณีข้อมูลคาบเกี่ยวข้ามปี
+// (เดือนเดียวกันชื่อซ้ำกันได้ถ้าข้อมูลมีมากกว่า 1 ปี เช่น ก.ค. 2025 กับ ก.ค. 2026)
+function monthLabelWithYear(monthKey, months_display){
+  const year = monthKey.split('-')[0];
+  return `${months_display[monthKey]} ${year.slice(2)}`;
+}
+
 function computeStatus(lt){
   if (lt <= 3) return 'ส่งภายใน 3 วัน';
   if (lt <= 7) return 'ส่งภายใน 7 วัน';
@@ -770,10 +777,12 @@ if (!detailState){
 // ============ Build filter UI (rebuilt each refresh, selection preserved) ============
 const monthChipsEl = document.getElementById('monthChips');
 monthChipsEl.innerHTML = '';
+const monthChipNames = months.map(m => months_display[m]);
+const monthChipsHaveDup = new Set(monthChipNames).size !== monthChipNames.length;
 months.forEach(m => {
   const chip = document.createElement('button');
   chip.className = 'chip' + (state.months.has(m) ? ' active' : '');
-  chip.textContent = months_display[m];
+  chip.textContent = monthChipsHaveDup ? monthLabelWithYear(m, months_display) : months_display[m];
   chip.dataset.month = m;
   chip.addEventListener('click', () => {
     if (state.months.has(m)) { state.months.delete(m); chip.classList.remove('active'); }
@@ -1128,8 +1137,14 @@ function render(){
     const lt = mrows.reduce((a,d)=>a+d.lt_sum,0);
     return { m, ship, avgLT: ship? lt/ship : 0 };
   });
+  // ถ้าเดือนที่จะแสดงมีชื่อไทยซ้ำกัน (คนละปี) ให้เติมปีต่อท้ายป้ายกำกับทุกอันเพื่อไม่ให้สับสน
+  const trendMonthNames = monthAgg.map(x => months_display[x.m]);
+  const hasDuplicateMonthName = new Set(trendMonthNames).size !== trendMonthNames.length;
+  const trendLabels = monthAgg.map(x =>
+    hasDuplicateMonthName ? monthLabelWithYear(x.m, months_display) : months_display[x.m]
+  );
   renderTrendChart('trendChart',
-    monthAgg.map(x=>months_display[x.m]),
+    trendLabels,
     monthAgg.map(x=>x.ship),
     monthAgg.map(x=>Math.round(x.avgLT*100)/100)
   );
