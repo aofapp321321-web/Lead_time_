@@ -197,6 +197,7 @@
     width:118px; flex-shrink:0; font-size:13.5px; color:var(--ink-700); font-weight:500;
     overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
   }
+  .barlist-label.is-active{color:var(--navy-900); font-weight:700;}
   .barlist-track{flex:1; background:#eef1f6; border-radius:7px; height:19px; position:relative; overflow:hidden;}
   .barlist-fill{
     height:100%; border-radius:7px; transition:width .7s cubic-bezier(.4,0,.2,1);
@@ -205,6 +206,13 @@
   }
   .barlist-value{width:96px; flex-shrink:0; text-align:right; font-size:13.5px; color:var(--ink-500); font-variant-numeric:tabular-nums;}
   .barlist-value b{color:var(--ink-900); font-weight:600; font-family:'Kanit',sans-serif; font-size:14.5px;}
+  .route-status-set{margin-top:18px;}
+  .route-status-set:first-of-type{margin-top:6px;}
+  .route-status-set-title{
+    display:flex; align-items:center; gap:7px; font-size:12.5px; font-weight:700;
+    color:var(--ink-500); text-transform:uppercase; letter-spacing:.04em; margin-bottom:9px;
+  }
+  .route-status-set-title .dot{width:8px; height:8px; border-radius:50%; flex-shrink:0;}
 
   table{width:100%; border-collapse:collapse; font-size:14px;}
   thead th{
@@ -261,6 +269,11 @@
   .subtable tbody td{padding:8px 16px; border-bottom:1px solid var(--line); color:var(--ink-700);}
   .subtable tbody tr:last-child td{border-bottom:none;}
   .subtable tbody tr:hover{background:#f8fafc;}
+  .route-month-table thead th{position:sticky; top:0; background:var(--card); z-index:2;}
+  .route-month-table tfoot .month-total-row td{
+    padding:10px 16px; border-top:2px solid var(--line); border-bottom:none;
+    background:var(--teal-100); font-weight:600; color:var(--ink-900);
+  }
   .empty-state{padding:34px 10px; text-align:center; color:var(--ink-300); font-size:14.5px;}
 
   .search-input{
@@ -374,9 +387,20 @@
       <div class="card">
         <div class="card-head">
           <div class="card-title">เปรียบเทียบตามกลุ่มเส้นทาง</div>
-          <div class="card-note">% ส่งภายใน 3 วัน ต่อกลุ่ม</div>
+          <div class="card-note">สัดส่วนแต่ละช่วงเวลาส่งมอบ ต่อกลุ่มเส้นทาง</div>
         </div>
-        <div class="chart-wrap" id="routeBar"></div>
+        <div class="route-status-set">
+          <div class="route-status-set-title"><span class="dot" style="background:#2f9e6e"></span>ภายใน 3 วัน</div>
+          <div id="routeBarOn3"></div>
+        </div>
+        <div class="route-status-set">
+          <div class="route-status-set-title"><span class="dot" style="background:#e8983a"></span>ภายใน 7 วัน</div>
+          <div id="routeBarOn7"></div>
+        </div>
+        <div class="route-status-set">
+          <div class="route-status-set-title"><span class="dot" style="background:#d9564a"></span>เกิน 7 วัน</div>
+          <div id="routeBarOver7"></div>
+        </div>
       </div>
       <div class="card">
         <div class="card-head">
@@ -411,40 +435,14 @@
       <div class="card-head">
         <div>
           <div class="card-title">สรุปตามเดือน → เส้นทาง</div>
-          <div class="card-note">รวมยอดของแต่ละเดือน แยกรายละเอียดเป็นกลุ่มเส้นทาง สรุปสัดส่วน ภายใน 3 วัน / ภายใน 7 วัน / เกิน 7 วัน</div>
+          <div class="card-note">เลือกเดือน เพื่อดูสัดส่วน ภายใน 3 วัน / ภายใน 7 วัน / เกิน 7 วัน แยกตามเส้นทาง</div>
         </div>
-      </div>
-      <div id="routeMonthGroupedWrap" class="grouped-scroll" style="max-height:520px;"></div>
-    </div>
-
-    <div class="card">
-      <div class="card-head">
-        <div>
-          <div class="card-title">ตารางรายละเอียด</div>
-          <div class="card-note" id="detailNote">คลิกหัวตารางเพื่อเรียงลำดับ</div>
-        </div>
-        <input type="text" class="search-input" id="detailSearch" placeholder="ค้นหาจังหวัด/เส้นทาง...">
       </div>
       <div class="filter-group" style="margin-bottom:14px;">
-        <div class="filter-label">กรองตามสถานะ</div>
-        <div class="chip-row" id="statusChips"></div>
+        <div class="filter-label">เดือน</div>
+        <div class="chip-row" id="routeMonthChips"></div>
       </div>
-
-      <div class="table-scroll" id="detailFlatWrap">
-        <table id="detailTable">
-          <thead><tr>
-            <th data-key="month">เดือน</th>
-            <th data-key="route">เส้นทาง</th>
-            <th data-key="status">สถานะ</th>
-            <th data-key="shipments" style="text-align:right">ออเดอร์</th>
-            <th data-key="packages" style="text-align:right">จำนวนห่อ</th>
-            <th data-key="avgLT" style="text-align:right">LT เฉลี่ย</th>
-          </tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-
-      <div id="detailGroupedWrap" style="display:none;"></div>
+      <div id="routeMonthGroupedWrap" class="table-scroll" style="max-height:520px;"></div>
     </div>
 
   </div>
@@ -742,9 +740,8 @@ function setSyncState(kind, extra){
 // ============ Render pipeline (runs every refresh) ============
 // ============================================================
 let state = null;
-let detailState = null;
+let routeMonthState = null;
 let sortState = null;
-let detailSearchTerm = '';
 
 function renderDashboard(RAW){
   const { months, months_display, routes, provinces, statuses, detail, carrier } = RAW;
@@ -768,10 +765,8 @@ if (!state){
   if (state.route !== 'ALL' && !routes.includes(state.route)) state.route = 'ALL';
   if (state.province !== 'ALL' && !provinces.includes(state.province)) state.province = 'ALL';
 }
-if (!detailState){
-  detailState = { status: 'ALL' };
-} else if (detailState.status !== 'ALL' && !statuses.includes(detailState.status)){
-  detailState.status = 'ALL';
+if (!routeMonthState){
+  routeMonthState = { month: null };
 }
 
 // ============ Build filter UI (rebuilt each refresh, selection preserved) ============
@@ -841,29 +836,6 @@ document.getElementById('resetBtn').onclick = () => {
   [...routeChipsEl.children].forEach(c => c.classList.toggle('active', c.dataset.route === 'ALL'));
   provinceSelect.value = 'ALL';
   render();
-};
-
-// ---- Detail table: status filter (drives flat vs grouped-by-month/route view) ----
-const statusChipsEl = document.getElementById('statusChips');
-statusChipsEl.innerHTML = '';
-const allStatusChip = document.createElement('button');
-allStatusChip.className = 'chip' + (detailState.status === 'ALL' ? ' active' : '');
-allStatusChip.textContent = 'ทั้งหมด';
-allStatusChip.dataset.status = 'ALL';
-statusChipsEl.appendChild(allStatusChip);
-STATUS_ORDER.forEach(s => {
-  const chip = document.createElement('button');
-  chip.className = 'chip' + (detailState.status === s ? ' active' : '');
-  chip.innerHTML = `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${STATUS_COLOR[s]};margin-right:6px;"></span>${s}`;
-  chip.dataset.status = s;
-  statusChipsEl.appendChild(chip);
-});
-statusChipsEl.onclick = (e) => {
-  const btn = e.target.closest('.chip');
-  if (!btn) return;
-  detailState.status = btn.dataset.status;
-  [...statusChipsEl.children].forEach(c => c.classList.toggle('active', c === btn));
-  renderDetailSection(filteredDetail());
 };
 
 // ============ Top bar overall stats (unfiltered) ============
@@ -1027,25 +999,30 @@ function renderDonut(containerId, entries){
 // ---- Horizontal bar list ----
 function renderBarList(containerId, entries, opts={}){
   const el = document.getElementById(containerId);
-  const max = Math.max(...entries.map(e=>e.value), 1);
-  el.innerHTML = entries.map(e => {
+  if (!entries.length){
+    el.innerHTML = `<div class="empty-state">ไม่พบข้อมูลตามตัวกรองที่เลือก</div>`;
+    return;
+  }
+  const max = opts.absolute ? 100 : Math.max(...entries.map(e=>e.value), 1);
+  const rows = entries.map(e => {
     const pct = Math.max((e.value/max*100), 2);
     const valueHtml = opts.suffix
       ? `<b>${fmt1(e.value)}</b>${opts.suffix}`
       : `<b>${fmtInt(e.value)}</b>${e.extra ? ' · '+e.extra : ''}`;
     return `
       <div class="barlist-row">
-        <div class="barlist-label" title="${e.label}">${e.label}</div>
+        <div class="barlist-label${e.bold ? ' is-active' : ''}" title="${e.label}">${e.label}</div>
         <div class="barlist-track">
           <div class="barlist-fill" style="width:${pct}%; background:${e.color}"></div>
         </div>
         <div class="barlist-value">${valueHtml}</div>
       </div>`;
   }).join('');
+  el.innerHTML = `<div class="barlist">${rows}</div>`;
 }
 
 // ============ Sorting state for tables (persists across refreshes) ============
-if (!sortState) sortState = { detail:{key:'shipments', dir:-1}, carrier:{key:'shipments', dir:-1} };
+if (!sortState) sortState = { carrier:{key:'shipments', dir:-1} };
 
 function updateSortIndicators(tableId, sortInfo){
   document.querySelectorAll(`#${tableId} thead th`).forEach(th => {
@@ -1157,21 +1134,28 @@ function render(){
   // ---- Status donut ----
   renderDonut('statusDonut', STATUS_ORDER.map(s => ({ label:s, value:byStatus[s], packages:byStatusPkg[s], color:STATUS_COLOR[s] })));
 
-  // ---- Route comparison bar (ignores route filter itself, shows all route groups for context) ----
+  // ---- Route comparison bars (ignores route filter itself, shows all route groups for context) ----
   const routeAgg = {};
-  routes.forEach(r => routeAgg[r] = {ship:0, on3:0});
+  routes.forEach(r => routeAgg[r] = {ship:0, on3:0, on7:0, over7:0});
   filteredGroupByMonth(detail).forEach(d => {
     if (state.province !== 'ALL' && d.province !== state.province) return;
-    if (!routeAgg[d.route]) routeAgg[d.route] = {ship:0, on3:0};
-    routeAgg[d.route].ship += d.shipments;
-    if (d.status === 'ส่งภายใน 3 วัน') routeAgg[d.route].on3 += d.shipments;
+    if (!routeAgg[d.route]) routeAgg[d.route] = {ship:0, on3:0, on7:0, over7:0};
+    const g = routeAgg[d.route];
+    g.ship += d.shipments;
+    if (d.status === 'ส่งภายใน 3 วัน') g.on3 += d.shipments;
+    else if (d.status === 'ส่งภายใน 7 วัน') g.on7 += d.shipments;
+    else g.over7 += d.shipments;
   });
   const routeEntries = Object.entries(routeAgg).filter(([,v])=>v.ship>0).sort((a,b)=>b[1].ship-a[1].ship);
-  renderBarList('routeBar', routeEntries.map(([r,v]) => ({
-    label:r,
-    value: v.ship? v.on3/v.ship*100 : 0,
-    color: r===state.route ? '#0b1830' : '#12897f'
-  })), { suffix:'%' });
+  const routeStatusEntries = (key) => routeEntries.map(([r,v]) => ({
+    label: r,
+    value: v.ship ? v[key]/v.ship*100 : 0,
+    color: STATUS_COLOR[key === 'on3' ? 'ส่งภายใน 3 วัน' : key === 'on7' ? 'ส่งภายใน 7 วัน' : 'เกิน 7 วัน'],
+    bold: r === state.route
+  }));
+  renderBarList('routeBarOn3', routeStatusEntries('on3'), { suffix:'%', absolute:true });
+  renderBarList('routeBarOn7', routeStatusEntries('on7'), { suffix:'%', absolute:true });
+  renderBarList('routeBarOver7', routeStatusEntries('over7'), { suffix:'%', absolute:true });
 
   // ---- Province bar top 12 ----
   const provAgg = {};
@@ -1190,10 +1174,7 @@ function render(){
   renderAggTable('carrier', carrier, 'carrier', sortState.carrier);
 
   // ---- Route x Month summary (3/7/over-7 day buckets) ----
-  renderRouteMonthSummary(rows, byStatus, byStatusPkg);
-
-  // ---- Detail table ----
-  renderDetailSection(rows);
+  renderRouteMonthSummary(rows);
 }
 
 function renderAggTable(tableId, sourceRows, keyField, sortInfo){
@@ -1230,7 +1211,8 @@ function statusBadge(pct){
 }
 
 // ---- Route x Month summary (3-day / 7-day / over-7-day buckets) ----
-function renderRouteMonthSummary(rows, byStatus, byStatusPkg){
+// Shows one month at a time, picked via chips, instead of an all-months accordion.
+function renderRouteMonthSummary(rows){
   const byMonth = {};
   rows.forEach(r => {
     if (!byMonth[r.month]) byMonth[r.month] = {};
@@ -1243,187 +1225,75 @@ function renderRouteMonthSummary(rows, byStatus, byStatusPkg){
     else g.over7 += r.shipments;
   });
 
-  const monthKeys = Object.keys(byMonth).sort();
+  const monthKeys = Object.keys(byMonth).sort(); // 'YYYY-MM' sorts chronologically as string
+  const chipsEl = document.getElementById('routeMonthChips');
   const wrap = document.getElementById('routeMonthGroupedWrap');
 
   if (!monthKeys.length){
+    chipsEl.innerHTML = '';
     wrap.innerHTML = `<div class="empty-state">ไม่พบข้อมูลตามตัวกรองที่เลือก</div>`;
-  } else {
-    const cell = (count, total, cls) => {
-      const pct = total ? (count/total*100) : 0;
-      return `<td class="num-cell"><span class="badge ${cls}">${fmtInt(count)}</span> <span style="color:var(--ink-300)">${fmt1(pct)}%</span></td>`;
-    };
-    const html = monthKeys.map((m, idx) => {
-      const mg = byMonth[m];
-      const routeEntries = Object.entries(mg).sort((a,b) => b[1].total - a[1].total);
-      const mTotal = routeEntries.reduce((a,[,v]) => a+v.total, 0);
-      const routeRows = routeEntries.map(([route, v]) => `
-        <tr>
-          <td class="route-cell">${route}</td>
-          ${cell(v.on3, v.total, 'badge-green')}
-          ${cell(v.on7, v.total, 'badge-amber')}
-          ${cell(v.over7, v.total, 'badge-red')}
-          <td class="num-cell"><b>${fmtInt(v.total)}</b></td>
-        </tr>`).join('');
-
-      return `
-        <details class="month-group" ${idx < 2 ? 'open' : ''}>
-          <summary>
-            <span class="month-group-title">${months_display[m]} ${m.split('-')[0]}</span>
-            <span class="month-group-stats"><span><b>${fmtInt(mTotal)}</b> ออเดอร์</span></span>
-          </summary>
-          <table class="subtable">
-            <thead><tr>
-              <th>เส้นทาง</th>
-              <th style="text-align:right">ภายใน 3 วัน</th>
-              <th style="text-align:right">ภายใน 7 วัน</th>
-              <th style="text-align:right">เกิน 7 วัน</th>
-              <th style="text-align:right">รวม</th>
-            </tr></thead>
-            <tbody>${routeRows}</tbody>
-          </table>
-        </details>`;
-    }).join('');
-    wrap.innerHTML = html;
-  }
-}
-
-function renderDetailSection(rows){
-  const flatWrap = document.getElementById('detailFlatWrap');
-  const groupedWrap = document.getElementById('detailGroupedWrap');
-  const note = document.getElementById('detailNote');
-
-  if (detailState.status === 'ALL') {
-    flatWrap.style.display = '';
-    groupedWrap.style.display = 'none';
-    note.textContent = 'คลิกหัวตารางเพื่อเรียงลำดับ';
-    renderDetailTable(rows);
-  } else {
-    flatWrap.style.display = 'none';
-    groupedWrap.style.display = '';
-    note.textContent = `แบ่งตามเดือน → เส้นทาง สำหรับสถานะ "${detailState.status}"`;
-    renderDetailGrouped(rows);
-  }
-}
-
-function renderDetailTable(rows){
-  let base = rows;
-  if (detailSearchTerm) {
-    base = base.filter(r => r.province.toLowerCase().includes(detailSearchTerm) || r.route.toLowerCase().includes(detailSearchTerm));
-  }
-  const agg = {};
-  base.forEach(d => {
-    const key = `${d.month}|${d.route}|${d.status}`;
-    if (!agg[key]) agg[key] = {month:d.month, route:d.route, status:d.status, shipments:0, packages:0, lt_sum:0};
-    agg[key].shipments += d.shipments;
-    agg[key].packages += d.packages;
-    agg[key].lt_sum += d.lt_sum;
-  });
-  let list = Object.values(agg).map(r => ({...r, avgLT: r.shipments? r.lt_sum/r.shipments : 0}));
-  const si = sortState.detail;
-  list.sort((a,b)=>{
-    const av=a[si.key], bv=b[si.key];
-    if (typeof av === 'string') return av.localeCompare(bv,'th') * si.dir;
-    return (av-bv) * si.dir;
-  });
-  list = list.slice(0, 300);
-
-  const tbody = document.querySelector('#detailTable tbody');
-  if (!list.length){
-    tbody.innerHTML = `<tr><td colspan="6" class="empty-state">ไม่พบข้อมูลตามตัวกรองที่เลือก</td></tr>`;
     return;
   }
-  tbody.innerHTML = list.map(r => `
-    <tr>
-      <td>${months_display[r.month]}</td>
-      <td class="route-cell">${r.route}</td>
-      <td>${statusChip(r.status)}</td>
-      <td class="num-cell">${fmtInt(r.shipments)}</td>
-      <td class="num-cell">${fmtInt(r.packages)}</td>
-      <td class="num-cell">${fmt1(r.avgLT)} วัน</td>
-    </tr>
+
+  // Keep the previously-picked month if it's still in range, otherwise default to the latest one.
+  if (!routeMonthState.month || !monthKeys.includes(routeMonthState.month)){
+    routeMonthState.month = monthKeys[monthKeys.length - 1];
+  }
+
+  chipsEl.innerHTML = monthKeys.map(m => `
+    <button class="chip${m === routeMonthState.month ? ' active' : ''}" data-month="${m}">${months_display[m]} ${m.split('-')[0]}</button>
   `).join('');
+  // .onclick (not addEventListener): chips are rebuilt every refresh, so re-running
+  // this must replace, not stack, the handler.
+  chipsEl.onclick = (e) => {
+    const btn = e.target.closest('.chip');
+    if (!btn) return;
+    routeMonthState.month = btn.dataset.month;
+    render();
+  };
+
+  const cell = (count, total, cls) => {
+    const pct = total ? (count/total*100) : 0;
+    return `<td class="num-cell"><span class="badge ${cls}">${fmtInt(count)}</span> <span style="color:var(--ink-300)">${fmt1(pct)}%</span></td>`;
+  };
+
+  const mg = byMonth[routeMonthState.month];
+  const routeEntries = Object.entries(mg).sort((a,b) => b[1].total - a[1].total);
+  const mTotal = routeEntries.reduce((a,[,v]) => a + v.total, 0);
+  const on3Total = routeEntries.reduce((a,[,v]) => a + v.on3, 0);
+  const on7Total = routeEntries.reduce((a,[,v]) => a + v.on7, 0);
+  const over7Total = routeEntries.reduce((a,[,v]) => a + v.over7, 0);
+
+  const routeRows = routeEntries.map(([route, v]) => `
+    <tr>
+      <td class="route-cell">${route}</td>
+      ${cell(v.on3, v.total, 'badge-green')}
+      ${cell(v.on7, v.total, 'badge-amber')}
+      ${cell(v.over7, v.total, 'badge-red')}
+      <td class="num-cell"><b>${fmtInt(v.total)}</b></td>
+    </tr>`).join('');
+
+  wrap.innerHTML = `
+    <table class="subtable route-month-table">
+      <thead><tr>
+        <th>เส้นทาง</th>
+        <th style="text-align:right">ภายใน 3 วัน</th>
+        <th style="text-align:right">ภายใน 7 วัน</th>
+        <th style="text-align:right">เกิน 7 วัน</th>
+        <th style="text-align:right">รวม</th>
+      </tr></thead>
+      <tbody>${routeRows}</tbody>
+      <tfoot><tr class="month-total-row">
+        <td>รวมทั้งหมด</td>
+        ${cell(on3Total, mTotal, 'badge-green')}
+        ${cell(on7Total, mTotal, 'badge-amber')}
+        ${cell(over7Total, mTotal, 'badge-red')}
+        <td class="num-cell"><b>${fmtInt(mTotal)}</b></td>
+      </tr></tfoot>
+    </table>`;
 }
-
-function renderDetailGrouped(rows){
-  let filtered = rows.filter(r => r.status === detailState.status);
-  if (detailSearchTerm) {
-    filtered = filtered.filter(r => r.province.toLowerCase().includes(detailSearchTerm) || r.route.toLowerCase().includes(detailSearchTerm));
-  }
-
-  const byMonth = {};
-  filtered.forEach(r => {
-    if (!byMonth[r.month]) byMonth[r.month] = { shipments:0, packages:0, lt_sum:0, routes:{} };
-    const mg = byMonth[r.month];
-    mg.shipments += r.shipments; mg.packages += r.packages; mg.lt_sum += r.lt_sum;
-    if (!mg.routes[r.route]) mg.routes[r.route] = { shipments:0, packages:0, lt_sum:0 };
-    mg.routes[r.route].shipments += r.shipments;
-    mg.routes[r.route].packages += r.packages;
-    mg.routes[r.route].lt_sum += r.lt_sum;
-  });
-
-  const monthKeys = Object.keys(byMonth).sort(); // 'YYYY-MM' sorts chronologically as string
-  const wrap = document.getElementById('detailGroupedWrap');
-
-  if (!monthKeys.length){
-    wrap.innerHTML = `<div class="empty-state">ไม่พบข้อมูลตามตัวกรองที่เลือก</div>`;
-    return;
-  }
-
-  const html = monthKeys.map((m, idx) => {
-    const mg = byMonth[m];
-    const avgLT = mg.shipments ? mg.lt_sum / mg.shipments : 0;
-    const routeRows = Object.entries(mg.routes)
-      .sort((a,b) => b[1].shipments - a[1].shipments)
-      .map(([route, v]) => {
-        const ravgLT = v.shipments ? v.lt_sum / v.shipments : 0;
-        return `<tr>
-          <td>${route}</td>
-          <td class="num-cell">${fmtInt(v.shipments)}</td>
-          <td class="num-cell">${fmtInt(v.packages)}</td>
-          <td class="num-cell">${fmt1(ravgLT)} วัน</td>
-        </tr>`;
-      }).join('');
-
-    return `
-      <details class="month-group" ${idx < 3 ? 'open' : ''}>
-        <summary>
-          <span class="month-group-title">${months_display[m]} ${m.split('-')[0]}</span>
-          <span class="month-group-stats">
-            <span><b>${fmtInt(mg.shipments)}</b> ออเดอร์</span>
-            <span><b>${fmtInt(mg.packages)}</b> ห่อ</span>
-            <span><b>${fmt1(avgLT)}</b> วัน เฉลี่ย</span>
-          </span>
-        </summary>
-        <table class="subtable">
-          <thead><tr>
-            <th>เส้นทาง</th>
-            <th style="text-align:right">ออเดอร์</th>
-            <th style="text-align:right">จำนวนห่อ</th>
-            <th style="text-align:right">LT เฉลี่ย</th>
-          </tr></thead>
-          <tbody>${routeRows}</tbody>
-        </table>
-      </details>`;
-  }).join('');
-
-  wrap.innerHTML = `<div class="grouped-scroll">${html}</div>`;
-}
-
-function statusChip(s){
-  const color = STATUS_COLOR[s];
-  return `<span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:8px;height:8px;border-radius:50%;background:${color};display:inline-block;"></span>${s}</span>`;
-}
-
-// .oninput (not addEventListener): this input is static DOM that persists
-// across refreshes, so re-running this must replace, not stack, the handler.
-document.getElementById('detailSearch').oninput = (e) => {
-  detailSearchTerm = e.target.value.trim().toLowerCase();
-  renderDetailSection(filteredDetail());
-};
 
 attachSort('carrierTable', sortState.carrier, () => renderAggTable('carrier', carrier, 'carrier', sortState.carrier));
-attachSort('detailTable', sortState.detail, () => renderDetailTable(filteredDetail()));
 
 buildCharts();
 render();
