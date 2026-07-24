@@ -646,10 +646,18 @@ function loadViaJSONP(timeoutMs = 12000){
     const script = document.createElement('script');
     let done = false;
 
+    // สำคัญ: ห้าม `delete window[cbName]` ทันทีตอน timeout/cleanup
+    // เพราะบางเบราว์เซอร์ยังโหลด/รัน <script> ต่อในเบื้องหลังได้ แม้จะถูก
+    // ลบออกจาก DOM แล้ว ถ้า response จาก Google มาถึงช้า (หลัง timeout)
+    // แล้วไปเรียกฟังก์ชันที่ถูกลบไปแล้ว จะเกิด
+    // "ReferenceError: __gvizCB_xxxx is not defined" ทันที (นี่คือสาเหตุของ
+    // error ที่เห็นในคอนโซล) — วิธีแก้คือเปลี่ยนเป็นฟังก์ชันเปล่า (no-op)
+    // แทนการลบ แล้วค่อยลบจริงหลังรอเผื่อไว้อีกพักหนึ่ง
     const cleanup = () => {
-      delete window[cbName];
-      if (script.parentNode) script.parentNode.removeChild(script);
       clearTimeout(timer);
+      if (script.parentNode) script.parentNode.removeChild(script);
+      window[cbName] = () => {}; // เพิกเฉย response ที่มาช้าอย่างปลอดภัย
+      setTimeout(() => { delete window[cbName]; }, 60000);
     };
 
     const timer = setTimeout(() => {
@@ -1394,7 +1402,10 @@ render();
 // ============================================================
 // ============ Fetch → render loop (this is what makes it "live") ============
 // ============================================================
+let refreshInFlight = false; // กันไม่ให้ auto-refresh (ทุก 30 วิ) ยิงซ้อนกันถ้ารอบก่อนหน้ายังโหลดไม่เสร็จ (เน็ตช้า/gviz หน่วง)
 async function refreshFromSheet(){
+  if (refreshInFlight) return;
+  refreshInFlight = true;
   setSyncState('loading');
   try {
     const RAW = await loadData();
@@ -1403,6 +1414,8 @@ async function refreshFromSheet(){
   } catch (err) {
     console.error('Refresh failed:', err);
     setSyncState('error', err.message || String(err));
+  } finally {
+    refreshInFlight = false;
   }
 }
 
