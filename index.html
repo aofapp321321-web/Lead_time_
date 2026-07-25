@@ -358,21 +358,26 @@
 
   .pkg-kpi-row{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:18px;}
   .pkg-kpi{
-    background:#fbfcfe; border:1px solid var(--line); border-radius:12px; padding:15px 17px;
-    position:relative; overflow:hidden;
+    background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px 17px 15px;
+    position:relative; overflow:hidden; border-top:3px solid var(--kpi-accent-500, var(--teal-400));
+    transition:box-shadow .15s ease, transform .15s ease;
   }
-  .pkg-kpi.is-primary{
-    background:linear-gradient(135deg, var(--navy-950), var(--navy-800));
-    border-color:var(--navy-800);
+  .pkg-kpi:hover{ box-shadow:var(--shadow-hover); transform:translateY(-2px); }
+  .pkg-kpi.is-primary{ --kpi-accent-500:var(--teal-500); --kpi-accent-100:var(--teal-100); }
+  .pkg-kpi.accent-violet{ --kpi-accent-500:var(--violet-500); --kpi-accent-100:var(--violet-100); }
+  .pkg-kpi.accent-amber{ --kpi-accent-500:var(--amber-500); --kpi-accent-100:var(--amber-100); }
+  .pkg-kpi.accent-green{ --kpi-accent-500:var(--green-500); --kpi-accent-100:var(--green-100); }
+  .pkg-kpi-icon{
+    position:absolute; top:13px; right:13px; width:30px; height:30px; border-radius:9px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--kpi-accent-100, var(--teal-100)); color:var(--kpi-accent-500, var(--teal-500));
   }
-  .pkg-kpi-lbl{font-size:12px; color:var(--ink-500); font-weight:600; text-transform:uppercase; letter-spacing:.03em; margin-bottom:8px; display:flex; align-items:center; gap:6px;}
-  .pkg-kpi.is-primary .pkg-kpi-lbl{color:#9fb0d6;}
-  .pkg-kpi-val{font-family:'Kanit',sans-serif; font-size:25px; font-weight:600; color:var(--ink-900); line-height:1;}
-  .pkg-kpi.is-primary .pkg-kpi-val{color:#fff; font-size:29px;}
+  .pkg-kpi-icon svg{width:16px; height:16px;}
+  .pkg-kpi-lbl{font-size:12px; color:var(--ink-500); font-weight:600; text-transform:uppercase; letter-spacing:.03em; margin-bottom:8px; display:flex; align-items:center; gap:6px; padding-right:36px;}
+  .pkg-kpi-val{font-family:'Kanit',sans-serif; font-size:26px; font-weight:700; color:var(--kpi-accent-500, var(--ink-900)); line-height:1;}
+  .pkg-kpi.is-primary .pkg-kpi-val{font-size:30px;}
   .pkg-kpi-unit{font-size:13px; color:var(--ink-500); font-weight:500; margin-left:3px;}
-  .pkg-kpi.is-primary .pkg-kpi-unit{color:#9fb0d6;}
   .pkg-kpi-sub{font-size:12.5px; margin-top:8px; color:var(--ink-500); display:flex; align-items:center; gap:5px;}
-  .pkg-kpi.is-primary .pkg-kpi-sub{color:#b7c0d6;}
   .pkg-kpi-trend{font-weight:700; display:inline-flex; align-items:center; gap:2px;}
   .pkg-kpi-trend.up{color:var(--green-500);}
   .pkg-kpi-trend.down{color:var(--red-500);}
@@ -393,10 +398,10 @@
   .pkg-insight-chip b{font-family:'Kanit',sans-serif; font-weight:600; color:var(--ink-900);}
   .pkg-insight-text{line-height:1.4;}
 
-  /* ===== Lead Time — สรุปสำหรับผู้บริหาร (executive insight row) ===== */
+  /* ===== Lead Time — สรุป Lead Time (executive insight grid) ===== */
   .lt-summary-card{
     background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
-    padding:16px 18px 6px; box-shadow:var(--shadow); margin-bottom:20px;
+    padding:16px 18px 18px; box-shadow:var(--shadow); margin-bottom:20px;
   }
   .lt-summary-head{
     display:flex; align-items:center; gap:8px;
@@ -406,9 +411,37 @@
   }
   .lt-summary-head .dot{width:7px; height:7px; border-radius:50%; background:var(--teal-400); box-shadow:0 0 0 4px rgba(23,179,164,.2); flex-shrink:0;}
   .lt-summary-head svg{width:15px; height:15px; color:var(--teal-500); flex-shrink:0;}
-  #ltInsightRow{margin-bottom:14px;}
-  #ltInsightRow .pkg-insight-chip{min-width:250px;}
-  #ltInsightRow .pkg-insight-chip.red{background:var(--red-100); border-color:#f3c7c2;}
+
+  .lt-insight-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px;}
+  .lt-insight-card{
+    position:relative; background:#fff; border:1px solid var(--line); border-radius:14px;
+    padding:18px 20px 17px; overflow:hidden; border-top:3px solid var(--lt-accent-500, var(--teal-400));
+    transition:box-shadow .15s ease, transform .15s ease;
+  }
+  .lt-insight-card:hover{ box-shadow:var(--shadow-hover); transform:translateY(-2px); }
+  .lt-insight-card.accent-red{ --lt-accent-500:var(--red-500); --lt-accent-100:var(--red-100); }
+  .lt-insight-card.accent-teal{ --lt-accent-500:var(--teal-500); --lt-accent-100:var(--teal-100); }
+  .lt-insight-card.accent-violet{ --lt-accent-500:var(--violet-500); --lt-accent-100:var(--violet-100); }
+  .lt-insight-card.accent-navy{ --lt-accent-500:var(--navy-800); --lt-accent-100:#e7ecf6; }
+  .lt-insight-card-icon{
+    position:absolute; top:16px; right:16px; width:34px; height:34px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--lt-accent-100, var(--teal-100)); color:var(--lt-accent-500, var(--teal-500));
+  }
+  .lt-insight-card-icon svg{width:18px; height:18px;}
+  .lt-insight-card-lbl{font-size:12.5px; color:var(--ink-500); font-weight:600; text-transform:uppercase; letter-spacing:.03em; margin-bottom:11px; padding-right:42px;}
+  .lt-insight-card-val{font-family:'Kanit',sans-serif; font-size:23px; font-weight:700; color:var(--ink-900); line-height:1.25;}
+  .lt-insight-card-val b{color:var(--lt-accent-500, var(--ink-900));}
+  .lt-insight-card-sub{font-size:13px; margin-top:8px; color:var(--ink-500);}
+  .lt-insight-split{display:flex; align-items:stretch; gap:18px; margin-top:2px;}
+  .lt-insight-split-item{flex:1;}
+  .lt-insight-split-num{font-family:'Kanit',sans-serif; font-size:25px; font-weight:700; line-height:1;}
+  .lt-insight-split-lbl{font-size:12px; color:var(--ink-500); margin-top:5px;}
+  .lt-insight-split-div{width:1px; background:var(--line);}
+
+  @media (max-width:640px){
+    .lt-insight-grid{grid-template-columns:1fr;}
+  }
 
   .pkg-sparkline-card{background:#f8fafc; border:1px solid var(--line); border-radius:12px; padding:14px 16px 10px; margin-bottom:16px;}
   .pkg-sparkline-title{font-size:12.5px; color:var(--ink-500); font-weight:600; margin-bottom:10px;}
@@ -537,7 +570,7 @@
         <svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.9 6.6 7.1.7-5.4 4.8 1.7 7-6.3-3.8-6.3 3.8 1.7-7L2 9.3l7.1-.7z" fill="currentColor"/></svg>
         สรุป Lead Time
       </div>
-      <div class="pkg-insight-row" id="ltInsightRow"></div>
+      <div class="lt-insight-grid" id="ltInsightRow"></div>
     </div>
 
     <div class="grid2">
@@ -1435,44 +1468,51 @@ function render(){
       ? ((curAvgLT - prevAvgLT) / prevAvgLT * 100) : null;
 
     const ltInsights = [];
-    if (bestProv){
+    if (worstProv){
       ltInsights.push(`
-        <div class="pkg-insight-chip">
-          <div class="pkg-insight-icon" style="color:var(--teal-500)"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.9 6.6 7.1.7-5.4 4.8 1.7 7-6.3-3.8-6.3 3.8 1.7-7L2 9.3l7.1-.7z" fill="currentColor"/></svg></div>
-          <div class="pkg-insight-text">บริการเร็วที่สุด: <b>${bestProv.p}</b> เฉลี่ย <b>${fmt1(bestProv.avgLT)} วัน</b></div>
-        </div>`);
-    }
-    if (worstProv && (!bestProv || worstProv.p !== bestProv.p)){
-      ltInsights.push(`
-        <div class="pkg-insight-chip red">
-          <div class="pkg-insight-icon" style="color:var(--red-500)"><svg viewBox="0 0 24 24" fill="none"><path d="M10.3 3.9L2.7 18a2 2 0 0 0 1.7 3h15.2a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 9v4M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
-          <div class="pkg-insight-text">ควรเฝ้าระวัง: <b>${worstProv.p}</b> เฉลี่ย <b>${fmt1(worstProv.avgLT)} วัน</b></div>
+        <div class="lt-insight-card accent-red">
+          <div class="lt-insight-card-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M10.3 3.9L2.7 18a2 2 0 0 0 1.7 3h15.2a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 9v4M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div class="lt-insight-card-lbl">ควรเฝ้าระวัง Lead Time</div>
+          <div class="lt-insight-card-val"><b>${worstProv.p}</b></div>
+          <div class="lt-insight-card-sub">เฉลี่ย <b style="color:var(--ink-900)">${fmt1(worstProv.avgLT)} วัน</b> — สูงที่สุดในช่วงที่เลือก</div>
         </div>`);
     }
     if (bestCarrier){
       ltInsights.push(`
-        <div class="pkg-insight-chip">
-          <div class="pkg-insight-icon" style="color:var(--teal-500)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="14" height="11"/><path d="M15 8h4l3 3v4h-7V8z"/><circle cx="5.5" cy="18" r="2"/><circle cx="17.5" cy="18" r="2"/></svg></div>
-          <div class="pkg-insight-text">สายขนส่งเร็วที่สุด: <b>${bestCarrier.name}</b> เฉลี่ย <b>${fmt1(bestCarrier.avgLT)} วัน</b></div>
+        <div class="lt-insight-card accent-teal">
+          <div class="lt-insight-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="14" height="11"/><path d="M15 8h4l3 3v4h-7V8z"/><circle cx="5.5" cy="18" r="2"/><circle cx="17.5" cy="18" r="2"/></svg></div>
+          <div class="lt-insight-card-lbl">สายขนส่งเร็วที่สุด</div>
+          <div class="lt-insight-card-val"><b>${bestCarrier.name}</b></div>
+          <div class="lt-insight-card-sub">เฉลี่ย <b style="color:var(--ink-900)">${fmt1(bestCarrier.avgLT)} วัน</b> ต่อออเดอร์</div>
         </div>`);
     }
     ltInsights.push(`
-      <div class="pkg-insight-chip violet">
-        <div class="pkg-insight-icon" style="color:var(--violet-500)"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="pkg-insight-text">ส่งตรงเวลา (ภายใน 7 วัน): <b>${fmt1(onTimePct)}%</b> (${fmtInt(onTimeCount)} ออเดอร์)</div>
+      <div class="lt-insight-card accent-violet">
+        <div class="lt-insight-card-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="lt-insight-card-lbl">สัดส่วนการส่งตามกำหนด</div>
+        <div class="lt-insight-split">
+          <div class="lt-insight-split-item">
+            <div class="lt-insight-split-num" style="color:var(--green-500)">${fmt1(onTimePct)}%</div>
+            <div class="lt-insight-split-lbl">ตรงเวลา (ภายใน 7 วัน) · ${fmtInt(onTimeCount)} ออเดอร์</div>
+          </div>
+          <div class="lt-insight-split-div"></div>
+          <div class="lt-insight-split-item">
+            <div class="lt-insight-split-num" style="color:var(--red-500)">${fmt1(overPct)}%</div>
+            <div class="lt-insight-split-lbl">เกิน 7 วัน (ควรติดตาม) · ${fmtInt(overCount)} ออเดอร์</div>
+          </div>
+        </div>
       </div>`);
+    const trendGood = ltTrendPct !== null && ltTrendPct < -0.5;
+    const trendBad = ltTrendPct !== null && ltTrendPct > 0.5;
+    const trendValHtml = ltTrendPct === null
+      ? `<b style="color:var(--ink-500)">—</b>`
+      : `<b style="color:${trendGood ? 'var(--green-500)' : trendBad ? 'var(--red-500)' : 'var(--ink-500)'}">${ltTrendPct < 0 ? '▼' : ltTrendPct > 0 ? '▲' : '►'} ${fmt1(Math.abs(ltTrendPct))}%</b>`;
     ltInsights.push(`
-      <div class="pkg-insight-chip amber">
-        <div class="pkg-insight-icon" style="color:var(--amber-500)"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.2 2.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="pkg-insight-text">เกิน 7 วัน (ควรติดตาม): <b>${fmt1(overPct)}%</b> (${fmtInt(overCount)} ออเดอร์)</div>
-      </div>`);
-    const trendChipHtml = ltTrendPct === null
-      ? `<span style="color:var(--ink-500)">ไม่มีเดือนก่อนหน้าให้เทียบ</span>`
-      : `<span class="pkg-kpi-trend ${ltTrendPct < -0.5 ? 'up' : ltTrendPct > 0.5 ? 'down' : 'flat'}">${ltTrendPct < 0 ? '▼' : ltTrendPct > 0 ? '▲' : '►'} ${fmt1(Math.abs(ltTrendPct))}%</span>`;
-    ltInsights.push(`
-      <div class="pkg-insight-chip">
-        <div class="pkg-insight-icon" style="color:var(--navy-800)"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="13" r="8" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v5l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="pkg-insight-text">LT เดือนล่าสุดเทียบเดือนก่อนหน้า: ${trendChipHtml}</div>
+      <div class="lt-insight-card accent-navy">
+        <div class="lt-insight-card-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="13" r="8" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v5l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="lt-insight-card-lbl">Lead Time เดือนล่าสุด เทียบเดือนก่อนหน้า</div>
+        <div class="lt-insight-card-val">${trendValHtml}</div>
+        <div class="lt-insight-card-sub">${ltTrendPct === null ? 'ไม่มีเดือนก่อนหน้าให้เทียบ' : (trendGood ? 'ดีขึ้น — Lead Time เฉลี่ยลดลง' : trendBad ? 'แย่ลง — Lead Time เฉลี่ยเพิ่มขึ้น' : 'ใกล้เคียงเดือนก่อนหน้า')}</div>
       </div>`);
 
     ltInsightRowEl.innerHTML = ltInsights.join('');
@@ -1673,21 +1713,25 @@ function renderDailyPackageSummary(byDay, years){
 
   kpiRowEl.innerHTML = `
     <div class="pkg-kpi is-primary">
+      <div class="pkg-kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg></div>
       <div class="pkg-kpi-lbl">รวมจำนวนห่อที่จัดส่ง</div>
       <div class="pkg-kpi-val">${fmtInt(totalPackages)}<span class="pkg-kpi-unit">ห่อ</span></div>
       <div class="pkg-kpi-sub">${trendHtml}</div>
     </div>
-    <div class="pkg-kpi">
+    <div class="pkg-kpi accent-violet">
+      <div class="pkg-kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
       <div class="pkg-kpi-lbl">จำนวนออเดอร์รวม</div>
       <div class="pkg-kpi-val">${fmtInt(totalShipments)}<span class="pkg-kpi-unit">ออเดอร์</span></div>
       <div class="pkg-kpi-sub">เฉลี่ย ${fmt1(totalShipments ? totalPackages / totalShipments : 0)} ห่อ/ออเดอร์</div>
     </div>
-    <div class="pkg-kpi">
+    <div class="pkg-kpi accent-amber">
+      <div class="pkg-kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg></div>
       <div class="pkg-kpi-lbl">เฉลี่ยต่อวันที่จัดส่ง</div>
       <div class="pkg-kpi-val">${fmtInt(avgPerActiveDay)}<span class="pkg-kpi-unit">ห่อ/วัน</span></div>
       <div class="pkg-kpi-sub">จาก ${activeDays} วันที่มีการจัดส่ง จากทั้งหมด ${daysInMonth} วัน</div>
     </div>
-    <div class="pkg-kpi">
+    <div class="pkg-kpi accent-green">
+      <div class="pkg-kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0V4z"/><path d="M7 6H4a3 3 0 0 0 3 5M17 6h3a3 3 0 0 1-3 5"/></svg></div>
       <div class="pkg-kpi-lbl">วันที่จัดส่งมากที่สุด</div>
       <div class="pkg-kpi-val">${maxPkg ? fmtInt(maxPkg) : '—'}<span class="pkg-kpi-unit">ห่อ</span></div>
       <div class="pkg-kpi-sub">${maxPkg ? `วันที่ ${maxDay.day} (${THAI_WEEKDAYS_SHORT[maxDay.weekday]})` : 'ไม่มีข้อมูล'}</div>
