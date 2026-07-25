@@ -327,11 +327,121 @@
   .subtable tbody tr:last-child td{border-bottom:none;}
   .subtable tbody tr:hover{background:#f8fafc;}
   .route-month-table thead th{position:sticky; top:0; background:var(--card); z-index:2;}
-  .route-month-table tfoot .month-total-row td{
+  .route-month-table tfoot .month-total-row td, .day-table tfoot .month-total-row td{
     padding:10px 16px; border-top:2px solid var(--line); border-bottom:none;
     background:var(--teal-100); font-weight:600; color:var(--ink-900);
   }
   .empty-state{padding:34px 10px; text-align:center; color:var(--ink-300); font-size:14.5px;}
+
+  /* ===== Daily packages — executive KPI card ===== */
+  .pkg-card{position:relative; overflow:hidden; border:1.5px solid var(--teal-400);}
+  .pkg-watermark{
+    position:absolute; right:-30px; bottom:-34px; width:220px; height:220px;
+    color:var(--navy-900); opacity:.045; pointer-events:none; z-index:0;
+  }
+  .pkg-pro-badge{
+    position:absolute; top:20px; right:22px; z-index:2;
+    font-family:'Kanit',sans-serif; font-size:11px; font-weight:600; letter-spacing:.03em;
+    color:#fff; background:linear-gradient(120deg, var(--navy-900), var(--violet-500));
+    padding:5px 12px 5px 9px; border-radius:999px; display:flex; align-items:center; gap:5px;
+    box-shadow:0 3px 10px rgba(28,20,70,.28);
+  }
+  .pkg-pro-badge svg{width:11px; height:11px; flex-shrink:0; color:var(--amber-500);}
+  .pkg-card > .card-head, .pkg-card > .pkg-filters, .pkg-card > .pkg-kpi-row,
+  .pkg-card > .pkg-insight-row, .pkg-card > .pkg-sparkline-card, .pkg-card > #pkgDayTableWrap{
+    position:relative; z-index:1;
+  }
+  .pkg-filters{display:flex; flex-wrap:wrap; gap:24px; margin-bottom:18px; padding-bottom:16px; border-bottom:1px dashed var(--line);}
+  .pkg-filters .filter-label{display:flex; align-items:center; gap:6px; color:var(--navy-800);}
+  .pkg-filters .filter-label svg{color:var(--teal-500); flex-shrink:0;}
+  .pkg-filters .chip.active{background:linear-gradient(120deg, var(--teal-500), var(--teal-400)); border-color:var(--teal-400);}
+
+  .pkg-kpi-row{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:18px;}
+  .pkg-kpi{
+    background:#fbfcfe; border:1px solid var(--line); border-radius:12px; padding:15px 17px;
+    position:relative; overflow:hidden;
+  }
+  .pkg-kpi.is-primary{
+    background:linear-gradient(135deg, var(--navy-950), var(--navy-800));
+    border-color:var(--navy-800);
+  }
+  .pkg-kpi-lbl{font-size:12px; color:var(--ink-500); font-weight:600; text-transform:uppercase; letter-spacing:.03em; margin-bottom:8px; display:flex; align-items:center; gap:6px;}
+  .pkg-kpi.is-primary .pkg-kpi-lbl{color:#9fb0d6;}
+  .pkg-kpi-val{font-family:'Kanit',sans-serif; font-size:25px; font-weight:600; color:var(--ink-900); line-height:1;}
+  .pkg-kpi.is-primary .pkg-kpi-val{color:#fff; font-size:29px;}
+  .pkg-kpi-unit{font-size:13px; color:var(--ink-500); font-weight:500; margin-left:3px;}
+  .pkg-kpi.is-primary .pkg-kpi-unit{color:#9fb0d6;}
+  .pkg-kpi-sub{font-size:12.5px; margin-top:8px; color:var(--ink-500); display:flex; align-items:center; gap:5px;}
+  .pkg-kpi.is-primary .pkg-kpi-sub{color:#b7c0d6;}
+  .pkg-kpi-trend{font-weight:700; display:inline-flex; align-items:center; gap:2px;}
+  .pkg-kpi-trend.up{color:var(--green-500);}
+  .pkg-kpi-trend.down{color:var(--red-500);}
+  .pkg-kpi-trend.flat{color:var(--ink-500);}
+
+  .pkg-insight-row{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:20px;}
+  .pkg-insight-chip{
+    display:flex; align-items:center; gap:9px; background:var(--teal-100); border:1px solid #c9ece6;
+    border-radius:11px; padding:9px 14px; font-size:13px; color:var(--navy-800); flex:1; min-width:230px;
+  }
+  .pkg-insight-chip.amber{background:var(--amber-100); border-color:#f4dcae;}
+  .pkg-insight-chip.violet{background:var(--violet-100); border-color:#d9d2f5;}
+  .pkg-insight-icon{
+    width:30px; height:30px; border-radius:9px; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+    background:#fff; box-shadow:0 1px 3px rgba(16,24,50,.12);
+  }
+  .pkg-insight-icon svg{width:16px; height:16px;}
+  .pkg-insight-chip b{font-family:'Kanit',sans-serif; font-weight:600; color:var(--ink-900);}
+  .pkg-insight-text{line-height:1.4;}
+
+  /* ===== Lead Time — สรุปสำหรับผู้บริหาร (executive insight row) ===== */
+  .lt-summary-card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:16px 18px 6px; box-shadow:var(--shadow); margin-bottom:20px;
+  }
+  .lt-summary-head{
+    display:flex; align-items:center; gap:8px;
+    font-family:'Kanit',sans-serif; font-size:13px; font-weight:600;
+    color:var(--navy-800); text-transform:uppercase; letter-spacing:.05em;
+    margin:0 0 12px;
+  }
+  .lt-summary-head .dot{width:7px; height:7px; border-radius:50%; background:var(--teal-400); box-shadow:0 0 0 4px rgba(23,179,164,.2); flex-shrink:0;}
+  .lt-summary-head svg{width:15px; height:15px; color:var(--teal-500); flex-shrink:0;}
+  #ltInsightRow{margin-bottom:14px;}
+  #ltInsightRow .pkg-insight-chip{min-width:250px;}
+  #ltInsightRow .pkg-insight-chip.red{background:var(--red-100); border-color:#f3c7c2;}
+
+  .pkg-sparkline-card{background:#f8fafc; border:1px solid var(--line); border-radius:12px; padding:14px 16px 10px; margin-bottom:16px;}
+  .pkg-sparkline-title{font-size:12.5px; color:var(--ink-500); font-weight:600; margin-bottom:10px;}
+  .pkg-sparkline{display:flex; align-items:flex-end; gap:3px; height:70px; overflow-x:auto; padding-bottom:2px;}
+  .pkg-spark-bar{
+    flex:1 0 8px; min-width:8px; max-width:22px; border-radius:3px 3px 1px 1px;
+    background:linear-gradient(180deg, var(--teal-400), var(--teal-500));
+    position:relative; cursor:pointer; transition:opacity .12s ease;
+  }
+  .pkg-spark-bar:hover{opacity:.75;}
+  .pkg-spark-bar.is-max{background:linear-gradient(180deg, var(--amber-500), #c97c1f);}
+  .pkg-spark-bar.is-empty{background:var(--line);}
+  .pkg-spark-bar.is-weekend{background:linear-gradient(180deg, var(--violet-500), #5847ad);}
+  .pkg-spark-bar.is-empty.is-weekend{background:var(--line);}
+
+  .day-table thead th{position:sticky; top:0; background:var(--card); z-index:2;}
+  .day-table .day-cell{display:flex; align-items:center; gap:8px; font-weight:600; color:var(--ink-900);}
+  .day-table .weekday-pill{
+    font-size:11px; font-weight:600; padding:2px 7px; border-radius:6px; color:var(--ink-500); background:#eef1f6;
+  }
+  .day-table tr.is-weekend .weekday-pill{color:var(--violet-500); background:var(--violet-100);}
+  .day-table tr.is-max td{background:var(--amber-100) !important;}
+  .day-table tr.is-max .day-cell::after{content:'สูงสุด'; font-size:10.5px; font-weight:700; color:var(--amber-500); background:#fff; border:1px solid #f0d199; padding:1px 7px; border-radius:999px;}
+  .day-table tr.is-min td{background:#f5f6fa;}
+  .day-table .pkg-bar-cell{display:flex; align-items:center; gap:10px; justify-content:flex-end;}
+  .day-table .pkg-bar-track{flex:1; max-width:140px; height:9px; background:#eef1f6; border-radius:5px; overflow:hidden;}
+  .day-table .pkg-bar-fill{height:100%; border-radius:5px; background:linear-gradient(90deg, var(--teal-400), var(--teal-500));}
+  .day-table tr.is-max .pkg-bar-fill{background:linear-gradient(90deg, var(--amber-500), #c97c1f);}
+  .day-table .pkg-num{font-family:'Kanit',sans-serif; font-weight:700; color:var(--ink-900); min-width:56px; text-align:right;}
+
+  @media (max-width: 900px){
+    .pkg-kpi-row{grid-template-columns:repeat(2,1fr);}
+  }
 
   .search-input{
     border:1px solid var(--line); border-radius:8px; padding:7px 12px; font-size:14px;
@@ -421,6 +531,15 @@
 
     <div class="kpi-row" id="kpiRow"></div>
 
+    <div class="lt-summary-card">
+      <div class="lt-summary-head">
+        <span class="dot"></span>
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.9 6.6 7.1.7-5.4 4.8 1.7 7-6.3-3.8-6.3 3.8 1.7-7L2 9.3l7.1-.7z" fill="currentColor"/></svg>
+        สรุป Lead Time
+      </div>
+      <div class="pkg-insight-row" id="ltInsightRow"></div>
+    </div>
+
     <div class="grid2">
       <div class="card">
         <div class="card-head">
@@ -494,18 +613,50 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card pkg-card">
+      <svg class="pkg-watermark" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M12 2 2 7l10 5 10-5-10-5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+        <path d="M2 7v10l10 5 10-5V7" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+        <path d="M12 12v10M2 7l10 5M22 7l-10 5" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+      <div class="pkg-pro-badge">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l2.9 6.6 7.1.7-5.4 4.8 1.7 7-6.3-3.8-6.3 3.8 1.7-7L2 9.3l7.1-.7z" fill="currentColor"/></svg>
+        Executive Summary
+      </div>
       <div class="card-head">
         <div>
-          <div class="card-title">สรุปตามเดือน → เส้นทาง</div>
-          <div class="card-note">เลือกเดือน เพื่อดูสัดส่วน ภายใน 3 วัน / ภายใน 7 วัน / เกิน 7 วัน แยกตามเส้นทาง</div>
+          <div class="card-title">สรุปจำนวนห่อที่จัดส่ง รายวัน</div>
+          <div class="card-note">เลือกปีและเดือน เพื่อดูยอดห่อที่จัดส่งจริงของแต่ละวัน — สำหรับสรุป KPI ให้ผู้บริหาร</div>
         </div>
       </div>
-      <div class="filter-group" style="margin-bottom:14px;">
-        <div class="filter-label">เดือน</div>
-        <div class="chip-row" id="routeMonthChips"></div>
+
+      <div class="pkg-filters">
+        <div class="filter-group">
+          <div class="filter-label">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="13" height="13"><rect x="3" y="4.5" width="18" height="16" rx="2.5" stroke="currentColor" stroke-width="1.7"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            ปี
+          </div>
+          <div class="chip-row" id="pkgYearChips"></div>
+        </div>
+        <div class="filter-group">
+          <div class="filter-label">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="13" height="13"><rect x="3" y="4.5" width="18" height="16" rx="2.5" stroke="currentColor" stroke-width="1.7"/><path d="M3 9.5h18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M8 13.5h2M8 17h2M14 13.5h2M14 17h2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            เดือน
+          </div>
+          <div class="chip-row" id="pkgMonthChips"></div>
+        </div>
       </div>
-      <div id="routeMonthGroupedWrap" class="table-scroll" style="max-height:520px;"></div>
+
+      <div class="pkg-kpi-row" id="pkgKpiRow"></div>
+
+      <div class="pkg-insight-row" id="pkgInsightRow"></div>
+
+      <div class="pkg-sparkline-card">
+        <div class="pkg-sparkline-title">แนวโน้มจำนวนห่อรายวันในเดือนนี้</div>
+        <div class="pkg-sparkline" id="pkgSparkline"></div>
+      </div>
+
+      <div id="pkgDayTableWrap" class="table-scroll" style="max-height:480px;"></div>
     </div>
 
   </div>
@@ -712,9 +863,11 @@ function gvizTableToRows(table){
 function buildRAW(rawRows){
   const detailMap = new Map();
   const carrierMap = new Map();
+  const dayMap = new Map();
   const monthsSet = new Set();
   const routesSet = new Set();
   const provincesSet = new Set();
+  const yearsSet = new Set();
 
   rawRows.forEach(row => {
     const shipDate = parseFlexibleDate(row[COL.SHIP_DATE]);
@@ -734,6 +887,18 @@ function buildRAW(rawRows){
     monthsSet.add(monthKey);
     routesSet.add(route);
     provincesSet.add(province);
+    yearsSet.add(shipDate.getFullYear());
+
+    // สรุปจำนวนห่อรายวัน (ตามวันที่ส่งของ) — ไม่แยกเส้นทาง/จังหวัด/สถานะ ใช้แค่ ปี-เดือน-วัน
+    const dateKey = `${shipDate.getFullYear()}-${String(shipDate.getMonth() + 1).padStart(2, '0')}-${String(shipDate.getDate()).padStart(2, '0')}`;
+    if (!dayMap.has(dateKey)) {
+      dayMap.set(dateKey, {
+        dateKey, year: shipDate.getFullYear(), month: shipDate.getMonth() + 1, day: shipDate.getDate(),
+        weekday: shipDate.getDay(), shipments: 0, packages: 0,
+      });
+    }
+    const dy = dayMap.get(dateKey);
+    dy.shipments += 1; dy.packages += packages;
 
     const dKey = `${monthKey}|${route}|${province}|${status}`;
     if (!detailMap.has(dKey)) detailMap.set(dKey, { month: monthKey, route, province, status, shipments: 0, packages: 0, lt_sum: 0 });
@@ -760,8 +925,10 @@ function buildRAW(rawRows){
 
   const provinces = [...provincesSet].sort((a, b) => a.localeCompare(b, 'th'));
   const statuses = ['ส่งภายใน 3 วัน', 'ส่งภายใน 7 วัน', 'เกิน 7 วัน'];
+  const years = [...yearsSet].sort((a, b) => a - b);
+  const byDay = [...dayMap.values()].sort((a, b) => a.dateKey < b.dateKey ? -1 : 1);
 
-  return { months, months_display, routes, provinces, statuses, detail: [...detailMap.values()], carrier: [...carrierMap.values()] };
+  return { months, months_display, routes, provinces, statuses, years, byDay, detail: [...detailMap.values()], carrier: [...carrierMap.values()] };
 }
 
 async function loadData(){
@@ -811,11 +978,11 @@ function setSyncState(kind, extra){
 // ============ Render pipeline (runs every refresh) ============
 // ============================================================
 let state = null;
-let routeMonthState = null;
+let pkgState = null;
 let sortState = null;
 
 function renderDashboard(RAW){
-  const { months, months_display, routes, provinces, statuses, detail, carrier } = RAW;
+  const { months, months_display, routes, provinces, statuses, detail, carrier, byDay, years } = RAW;
 
   const STATUS_COLOR = {
   'ส่งภายใน 3 วัน': '#2f9e6e',
@@ -836,8 +1003,8 @@ if (!state){
   if (state.route !== 'ALL' && !routes.includes(state.route)) state.route = 'ALL';
   if (state.province !== 'ALL' && !provinces.includes(state.province)) state.province = 'ALL';
 }
-if (!routeMonthState){
-  routeMonthState = { month: null };
+if (!pkgState){
+  pkgState = { year: null, month: null };
 }
 
 // ============ Build filter UI (rebuilt each refresh, selection preserved) ============
@@ -1211,6 +1378,106 @@ function render(){
     </div>
   `;
 
+  // ---- Lead Time insight row (สรุปสำหรับผู้บริหาร) ----
+  const ltInsightRowEl = document.getElementById('ltInsightRow');
+  if (ltInsightRowEl){
+    // จังหวัดที่เร็วที่สุด / ควรเฝ้าระวัง (ตัดจังหวัดที่มีจำนวนออเดอร์น้อยเกินไปออก กันค่าผิดเพี้ยน)
+    const provLT = {};
+    rows.forEach(d => {
+      if (!provLT[d.province]) provLT[d.province] = { ship:0, lt:0 };
+      provLT[d.province].ship += d.shipments;
+      provLT[d.province].lt += d.lt_sum;
+    });
+    const minShipForRanking = Math.max(3, Math.round(totalShip * 0.02));
+    const provLTEntries = Object.entries(provLT)
+      .map(([p,v]) => ({ p, ship:v.ship, avgLT: v.ship ? v.lt/v.ship : 0 }))
+      .filter(x => x.ship >= minShipForRanking);
+    const bestProv = provLTEntries.reduce((a,x) => (!a || x.avgLT < a.avgLT) ? x : a, null);
+    const worstProv = provLTEntries.reduce((a,x) => (!a || x.avgLT > a.avgLT) ? x : a, null);
+
+    // สายขนส่งที่เร็วที่สุด (กรองตามเดือนที่เลือก เช่นเดียวกับตารางสายขนส่งด้านล่าง)
+    const carrierFiltered = carrier.filter(d => state.months.has(d.month));
+    const carrierLT = {};
+    carrierFiltered.forEach(d => {
+      if (!carrierLT[d.carrier]) carrierLT[d.carrier] = { ship:0, lt:0 };
+      carrierLT[d.carrier].ship += d.shipments;
+      carrierLT[d.carrier].lt += d.lt_sum;
+    });
+    const carrierTotalShip = Object.values(carrierLT).reduce((a,v)=>a+v.ship,0);
+    const minShipForCarrier = Math.max(3, Math.round(carrierTotalShip * 0.02));
+    const bestCarrier = Object.entries(carrierLT)
+      .map(([name,v]) => ({ name, ship:v.ship, avgLT: v.ship ? v.lt/v.ship : 0 }))
+      .filter(x => x.ship >= minShipForCarrier)
+      .reduce((a,x) => (!a || x.avgLT < a.avgLT) ? x : a, null);
+
+    // สัดส่วนส่งตรงเวลา (ภายใน 7 วัน) และสัดส่วนที่เกิน 7 วัน (ความเสี่ยงที่ต้องติดตาม)
+    const onTimeCount = (byStatus['ส่งภายใน 3 วัน']||0) + (byStatus['ส่งภายใน 7 วัน']||0);
+    const onTimePct = totalShip ? onTimeCount / totalShip * 100 : 0;
+    const overCount = byStatus['เกิน 7 วัน'] || 0;
+    const overPct = totalShip ? overCount / totalShip * 100 : 0;
+
+    // แนวโน้ม LT เฉลี่ยของเดือนล่าสุดที่เลือก เทียบเดือนก่อนหน้า (ไล่ตามลำดับเวลาจริงจากข้อมูลทั้งหมด ไม่ขึ้นกับตัวกรองเดือน)
+    const monthLTMap = new Map();
+    detail.forEach(d => {
+      if (!monthLTMap.has(d.month)) monthLTMap.set(d.month, { ship:0, lt:0 });
+      const g = monthLTMap.get(d.month);
+      g.ship += d.shipments; g.lt += d.lt_sum;
+    });
+    const selectedMonths = months.filter(m => state.months.has(m)).sort();
+    const latestSelectedMonth = selectedMonths[selectedMonths.length - 1];
+    const latestIdx = latestSelectedMonth ? months.indexOf(latestSelectedMonth) : -1;
+    const prevMonthKey = latestIdx > 0 ? months[latestIdx - 1] : null;
+    const curM = latestSelectedMonth ? monthLTMap.get(latestSelectedMonth) : null;
+    const prevM = prevMonthKey ? monthLTMap.get(prevMonthKey) : null;
+    const curAvgLT = (curM && curM.ship) ? curM.lt / curM.ship : null;
+    const prevAvgLT = (prevM && prevM.ship) ? prevM.lt / prevM.ship : null;
+    const ltTrendPct = (curAvgLT !== null && prevAvgLT !== null && prevAvgLT > 0)
+      ? ((curAvgLT - prevAvgLT) / prevAvgLT * 100) : null;
+
+    const ltInsights = [];
+    if (bestProv){
+      ltInsights.push(`
+        <div class="pkg-insight-chip">
+          <div class="pkg-insight-icon" style="color:var(--teal-500)"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.9 6.6 7.1.7-5.4 4.8 1.7 7-6.3-3.8-6.3 3.8 1.7-7L2 9.3l7.1-.7z" fill="currentColor"/></svg></div>
+          <div class="pkg-insight-text">บริการเร็วที่สุด: <b>${bestProv.p}</b> เฉลี่ย <b>${fmt1(bestProv.avgLT)} วัน</b></div>
+        </div>`);
+    }
+    if (worstProv && (!bestProv || worstProv.p !== bestProv.p)){
+      ltInsights.push(`
+        <div class="pkg-insight-chip red">
+          <div class="pkg-insight-icon" style="color:var(--red-500)"><svg viewBox="0 0 24 24" fill="none"><path d="M10.3 3.9L2.7 18a2 2 0 0 0 1.7 3h15.2a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 9v4M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div class="pkg-insight-text">ควรเฝ้าระวัง: <b>${worstProv.p}</b> เฉลี่ย <b>${fmt1(worstProv.avgLT)} วัน</b></div>
+        </div>`);
+    }
+    if (bestCarrier){
+      ltInsights.push(`
+        <div class="pkg-insight-chip">
+          <div class="pkg-insight-icon" style="color:var(--teal-500)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="14" height="11"/><path d="M15 8h4l3 3v4h-7V8z"/><circle cx="5.5" cy="18" r="2"/><circle cx="17.5" cy="18" r="2"/></svg></div>
+          <div class="pkg-insight-text">สายขนส่งเร็วที่สุด: <b>${bestCarrier.name}</b> เฉลี่ย <b>${fmt1(bestCarrier.avgLT)} วัน</b></div>
+        </div>`);
+    }
+    ltInsights.push(`
+      <div class="pkg-insight-chip violet">
+        <div class="pkg-insight-icon" style="color:var(--violet-500)"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="pkg-insight-text">ส่งตรงเวลา (ภายใน 7 วัน): <b>${fmt1(onTimePct)}%</b> (${fmtInt(onTimeCount)} ออเดอร์)</div>
+      </div>`);
+    ltInsights.push(`
+      <div class="pkg-insight-chip amber">
+        <div class="pkg-insight-icon" style="color:var(--amber-500)"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.2 2.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="pkg-insight-text">เกิน 7 วัน (ควรติดตาม): <b>${fmt1(overPct)}%</b> (${fmtInt(overCount)} ออเดอร์)</div>
+      </div>`);
+    const trendChipHtml = ltTrendPct === null
+      ? `<span style="color:var(--ink-500)">ไม่มีเดือนก่อนหน้าให้เทียบ</span>`
+      : `<span class="pkg-kpi-trend ${ltTrendPct < -0.5 ? 'up' : ltTrendPct > 0.5 ? 'down' : 'flat'}">${ltTrendPct < 0 ? '▼' : ltTrendPct > 0 ? '▲' : '►'} ${fmt1(Math.abs(ltTrendPct))}%</span>`;
+    ltInsights.push(`
+      <div class="pkg-insight-chip">
+        <div class="pkg-insight-icon" style="color:var(--navy-800)"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="13" r="8" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v5l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="pkg-insight-text">LT เดือนล่าสุดเทียบเดือนก่อนหน้า: ${trendChipHtml}</div>
+      </div>`);
+
+    ltInsightRowEl.innerHTML = ltInsights.join('');
+  }
+
   // ---- Trend chart (by month) ----
   const monthsSelected = months.filter(m => state.months.has(m));
   const monthAgg = monthsSelected.map(m => {
@@ -1274,7 +1541,7 @@ function render(){
   renderAggTable('carrier', carrier, 'carrier', sortState.carrier);
 
   // ---- Route x Month summary (3/7/over-7 day buckets) ----
-  renderRouteMonthSummary(rows);
+  renderDailyPackageSummary(byDay, years);
 }
 
 function renderAggTable(tableId, sourceRows, keyField, sortInfo){
@@ -1310,85 +1577,201 @@ function statusBadge(pct){
   return `<span class="badge ${cls}">${fmt1(pct)}%</span>`;
 }
 
-// ---- Route x Month summary (3-day / 7-day / over-7-day buckets) ----
-// Shows one month at a time, picked via chips, instead of an all-months accordion.
-function renderRouteMonthSummary(rows){
-  const byMonth = {};
-  rows.forEach(r => {
-    if (!byMonth[r.month]) byMonth[r.month] = {};
-    const mg = byMonth[r.month];
-    if (!mg[r.route]) mg[r.route] = { on3:0, on7:0, over7:0, total:0 };
-    const g = mg[r.route];
-    g.total += r.shipments;
-    if (r.status === 'ส่งภายใน 3 วัน') g.on3 += r.shipments;
-    else if (r.status === 'ส่งภายใน 7 วัน') g.on7 += r.shipments;
-    else g.over7 += r.shipments;
-  });
+// ---- Daily packages — executive KPI summary (เลือกปี → เดือน → ดูจำนวนห่อของแต่ละวัน) ----
+// Independent of the top filter bar on purpose: this card is meant to show the true,
+// unfiltered daily package volume company-wide, so leadership always sees the full picture.
+const THAI_WEEKDAYS_SHORT = ['อา','จ','อ','พ','พฤ','ศ','ส'];
 
-  const monthKeys = Object.keys(byMonth).sort(); // 'YYYY-MM' sorts chronologically as string
-  const chipsEl = document.getElementById('routeMonthChips');
-  const wrap = document.getElementById('routeMonthGroupedWrap');
+function renderDailyPackageSummary(byDay, years){
+  const yearChipsEl = document.getElementById('pkgYearChips');
+  const monthChipsEl = document.getElementById('pkgMonthChips');
+  const kpiRowEl = document.getElementById('pkgKpiRow');
+  const insightRowEl = document.getElementById('pkgInsightRow');
+  const sparklineEl = document.getElementById('pkgSparkline');
+  const tableWrapEl = document.getElementById('pkgDayTableWrap');
 
-  if (!monthKeys.length){
-    chipsEl.innerHTML = '';
-    wrap.innerHTML = `<div class="empty-state">ไม่พบข้อมูลตามตัวกรองที่เลือก</div>`;
+  if (!byDay.length){
+    yearChipsEl.innerHTML = '';
+    monthChipsEl.innerHTML = '';
+    kpiRowEl.innerHTML = '';
+    insightRowEl.innerHTML = '';
+    sparklineEl.innerHTML = '';
+    tableWrapEl.innerHTML = `<div class="empty-state">ไม่พบข้อมูลตามตัวกรองที่เลือก</div>`;
     return;
   }
 
-  // Keep the previously-picked month if it's still in range, otherwise default to the latest one.
-  if (!routeMonthState.month || !monthKeys.includes(routeMonthState.month)){
-    routeMonthState.month = monthKeys[monthKeys.length - 1];
-  }
-
-  chipsEl.innerHTML = monthKeys.map(m => `
-    <button class="chip${m === routeMonthState.month ? ' active' : ''}" data-month="${m}">${months_display[m]} ${m.split('-')[0]}</button>
+  // ---- Year chips (keep the previous selection if it still exists, otherwise the latest year) ----
+  if (!pkgState.year || !years.includes(pkgState.year)) pkgState.year = years[years.length - 1];
+  yearChipsEl.innerHTML = years.map(y => `
+    <button class="chip${y === pkgState.year ? ' active' : ''}" data-year="${y}">${y}</button>
   `).join('');
-  // .onclick (not addEventListener): chips are rebuilt every refresh, so re-running
-  // this must replace, not stack, the handler.
-  chipsEl.onclick = (e) => {
-    const btn = e.target.closest('.chip');
-    if (!btn) return;
-    routeMonthState.month = btn.dataset.month;
+  // .onclick (not addEventListener): chips are rebuilt every refresh, so re-running this must replace, not stack, the handler.
+  yearChipsEl.onclick = (e) => {
+    const btn = e.target.closest('.chip'); if (!btn) return;
+    pkgState.year = Number(btn.dataset.year);
+    pkgState.month = null; // ให้ระบบเลือกเดือนล่าสุดของปีที่เพิ่งเลือกให้อัตโนมัติ
     render();
   };
 
-  const cell = (count, total, cls) => {
-    const pct = total ? (count/total*100) : 0;
-    return `<td class="num-cell"><span class="badge ${cls}">${fmtInt(count)}</span> <span style="color:var(--ink-300)">${fmt1(pct)}%</span></td>`;
+  // ---- Month chips: เฉพาะเดือนที่มีข้อมูลจริงในปีที่เลือก ----
+  const monthsInYear = [...new Set(byDay.filter(d => d.year === pkgState.year).map(d => d.month))].sort((a,b) => a - b);
+  if (!pkgState.month || !monthsInYear.includes(pkgState.month)){
+    pkgState.month = monthsInYear[monthsInYear.length - 1];
+  }
+  monthChipsEl.innerHTML = monthsInYear.map(m => `
+    <button class="chip${m === pkgState.month ? ' active' : ''}" data-month="${m}">${THAI_MONTHS[m - 1]}</button>
+  `).join('');
+  monthChipsEl.onclick = (e) => {
+    const btn = e.target.closest('.chip'); if (!btn) return;
+    pkgState.month = Number(btn.dataset.month);
+    render();
   };
 
-  const mg = byMonth[routeMonthState.month];
-  const routeEntries = Object.entries(mg).sort((a,b) => b[1].total - a[1].total);
-  const mTotal = routeEntries.reduce((a,[,v]) => a + v.total, 0);
-  const on3Total = routeEntries.reduce((a,[,v]) => a + v.on3, 0);
-  const on7Total = routeEntries.reduce((a,[,v]) => a + v.on7, 0);
-  const over7Total = routeEntries.reduce((a,[,v]) => a + v.over7, 0);
+  // ---- สร้างปฏิทินเต็มเดือน (เติมวันที่ไม่มีการจัดส่งเป็น 0 ห่อ เพื่อให้เห็นภาพครบทุกวัน) ----
+  const y = pkgState.year, m = pkgState.month;
+  const daysInMonth = new Date(y, m, 0).getDate();
+  const dataByDate = new Map(byDay.filter(d => d.year === y && d.month === m).map(d => [d.day, d]));
+  const cal = [];
+  for (let day = 1; day <= daysInMonth; day++){
+    const found = dataByDate.get(day);
+    cal.push(found || {
+      dateKey: `${y}-${String(m).padStart(2,'0')}-${String(day).padStart(2,'0')}`,
+      year: y, month: m, day, weekday: new Date(y, m - 1, day).getDay(), shipments: 0, packages: 0,
+    });
+  }
 
-  const routeRows = routeEntries.map(([route, v]) => `
-    <tr>
-      <td class="route-cell">${route}</td>
-      ${cell(v.on3, v.total, 'badge-green')}
-      ${cell(v.on7, v.total, 'badge-amber')}
-      ${cell(v.over7, v.total, 'badge-red')}
-      <td class="num-cell"><b>${fmtInt(v.total)}</b></td>
-    </tr>`).join('');
+  const totalPackages = cal.reduce((a,d) => a + d.packages, 0);
+  const totalShipments = cal.reduce((a,d) => a + d.shipments, 0);
+  const activeDays = cal.filter(d => d.shipments > 0).length;
+  const avgPerActiveDay = activeDays ? totalPackages / activeDays : 0;
+  const maxDay = cal.reduce((a,d) => (!a || d.packages > a.packages) ? d : a, null);
+  const maxPkg = maxDay ? maxDay.packages : 0;
+  const activeCal = cal.filter(d => d.packages > 0);
+  const minDay = activeCal.reduce((a,d) => (!a || d.packages < a.packages) ? d : a, null);
+  const weekendPackages = cal.filter(d => d.weekday === 0 || d.weekday === 6).reduce((a,d) => a + d.packages, 0);
+  const weekendPct = totalPackages ? weekendPackages / totalPackages * 100 : 0;
 
-  wrap.innerHTML = `
-    <table class="subtable route-month-table">
+  // ---- แนวโน้มเทียบเดือนก่อนหน้า (ไล่ตามลำดับเวลาจริง ข้ามปีได้ถูกต้อง) ----
+  const monthTotals = new Map();
+  byDay.forEach(d => {
+    const key = d.year * 12 + d.month;
+    monthTotals.set(key, (monthTotals.get(key) || 0) + d.packages);
+  });
+  const sortedKeys = [...monthTotals.keys()].sort((a,b) => a - b);
+  const curKey = y * 12 + m;
+  const curIdx = sortedKeys.indexOf(curKey);
+  const prevTotal = curIdx > 0 ? monthTotals.get(sortedKeys[curIdx - 1]) : null;
+  const trendPct = (prevTotal !== null && prevTotal > 0) ? ((totalPackages - prevTotal) / prevTotal * 100) : null;
+  const isRecord = totalPackages > 0 && totalPackages === Math.max(...monthTotals.values());
+
+  const dateLabel = d => `${d.day} ${THAI_MONTHS[d.month - 1]} ${d.year}`;
+
+  // ---- KPI row ----
+  const trendHtml = trendPct === null
+    ? `<span style="color:var(--ink-500)">ไม่มีเดือนก่อนหน้าให้เทียบ</span>`
+    : `<span class="pkg-kpi-trend ${trendPct > 0.5 ? 'up' : trendPct < -0.5 ? 'down' : 'flat'}">${trendPct > 0 ? '▲' : trendPct < 0 ? '▼' : '►'} ${fmt1(Math.abs(trendPct))}%</span>&nbsp;เทียบเดือนก่อนหน้า`;
+
+  kpiRowEl.innerHTML = `
+    <div class="pkg-kpi is-primary">
+      <div class="pkg-kpi-lbl">รวมจำนวนห่อที่จัดส่ง</div>
+      <div class="pkg-kpi-val">${fmtInt(totalPackages)}<span class="pkg-kpi-unit">ห่อ</span></div>
+      <div class="pkg-kpi-sub">${trendHtml}</div>
+    </div>
+    <div class="pkg-kpi">
+      <div class="pkg-kpi-lbl">จำนวนออเดอร์รวม</div>
+      <div class="pkg-kpi-val">${fmtInt(totalShipments)}<span class="pkg-kpi-unit">ออเดอร์</span></div>
+      <div class="pkg-kpi-sub">เฉลี่ย ${fmt1(totalShipments ? totalPackages / totalShipments : 0)} ห่อ/ออเดอร์</div>
+    </div>
+    <div class="pkg-kpi">
+      <div class="pkg-kpi-lbl">เฉลี่ยต่อวันที่จัดส่ง</div>
+      <div class="pkg-kpi-val">${fmtInt(avgPerActiveDay)}<span class="pkg-kpi-unit">ห่อ/วัน</span></div>
+      <div class="pkg-kpi-sub">จาก ${activeDays} วันที่มีการจัดส่ง จากทั้งหมด ${daysInMonth} วัน</div>
+    </div>
+    <div class="pkg-kpi">
+      <div class="pkg-kpi-lbl">วันที่จัดส่งมากที่สุด</div>
+      <div class="pkg-kpi-val">${maxPkg ? fmtInt(maxPkg) : '—'}<span class="pkg-kpi-unit">ห่อ</span></div>
+      <div class="pkg-kpi-sub">${maxPkg ? `วันที่ ${maxDay.day} (${THAI_WEEKDAYS_SHORT[maxDay.weekday]})` : 'ไม่มีข้อมูล'}</div>
+    </div>
+  `;
+
+  // ---- Insight chips ----
+  const insights = [];
+  if (maxPkg){
+    insights.push(`
+      <div class="pkg-insight-chip">
+        <div class="pkg-insight-icon" style="color:var(--teal-500)"><svg viewBox="0 0 24 24" fill="none"><path d="M4 20V10M12 20V4M20 20v-7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="pkg-insight-text">วันที่จัดส่งมากที่สุดคือ <b>${dateLabel(maxDay)}</b> ด้วยยอด <b>${fmtInt(maxDay.packages)} ห่อ</b></div>
+      </div>`);
+  }
+  if (isRecord){
+    insights.push(`
+      <div class="pkg-insight-chip amber">
+        <div class="pkg-insight-icon" style="color:var(--amber-500)"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.9 6.6 7.1.7-5.4 4.8 1.7 7-6.3-3.8-6.3 3.8 1.7-7L2 9.3l7.1-.7z" fill="currentColor"/></svg></div>
+        <div class="pkg-insight-text"><b>สถิติใหม่!</b> เดือนนี้มียอดห่อรวมสูงสุดเท่าที่เคยบันทึกมา</div>
+      </div>`);
+  } else if (minDay && maxDay && minDay.dateKey !== maxDay.dateKey){
+    insights.push(`
+      <div class="pkg-insight-chip">
+        <div class="pkg-insight-icon" style="color:var(--ink-500)"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="pkg-insight-text">วันที่จัดส่งน้อยที่สุดคือ <b>${dateLabel(minDay)}</b> ด้วยยอด <b>${fmtInt(minDay.packages)} ห่อ</b></div>
+      </div>`);
+  }
+  insights.push(`
+    <div class="pkg-insight-chip violet">
+      <div class="pkg-insight-icon" style="color:var(--violet-500)"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="17" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 9h18" stroke="currentColor" stroke-width="2"/></svg></div>
+      <div class="pkg-insight-text">ส่งวันเสาร์-อาทิตย์คิดเป็น <b>${fmt1(weekendPct)}%</b> ของยอดห่อทั้งเดือน (${fmtInt(weekendPackages)} ห่อ)</div>
+    </div>`);
+  insightRowEl.innerHTML = insights.join('');
+
+  // ---- Sparkline: ภาพรวมแนวโน้มรายวันทั้งเดือนในหนึ่งแถว ----
+  sparklineEl.innerHTML = cal.map(d => {
+    const h = maxPkg ? Math.max(4, Math.round(d.packages / maxPkg * 100)) : 4;
+    const isWeekend = d.weekday === 0 || d.weekday === 6;
+    const isMax = maxPkg > 0 && d.packages === maxPkg;
+    const cls = ['pkg-spark-bar'];
+    if (d.packages === 0) cls.push('is-empty');
+    if (isWeekend) cls.push('is-weekend');
+    if (isMax) cls.push('is-max');
+    return `<div class="${cls.join(' ')}" style="height:${h}%" title="${dateLabel(d)} (${THAI_WEEKDAYS_SHORT[d.weekday]}): ${fmtInt(d.packages)} ห่อ"></div>`;
+  }).join('');
+
+  // ---- ตารางรายวัน ----
+  const rowsHtml = cal.map(d => {
+    const isWeekend = d.weekday === 0 || d.weekday === 6;
+    const isMax = maxPkg > 0 && d.packages === maxPkg;
+    const isMin = !!(minDay && d.packages > 0 && d.dateKey === minDay.dateKey && !isMax);
+    const barPct = maxPkg ? Math.round(d.packages / maxPkg * 100) : 0;
+    const trCls = [isWeekend ? 'is-weekend' : '', isMax ? 'is-max' : '', isMin ? 'is-min' : ''].filter(Boolean).join(' ');
+    return `
+      <tr class="${trCls}">
+        <td>
+          <div class="day-cell">
+            ${dateLabel(d)}
+            <span class="weekday-pill">${THAI_WEEKDAYS_SHORT[d.weekday]}</span>
+          </div>
+        </td>
+        <td class="num-cell">${fmtInt(d.shipments)}</td>
+        <td class="num-cell">
+          <div class="pkg-bar-cell">
+            <div class="pkg-bar-track"><div class="pkg-bar-fill" style="width:${barPct}%"></div></div>
+            <span class="pkg-num">${fmtInt(d.packages)}</span>
+          </div>
+        </td>
+      </tr>`;
+  }).join('');
+
+  tableWrapEl.innerHTML = `
+    <table class="day-table">
       <thead><tr>
-        <th>เส้นทาง</th>
-        <th style="text-align:right">ภายใน 3 วัน</th>
-        <th style="text-align:right">ภายใน 7 วัน</th>
-        <th style="text-align:right">เกิน 7 วัน</th>
-        <th style="text-align:right">รวม</th>
+        <th>วันที่</th>
+        <th style="text-align:right">จำนวนออเดอร์</th>
+        <th style="text-align:right">จำนวนห่อ</th>
       </tr></thead>
-      <tbody>${routeRows}</tbody>
+      <tbody>${rowsHtml}</tbody>
       <tfoot><tr class="month-total-row">
-        <td>รวมทั้งหมด</td>
-        ${cell(on3Total, mTotal, 'badge-green')}
-        ${cell(on7Total, mTotal, 'badge-amber')}
-        ${cell(over7Total, mTotal, 'badge-red')}
-        <td class="num-cell"><b>${fmtInt(mTotal)}</b></td>
+        <td>รวมทั้งเดือน</td>
+        <td class="num-cell"><b>${fmtInt(totalShipments)}</b></td>
+        <td class="num-cell"><b>${fmtInt(totalPackages)} ห่อ</b></td>
       </tr></tfoot>
     </table>`;
 }
