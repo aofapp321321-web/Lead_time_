@@ -443,6 +443,84 @@
     .lt-insight-grid{grid-template-columns:1fr;}
   }
 
+  /* ===== Reason summary: ทำไม Lead Time ถึงเปลี่ยนแปลง (ข้อดี/ข้อเสีย) ===== */
+  .lt-reason{
+    position:relative; margin-top:16px; border-radius:14px; border:1px solid var(--line);
+    background:var(--card); overflow:hidden; isolation:isolate;
+    box-shadow:var(--shadow);
+    animation: ltReasonGlow 3.6s ease-in-out infinite;
+  }
+  .lt-reason::before{
+    content:""; position:absolute; top:0; left:0; right:0; height:3px; z-index:2;
+    background:linear-gradient(90deg, var(--teal-400), var(--violet-500), var(--teal-400));
+    background-size:200% 100%;
+    animation: ltReasonShimmer 5s linear infinite;
+  }
+  .lt-reason-watermark{
+    position:absolute; right:-18px; bottom:-22px; width:170px; height:170px;
+    color:var(--navy-900); opacity:.035; pointer-events:none; z-index:0;
+  }
+  .lt-reason-watermark svg{width:100%; height:100%;}
+  @keyframes ltReasonGlow{
+    0%,100%{ box-shadow:var(--shadow), 0 0 0 1px rgba(23,179,164,.08); }
+    50%{ box-shadow:var(--shadow), 0 0 0 1px rgba(109,91,208,.16), 0 18px 36px -18px rgba(23,179,164,.4); }
+  }
+  @keyframes ltReasonShimmer{ 0%{background-position:0% 0;} 100%{background-position:200% 0;} }
+  .lt-reason-head{padding:16px 20px; display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; border-bottom:1px solid var(--line); background:#fff; position:relative; z-index:1;}
+  .lt-reason-head-left{display:flex; align-items:center; gap:10px;}
+  .lt-reason-head-icon{width:32px; height:32px; border-radius:9px; background:var(--navy-900); color:#fff; display:flex; align-items:center; justify-content:center; flex-shrink:0; position:relative;}
+  .lt-reason-head-icon::after{
+    content:""; position:absolute; inset:-3px; border-radius:12px; border:1.5px solid var(--teal-400);
+    opacity:.55; animation:ltReasonPulseRing 2.4s ease-out infinite;
+  }
+  @keyframes ltReasonPulseRing{ 0%{transform:scale(.85); opacity:.6;} 100%{transform:scale(1.35); opacity:0;} }
+  .lt-reason-head-icon svg{width:16px; height:16px;}
+  .lt-reason-head-title{font-family:'Kanit',sans-serif; font-size:15.5px; font-weight:600; color:var(--ink-900); display:flex; align-items:center; gap:7px;}
+  .lt-reason-head-title .live-dot{width:6px; height:6px; border-radius:50%; background:var(--teal-400); box-shadow:0 0 0 3px rgba(23,179,164,.2); animation:heroDot 1.8s ease-in-out infinite; flex-shrink:0;}
+  .lt-reason-head-sub{font-size:12.5px; color:var(--ink-500); margin-top:2px;}
+  .lt-reason-verdict{display:flex; align-items:center; gap:9px; font-family:'Kanit',sans-serif; font-size:19px; font-weight:700; padding:11px 22px; border-radius:999px;}
+  .lt-reason-verdict.good{background:var(--green-100); color:var(--green-500);}
+  .lt-reason-verdict.bad{background:var(--red-100); color:var(--red-500);}
+  .lt-reason-verdict.flat{background:#eef1f7; color:var(--ink-500);}
+  .lt-reason-narrative{
+    position:relative; z-index:1; display:flex; align-items:flex-start; gap:12px;
+    margin:16px 20px 0; padding:16px 19px; border-radius:12px;
+    background:linear-gradient(90deg, rgba(23,179,164,.07), rgba(109,91,208,.06));
+    border:1px solid rgba(23,179,164,.18); font-size:15px; line-height:1.65; color:var(--ink-700);
+  }
+  .lt-reason-narrative b{color:var(--ink-900);}
+  .lt-reason-narrative-icon{
+    width:30px; height:30px; border-radius:9px; flex-shrink:0; margin-top:1px;
+    background:linear-gradient(135deg, var(--teal-400), var(--violet-500)); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .lt-reason-narrative-icon svg{width:16px; height:16px;}
+  .lt-reason-body{position:relative; z-index:1; display:grid; grid-template-columns:1fr 1fr; gap:0;}
+  .lt-reason-col{padding:18px 20px 20px;}
+  .lt-reason-col + .lt-reason-col{border-left:1px solid var(--line);}
+  .lt-reason-col-head{display:flex; align-items:center; gap:8px; font-family:'Kanit',sans-serif; font-size:14.5px; font-weight:600; margin-bottom:13px;}
+  .lt-reason-col-head .badge{width:24px; height:24px; border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .lt-reason-col.pros .lt-reason-col-head{color:var(--green-500);}
+  .lt-reason-col.pros .badge{background:var(--green-100); color:var(--green-500);}
+  .lt-reason-col.cons .lt-reason-col-head{color:var(--red-500);}
+  .lt-reason-col.cons .badge{background:var(--red-100); color:var(--red-500);}
+  .lt-reason-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px;}
+  .lt-reason-item{display:flex; gap:10px; align-items:flex-start; font-size:13.5px; line-height:1.55; color:var(--ink-700);}
+  .lt-reason-item .dot{width:6px; height:6px; border-radius:50%; margin-top:6px; flex-shrink:0;}
+  .lt-reason-col.pros .lt-reason-item .dot{background:var(--green-500);}
+  .lt-reason-col.cons .lt-reason-item .dot{background:var(--red-500);}
+  .lt-reason-item b{color:var(--ink-900); font-weight:700;}
+  .lt-reason-item .impact{display:inline-block; font-family:'Kanit',sans-serif; font-weight:700; font-size:12px; padding:1px 7px; border-radius:6px; margin-left:2px;}
+  .lt-reason-col.pros .lt-reason-item .impact{background:var(--green-100); color:var(--green-500);}
+  .lt-reason-col.cons .lt-reason-item .impact{background:var(--red-100); color:var(--red-500);}
+  .lt-reason-empty{font-size:13px; color:var(--ink-300); font-style:italic;}
+  .lt-reason-foot{position:relative; z-index:1; padding:13px 20px; background:#fff; border-top:1px solid var(--line); font-size:12.5px; color:var(--ink-500); display:flex; align-items:center; gap:8px;}
+  .lt-reason-foot svg{width:14px; height:14px; color:var(--ink-300); flex-shrink:0;}
+  @media (max-width:760px){
+    .lt-reason-body{grid-template-columns:1fr;}
+    .lt-reason-col + .lt-reason-col{border-left:none; border-top:1px solid var(--line);}
+  }
+
   .pkg-sparkline-card{background:#f8fafc; border:1px solid var(--line); border-radius:12px; padding:14px 16px 10px; margin-bottom:16px;}
   .pkg-sparkline-title{font-size:12.5px; color:var(--ink-500); font-weight:600; margin-bottom:10px;}
   .pkg-sparkline{display:flex; align-items:flex-end; gap:3px; height:70px; overflow-x:auto; padding-bottom:2px;}
@@ -564,15 +642,6 @@
 
     <div class="kpi-row" id="kpiRow"></div>
 
-    <div class="lt-summary-card">
-      <div class="lt-summary-head">
-        <span class="dot"></span>
-        <svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.9 6.6 7.1.7-5.4 4.8 1.7 7-6.3-3.8-6.3 3.8 1.7-7L2 9.3l7.1-.7z" fill="currentColor"/></svg>
-        สรุป Lead Time
-      </div>
-      <div class="lt-insight-grid" id="ltInsightRow"></div>
-    </div>
-
     <div class="grid2">
       <div class="card">
         <div class="card-head">
@@ -596,6 +665,16 @@
         </div>
         <div class="chart-wrap tall" id="statusDonut"></div>
       </div>
+    </div>
+
+    <div class="lt-summary-card">
+      <div class="lt-summary-head">
+        <span class="dot"></span>
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.9 6.6 7.1.7-5.4 4.8 1.7 7-6.3-3.8-6.3 3.8 1.7-7L2 9.3l7.1-.7z" fill="currentColor"/></svg>
+        สรุป Lead Time
+      </div>
+      <div class="lt-insight-grid" id="ltInsightRow"></div>
+      <div id="ltReasonSummary"></div>
     </div>
 
     <div class="grid2b">
@@ -1468,13 +1547,13 @@ function render(){
       ? ((curAvgLT - prevAvgLT) / prevAvgLT * 100) : null;
 
     const ltInsights = [];
-    if (worstProv){
+    if (bestProv){
       ltInsights.push(`
-        <div class="lt-insight-card accent-red">
-          <div class="lt-insight-card-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M10.3 3.9L2.7 18a2 2 0 0 0 1.7 3h15.2a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 9v4M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
-          <div class="lt-insight-card-lbl">ควรเฝ้าระวัง Lead Time</div>
-          <div class="lt-insight-card-val"><b>${worstProv.p}</b></div>
-          <div class="lt-insight-card-sub">เฉลี่ย <b style="color:var(--ink-900)">${fmt1(worstProv.avgLT)} วัน</b> — สูงที่สุดในช่วงที่เลือก</div>
+        <div class="lt-insight-card accent-teal">
+          <div class="lt-insight-card-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="lt-insight-card-lbl">จังหวัดที่ Lead Time ดีที่สุด</div>
+          <div class="lt-insight-card-val"><b>${bestProv.p}</b></div>
+          <div class="lt-insight-card-sub">เฉลี่ย <b style="color:var(--ink-900)">${fmt1(bestProv.avgLT)} วัน</b> — เร็วที่สุดในช่วงที่เลือก</div>
         </div>`);
     }
     if (bestCarrier){
@@ -1516,6 +1595,163 @@ function render(){
       </div>`);
 
     ltInsightRowEl.innerHTML = ltInsights.join('');
+
+    // ---- สรุปเหตุผล: ทำไม Lead Time ถึงเปลี่ยนแปลง (ข้อดี/ข้อเสีย) สำหรับใช้ชี้วัด KPI ----
+    const reasonEl = document.getElementById('ltReasonSummary');
+    if (reasonEl && latestSelectedMonth && prevMonthKey){
+      const minShipProv = Math.max(3, Math.round(totalShip * 0.01));
+      const minShipCarrier = Math.max(3, Math.round(carrierTotalShip * 0.01));
+
+      const groupAvgByMonth = (arr, keyField, monthKey, minShip) => {
+        const m = {};
+        arr.filter(d => d.month === monthKey).forEach(d => {
+          if (!m[d[keyField]]) m[d[keyField]] = { ship:0, lt:0 };
+          m[d[keyField]].ship += d.shipments;
+          m[d[keyField]].lt += d.lt_sum;
+        });
+        const out = {};
+        Object.entries(m).forEach(([k,v]) => { if (v.ship >= minShip) out[k] = v.ship ? v.lt / v.ship : 0; });
+        return out;
+      };
+
+      const provCur = groupAvgByMonth(detail, 'province', latestSelectedMonth, minShipProv);
+      const provPrev = groupAvgByMonth(detail, 'province', prevMonthKey, minShipProv);
+      const provDeltas = Object.keys(provCur).filter(p => provPrev[p] !== undefined)
+        .map(p => ({ p, cur: provCur[p], prev: provPrev[p], delta: provCur[p] - provPrev[p] }));
+      const provImproved = provDeltas.filter(x => x.delta < -0.05).sort((a,b) => a.delta - b.delta).slice(0,2);
+      const provWorsened = provDeltas.filter(x => x.delta > 0.05).sort((a,b) => b.delta - a.delta).slice(0,2);
+
+      const carrierCur = groupAvgByMonth(carrier, 'carrier', latestSelectedMonth, minShipCarrier);
+      const carrierPrev = groupAvgByMonth(carrier, 'carrier', prevMonthKey, minShipCarrier);
+      const carrierDeltas = Object.keys(carrierCur).filter(c => carrierPrev[c] !== undefined)
+        .map(c => ({ c, cur: carrierCur[c], prev: carrierPrev[c], delta: carrierCur[c] - carrierPrev[c] }));
+      const carrierImproved = carrierDeltas.filter(x => x.delta < -0.05).sort((a,b) => a.delta - b.delta).slice(0,2);
+      const carrierWorsened = carrierDeltas.filter(x => x.delta > 0.05).sort((a,b) => b.delta - a.delta).slice(0,2);
+
+      // สัดส่วนส่งตรงเวลา/เกินกำหนด รายเดือน (คำนวณจาก detail ซึ่งมีสถานะต่อแถวอยู่แล้ว)
+      const monthStatusMap = new Map();
+      detail.forEach(d => {
+        if (!monthStatusMap.has(d.month)) monthStatusMap.set(d.month, {});
+        const g = monthStatusMap.get(d.month);
+        g[d.status] = (g[d.status] || 0) + d.shipments;
+      });
+      const onTimeRate = mk => {
+        const g = monthStatusMap.get(mk);
+        if (!g) return null;
+        const total = Object.values(g).reduce((a,v)=>a+v,0);
+        if (!total) return null;
+        const onTime = (g['ส่งภายใน 3 วัน']||0) + (g['ส่งภายใน 7 วัน']||0);
+        return { pct: onTime/total*100, overPct: (g['เกิน 7 วัน']||0)/total*100, over: g['เกิน 7 วัน']||0, total };
+      };
+      const curRate = onTimeRate(latestSelectedMonth);
+      const prevRate = onTimeRate(prevMonthKey);
+      const onTimeDelta = (curRate && prevRate) ? curRate.pct - prevRate.pct : null;
+      const monthLbl = mk => months_display[mk] || mk;
+
+      const pros = [];
+      const cons = [];
+
+      if (ltTrendPct !== null){
+        if (ltTrendPct < -0.5){
+          pros.push(`Lead Time เฉลี่ยเดือน <b>${monthLbl(latestSelectedMonth)}</b> ลดลงจาก <b>${fmt1(prevAvgLT)} วัน</b> เหลือ <b>${fmt1(curAvgLT)} วัน</b> เทียบเดือน ${monthLbl(prevMonthKey)} <span class="impact">-${fmt1(Math.abs(ltTrendPct))}%</span>`);
+        } else if (ltTrendPct > 0.5){
+          cons.push(`Lead Time เฉลี่ยเดือน <b>${monthLbl(latestSelectedMonth)}</b> เพิ่มขึ้นจาก <b>${fmt1(prevAvgLT)} วัน</b> เป็น <b>${fmt1(curAvgLT)} วัน</b> เทียบเดือน ${monthLbl(prevMonthKey)} <span class="impact">+${fmt1(Math.abs(ltTrendPct))}%</span>`);
+        }
+      }
+
+      provImproved.forEach(x => pros.push(`จังหวัด <b>${x.p}</b> Lead Time ดีขึ้นจาก ${fmt1(x.prev)} เหลือ ${fmt1(x.cur)} วัน <span class="impact">${fmt1(x.delta)} วัน</span>`));
+      provWorsened.forEach(x => cons.push(`จังหวัด <b>${x.p}</b> Lead Time แย่ลงจาก ${fmt1(x.prev)} เป็น ${fmt1(x.cur)} วัน <span class="impact">+${fmt1(x.delta)} วัน</span> ควรติดตาม`));
+      carrierImproved.forEach(x => pros.push(`สายขนส่ง <b>${x.c}</b> ทำเวลาได้ดีขึ้นจาก ${fmt1(x.prev)} เหลือ ${fmt1(x.cur)} วัน <span class="impact">${fmt1(x.delta)} วัน</span>`));
+      carrierWorsened.forEach(x => cons.push(`สายขนส่ง <b>${x.c}</b> ทำเวลาได้ช้าลงจาก ${fmt1(x.prev)} เป็น ${fmt1(x.cur)} วัน <span class="impact">+${fmt1(x.delta)} วัน</span> ควรติดตาม`));
+
+      if (onTimeDelta !== null){
+        if (onTimeDelta > 0.3){
+          pros.push(`สัดส่วนส่งตรงเวลา (ภายใน 7 วัน) เพิ่มขึ้นเป็น <b>${fmt1(curRate.pct)}%</b> จาก ${fmt1(prevRate.pct)}% เดือนก่อน <span class="impact">+${fmt1(onTimeDelta)}pt</span>`);
+        } else if (onTimeDelta < -0.3){
+          cons.push(`สัดส่วนส่งตรงเวลา (ภายใน 7 วัน) ลดลงเหลือ <b>${fmt1(curRate.pct)}%</b> จาก ${fmt1(prevRate.pct)}% เดือนก่อน <span class="impact">${fmt1(onTimeDelta)}pt</span> ควรเฝ้าติดตามใกล้ชิด`);
+        }
+      }
+      if (curRate && curRate.overPct >= 2){
+        cons.push(`ยังมีออเดอร์เกิน 7 วันอยู่ที่ <b>${fmt1(curRate.overPct)}%</b> (${fmtInt(curRate.over)} ออเดอร์) ในเดือน ${monthLbl(latestSelectedMonth)} หากปล่อยไว้อาจฉุดภาพรวมในเดือนถัดไป`);
+      }
+
+      if (!pros.length) pros.push('ยังไม่พบปัจจัยบวกที่ชัดเจนในช่วงที่เลือก — ลองขยายช่วงเดือนเพื่อดูแนวโน้มเพิ่มเติม');
+      if (!cons.length) cons.push('ไม่พบความเสี่ยงเด่นชัดในช่วงที่เลือก ควรติดตามต่อเนื่องเพื่อรักษาประสิทธิภาพการจัดส่ง');
+
+      // ---- ประโยคสรุปสาเหตุหลัก (สังเคราะห์จากปัจจัยที่มีผลมากที่สุด) ----
+      const combinedDeltas = [
+        ...provImproved.map(x => ({ label: `จังหวัด${x.p}`, delta: x.delta })),
+        ...provWorsened.map(x => ({ label: `จังหวัด${x.p}`, delta: x.delta })),
+        ...carrierImproved.map(x => ({ label: `สายขนส่ง${x.c}`, delta: x.delta })),
+        ...carrierWorsened.map(x => ({ label: `สายขนส่ง${x.c}`, delta: x.delta })),
+      ];
+      const topImprove = combinedDeltas.filter(x => x.delta < 0).sort((a,b) => a.delta - b.delta)[0];
+      const topWorsen = combinedDeltas.filter(x => x.delta > 0).sort((a,b) => b.delta - a.delta)[0];
+
+      let narrativeHtml = '';
+      if (ltTrendPct !== null){
+        if (ltTrendPct < -0.5){
+          narrativeHtml = `<b>สาเหตุหลักที่ Lead Time ดีขึ้น:</b> แรงหนุนหลักมาจาก${topImprove ? ` <b>${topImprove.label}</b> ที่ทำเวลาได้ดีขึ้น ${fmt1(Math.abs(topImprove.delta))} วัน` : 'หลายพื้นที่ที่ส่งเร็วขึ้นพร้อมกัน'}${onTimeDelta !== null && onTimeDelta > 0.3 ? ' ประกอบกับสัดส่วนส่งตรงเวลาที่เพิ่มขึ้น' : ''}`
+            + (topWorsen ? ` อย่างไรก็ตาม <b>${topWorsen.label}</b> ยังแย่ลง ${fmt1(topWorsen.delta)} วัน ควรติดตามไม่ให้ฉุดภาพรวมในเดือนถัดไป` : '');
+        } else if (ltTrendPct > 0.5){
+          narrativeHtml = `<b>สาเหตุหลักที่ Lead Time แย่ลง:</b> ส่วนใหญ่มาจาก${topWorsen ? ` <b>${topWorsen.label}</b> ที่ใช้เวลาเพิ่มขึ้น ${fmt1(topWorsen.delta)} วัน` : 'หลายพื้นที่ที่ส่งช้าลงพร้อมกัน'}${onTimeDelta !== null && onTimeDelta < -0.3 ? ' และสัดส่วนส่งตรงเวลาที่ลดลง' : ''}`
+            + (topImprove ? ` ในขณะที่ <b>${topImprove.label}</b> ยังทำได้ดี (${fmt1(Math.abs(topImprove.delta))} วัน) ช่วยพยุงภาพรวมไว้บางส่วน` : '');
+        } else {
+          narrativeHtml = `Lead Time เฉลี่ยใกล้เคียงเดือนก่อนหน้า ไม่มีปัจจัยใดเปลี่ยนแปลงอย่างมีนัยสำคัญในช่วงที่เลือก`;
+        }
+      }
+
+      const verdictCls = ltTrendPct === null ? 'flat' : (ltTrendPct < -0.5 ? 'good' : ltTrendPct > 0.5 ? 'bad' : 'flat');
+      const verdictIcon = ltTrendPct === null ? '' : (ltTrendPct < -0.5
+        ? `<svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M18 15l-6-6-6 6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+        : ltTrendPct > 0.5
+        ? `<svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+        : `<svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M5 12h14" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>`);
+      const verdictLbl = ltTrendPct === null ? 'ไม่มีข้อมูลเทียบ' : (ltTrendPct < -0.5 ? `ดีขึ้น ${fmt1(Math.abs(ltTrendPct))}%` : ltTrendPct > 0.5 ? `แย่ลง ${fmt1(Math.abs(ltTrendPct))}%` : 'ใกล้เคียงเดิม');
+
+      reasonEl.innerHTML = `
+        <div class="lt-reason">
+          <div class="lt-reason-watermark"><svg viewBox="0 0 24 24" fill="none"><path d="M3 3v18h18" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M7 15l4-5 3 3 5-7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="lt-reason-head">
+            <div class="lt-reason-head-left">
+              <div class="lt-reason-head-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.5.4.8 1 .8 1.6v.5h5.4v-.5c0-.6.3-1.2.8-1.6A6 6 0 0 0 12 3z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div>
+                <div class="lt-reason-head-title"><span class="live-dot"></span>สรุปเหตุผล: ทำไม Lead Time เดือน ${monthLbl(latestSelectedMonth)} ถึงเปลี่ยนแปลง</div>
+                <div class="lt-reason-head-sub">เทียบเดือน ${monthLbl(prevMonthKey)} แบบเจาะลึกรายจังหวัดและสายขนส่ง</div>
+              </div>
+            </div>
+            <div class="lt-reason-verdict ${verdictCls}">${verdictIcon}${verdictLbl}</div>
+          </div>
+          ${narrativeHtml ? `<div class="lt-reason-narrative"><span class="lt-reason-narrative-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.5.4.8 1 .8 1.6v.5h5.4v-.5c0-.6.3-1.2.8-1.6A6 6 0 0 0 12 3z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>${narrativeHtml}</span></div>` : ''}
+          <div class="lt-reason-body">
+            <div class="lt-reason-col pros">
+              <div class="lt-reason-col-head"><span class="badge"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>ข้อดี — ปัจจัยที่ทำให้ Lead Time ดีขึ้น</div>
+              <ul class="lt-reason-list">${pros.map(t => `<li class="lt-reason-item"><span class="dot"></span><span>${t}</span></li>`).join('')}</ul>
+            </div>
+            <div class="lt-reason-col cons">
+              <div class="lt-reason-col-head"><span class="badge"><svg viewBox="0 0 24 24" fill="none"><path d="M12 9v4M12 17h.01M10.3 3.9L2.7 18a2 2 0 0 0 1.7 3h15.2a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>ข้อเสีย — ปัจจัยเสี่ยงที่ควรติดตาม</div>
+              <ul class="lt-reason-list">${cons.map(t => `<li class="lt-reason-item"><span class="dot"></span><span>${t}</span></li>`).join('')}</ul>
+            </div>
+          </div>
+          <div class="lt-reason-foot">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 8v5M12 16h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            วิเคราะห์อัตโนมัติจากข้อมูลการจัดส่งจริงในระบบ เทียบเดือนล่าสุดกับเดือนก่อนหน้า
+          </div>
+        </div>`;
+    } else if (reasonEl) {
+      reasonEl.innerHTML = `
+        <div class="lt-reason">
+          <div class="lt-reason-head">
+            <div class="lt-reason-head-left">
+              <div class="lt-reason-head-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.5.4.8 1 .8 1.6v.5h5.4v-.5c0-.6.3-1.2.8-1.6A6 6 0 0 0 12 3z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div>
+                <div class="lt-reason-head-title">สรุปเหตุผลการเปลี่ยนแปลง Lead Time</div>
+                <div class="lt-reason-head-sub">เลือกอย่างน้อย 2 เดือนที่ต่อเนื่องกันในตัวกรองด้านบน เพื่อดูการเปรียบเทียบข้อดี/ข้อเสีย</div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
   }
 
   // ---- Trend chart (by month) ----
