@@ -677,6 +677,52 @@
       <div id="ltReasonSummary"></div>
     </div>
 
+    <div class="card pkg-card">
+      <svg class="pkg-watermark" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M12 2 2 7l10 5 10-5-10-5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+        <path d="M2 7v10l10 5 10-5V7" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+        <path d="M12 12v10M2 7l10 5M22 7l-10 5" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+      <div class="pkg-pro-badge">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l2.9 6.6 7.1.7-5.4 4.8 1.7 7-6.3-3.8-6.3 3.8 1.7-7L2 9.3l7.1-.7z" fill="currentColor"/></svg>
+        Executive Summary
+      </div>
+      <div class="card-head">
+        <div>
+          <div class="card-title">สรุปจำนวนห่อที่จัดส่ง รายวัน</div>
+          <div class="card-note">เลือกปีและเดือน เพื่อดูยอดห่อที่จัดส่งจริงของแต่ละวัน — สำหรับสรุป KPI ให้ผู้บริหาร</div>
+        </div>
+      </div>
+
+      <div class="pkg-filters">
+        <div class="filter-group">
+          <div class="filter-label">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="13" height="13"><rect x="3" y="4.5" width="18" height="16" rx="2.5" stroke="currentColor" stroke-width="1.7"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            ปี
+          </div>
+          <div class="chip-row" id="pkgYearChips"></div>
+        </div>
+        <div class="filter-group">
+          <div class="filter-label">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="13" height="13"><rect x="3" y="4.5" width="18" height="16" rx="2.5" stroke="currentColor" stroke-width="1.7"/><path d="M3 9.5h18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M8 13.5h2M8 17h2M14 13.5h2M14 17h2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            เดือน
+          </div>
+          <div class="chip-row" id="pkgMonthChips"></div>
+        </div>
+      </div>
+
+      <div class="pkg-kpi-row" id="pkgKpiRow"></div>
+
+      <div class="pkg-insight-row" id="pkgInsightRow"></div>
+
+      <div class="pkg-sparkline-card">
+        <div class="pkg-sparkline-title">แนวโน้มจำนวนห่อรายวันในเดือนนี้</div>
+        <div class="pkg-sparkline" id="pkgSparkline"></div>
+      </div>
+
+      <div id="pkgDayTableWrap" class="table-scroll" style="max-height:480px;"></div>
+    </div>
+
     <div class="grid2b">
       <div class="card">
         <div class="card-head">
@@ -723,52 +769,6 @@
           <tbody></tbody>
         </table>
       </div>
-    </div>
-
-    <div class="card pkg-card">
-      <svg class="pkg-watermark" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M12 2 2 7l10 5 10-5-10-5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
-        <path d="M2 7v10l10 5 10-5V7" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
-        <path d="M12 12v10M2 7l10 5M22 7l-10 5" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
-      </svg>
-      <div class="pkg-pro-badge">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l2.9 6.6 7.1.7-5.4 4.8 1.7 7-6.3-3.8-6.3 3.8 1.7-7L2 9.3l7.1-.7z" fill="currentColor"/></svg>
-        Executive Summary
-      </div>
-      <div class="card-head">
-        <div>
-          <div class="card-title">สรุปจำนวนห่อที่จัดส่ง รายวัน</div>
-          <div class="card-note">เลือกปีและเดือน เพื่อดูยอดห่อที่จัดส่งจริงของแต่ละวัน — สำหรับสรุป KPI ให้ผู้บริหาร</div>
-        </div>
-      </div>
-
-      <div class="pkg-filters">
-        <div class="filter-group">
-          <div class="filter-label">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="13" height="13"><rect x="3" y="4.5" width="18" height="16" rx="2.5" stroke="currentColor" stroke-width="1.7"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-            ปี
-          </div>
-          <div class="chip-row" id="pkgYearChips"></div>
-        </div>
-        <div class="filter-group">
-          <div class="filter-label">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="13" height="13"><rect x="3" y="4.5" width="18" height="16" rx="2.5" stroke="currentColor" stroke-width="1.7"/><path d="M3 9.5h18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M8 13.5h2M8 17h2M14 13.5h2M14 17h2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-            เดือน
-          </div>
-          <div class="chip-row" id="pkgMonthChips"></div>
-        </div>
-      </div>
-
-      <div class="pkg-kpi-row" id="pkgKpiRow"></div>
-
-      <div class="pkg-insight-row" id="pkgInsightRow"></div>
-
-      <div class="pkg-sparkline-card">
-        <div class="pkg-sparkline-title">แนวโน้มจำนวนห่อรายวันในเดือนนี้</div>
-        <div class="pkg-sparkline" id="pkgSparkline"></div>
-      </div>
-
-      <div id="pkgDayTableWrap" class="table-scroll" style="max-height:480px;"></div>
     </div>
 
   </div>
