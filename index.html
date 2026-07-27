@@ -1675,6 +1675,58 @@ function render(){
         cons.push(`ยังมีออเดอร์เกิน 7 วันอยู่ที่ <b>${fmt1(curRate.overPct)}%</b> (${fmtInt(curRate.over)} ออเดอร์) ในเดือน ${monthLbl(latestSelectedMonth)} หากปล่อยไว้อาจฉุดภาพรวมในเดือนถัดไป`);
       }
 
+      // ---- บริบทวันหยุด/เทศกาลของแต่ละเดือน (ข้อมูลทั่วไป ใช้ประกอบการอธิบายง่ายๆ) ----
+      const HOLIDAY_INFO = {
+        1: { label: 'วันขึ้นปีใหม่', days: 1 },
+        2: { label: 'วันมาฆบูชา', days: 1 },
+        4: { label: 'วันจักรีและเทศกาลสงกรานต์', days: 4 },
+        5: { label: 'วันแรงงาน วันฉัตรมงคล และวันวิสาขบูชา', days: 3 },
+        6: { label: 'วันเฉลิมพระชนมพรรษาสมเด็จพระราชินี', days: 1 },
+        7: { label: 'วันอาสาฬหบูชา วันเข้าพรรษา และวันเฉลิมพระชนมพรรษา ร.10', days: 3 },
+        8: { label: 'วันแม่แห่งชาติ', days: 1 },
+        10: { label: 'วันคล้ายวันสวรรคต ร.9 และวันปิยมหาราช', days: 2 },
+        12: { label: 'วันพ่อแห่งชาติ วันรัฐธรรมนูญ และวันสิ้นปี', days: 3 },
+      };
+      const curMonthNum = Number(latestSelectedMonth.split('-')[1]);
+      const prevMonthNum = Number(prevMonthKey.split('-')[1]);
+      const curHoliday = HOLIDAY_INFO[curMonthNum];
+      const prevHoliday = HOLIDAY_INFO[prevMonthNum];
+      const trendWorse = ltTrendPct !== null && ltTrendPct > 0.5;
+
+      if (curHoliday){
+        if (trendWorse){
+          cons.push(`เดือน ${monthLbl(latestSelectedMonth)} มี<b>${curHoliday.label}</b> ทำให้วันทำการขนส่งลดลง (~${curHoliday.days} วันหยุด) อาจเป็นอีกสาเหตุที่ Lead Time เพิ่มขึ้นในเดือนนี้`);
+        } else {
+          pros.push(`แม้เดือน ${monthLbl(latestSelectedMonth)} จะมี<b>${curHoliday.label}</b> ซึ่งปกติมักทำให้วันทำการขนส่งลดลง แต่ Lead Time โดยรวมยังคุมได้ดี สะท้อนการบริหารจัดการช่วงวันหยุดที่มีประสิทธิภาพ`);
+        }
+      }
+      if (prevHoliday && (!curHoliday || prevHoliday.days > curHoliday.days)){
+        pros.push(`เดือนก่อนหน้า (${monthLbl(prevMonthKey)}) มี<b>${prevHoliday.label}</b> ทำให้ฐาน Lead Time เดือนนั้นสูงกว่าปกติ เมื่อเทียบกับเดือนนี้ที่วันหยุดน้อยกว่าจึงดูดีขึ้นชัดเจน`);
+      }
+
+      // ---- ปริมาณออเดอร์เพิ่มขึ้น/ลดลง ส่งผลต่อความเร็วการจัดส่งอย่างไร (ละเอียดแต่เข้าใจง่าย) ----
+      const volCur = curM ? curM.ship : 0;
+      const volPrev = prevM ? prevM.ship : 0;
+      const volDeltaPct = volPrev > 0 ? ((volCur - volPrev) / volPrev * 100) : null;
+      const volDeltaAbs = volCur - volPrev;
+      if (volDeltaPct !== null && Math.abs(volDeltaPct) >= 3){
+        const volUp = volDeltaPct > 0;
+        const volText = `ปริมาณออเดอร์เดือน ${monthLbl(latestSelectedMonth)} อยู่ที่ <b>${fmtInt(volCur)} ออเดอร์</b> ${volUp ? 'เพิ่มขึ้น' : 'ลดลง'} <span class="impact">${volUp ? '+' : ''}${fmt1(volDeltaPct)}%</span> (${volUp ? '+' : '-'}${fmtInt(Math.abs(volDeltaAbs))} ออเดอร์) จากเดือนก่อน (${fmtInt(volPrev)} ออเดอร์)`;
+        if (volUp && trendBad){
+          cons.push(`${volText} — ปริมาณงานที่เพิ่มขึ้นระดับนี้เป็นแรงกดดันสำคัญ ทำให้ทีมขนส่งต้องรับภาระต่อวันมากขึ้น จึงเป็นสาเหตุหลักอย่างหนึ่งที่ Lead Time ขยับสูงขึ้นตามไปด้วย`);
+        } else if (volUp && trendGood){
+          pros.push(`${volText} — แม้ปริมาณงานเพิ่มขึ้นมาก แต่ Lead Time ยังดีขึ้นได้ สะท้อนว่าระบบและสายขนส่งรองรับปริมาณงานที่สูงขึ้นได้อย่างมีประสิทธิภาพ`);
+        } else if (!volUp && trendGood){
+          pros.push(`${volText} — ปริมาณงานที่ลดลงช่วยแบ่งเบาภาระต่อวันของทีมขนส่ง ทำให้จัดส่งได้เร็วขึ้น เป็นอีกส่วนหนึ่งที่ทำให้ Lead Time ดีขึ้นในเดือนนี้`);
+        } else if (!volUp && trendBad){
+          cons.push(`${volText} — แม้ปริมาณงานลดลงแต่ Lead Time กลับแย่ลง แสดงว่าสาเหตุไม่ได้มาจากปริมาณงาน แต่น่าจะมาจากปัจจัยอื่น เช่น เส้นทาง สายขนส่ง หรือวันหยุด ที่ควรตรวจสอบเพิ่มเติม`);
+        } else if (volUp){
+          cons.push(`${volText} — ควรเฝ้าติดตามว่าปริมาณงานที่เพิ่มขึ้นจะเริ่มกดดัน Lead Time ในเดือนถัดไปหรือไม่`);
+        } else {
+          pros.push(`${volText} — ปริมาณงานที่ลดลงอาจเป็นปัจจัยหนุนให้ Lead Time ทรงตัวหรือดีขึ้นต่อเนื่องในเดือนถัดไป`);
+        }
+      }
+
       if (!pros.length) pros.push('ยังไม่พบปัจจัยบวกที่ชัดเจนในช่วงที่เลือก — ลองขยายช่วงเดือนเพื่อดูแนวโน้มเพิ่มเติม');
       if (!cons.length) cons.push('ไม่พบความเสี่ยงเด่นชัดในช่วงที่เลือก ควรติดตามต่อเนื่องเพื่อรักษาประสิทธิภาพการจัดส่ง');
 
