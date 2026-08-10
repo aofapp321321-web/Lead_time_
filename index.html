@@ -1225,8 +1225,8 @@ document.getElementById('sidebarNav').addEventListener('click', e => {
 // ============ Live data source: Google Sheet (CSV) ============
 // ============================================================
 // วิธีแก้ค่าถ้าต้องเปลี่ยนชีท/แท็บ: แก้ค่าเหล่านี้
-const SHEET_ID = '1Xc7-rD9joUZW0mJMhk8KhmcWx3JFSgMpzQ0l15spe-k'; // ใช้ได้ถ้าเปิด Share > Anyone with the link
-const PUBLISHED_ID = '2PACX-1vQFxE5_mBesMLujllZEP-KCBKJc-fXX-BGipEnihaun10VUdZCaW75M7E8XC4D2uT1rLYCzm363Bv98'; // จาก File > Share > Publish to web
+const SHEET_ID = '1SNqq_ODDDiLYXg4zBhZw4jHgSFoTXqyT2hgIlq0xchw'; // ใช้ได้ถ้าเปิด Share > Anyone with the link
+const PUBLISHED_ID = ''; // ยังไม่ได้ Publish to web — ระบบจะใช้ gviz เป็นหลัก (ใช้ได้เพราะเปิด Share > Anyone with the link แล้ว)
 const SHEET_GID = '0';
 const CSV_URL_GVIZ = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${SHEET_GID}`;
 const CSV_URL_PUB = `https://docs.google.com/spreadsheets/d/e/${PUBLISHED_ID}/pub?gid=${SHEET_GID}&single=true&output=csv`;
@@ -1234,12 +1234,12 @@ const REFRESH_INTERVAL_MS = 30000; // อัปเดตอัตโนมัต
 
 // ตำแหน่งคอลัมน์ในชีท (0 = A, 1 = B, ...) ตามที่เห็นในภาพตัวอย่าง
 const COL = {
-  SHIP_DATE: 0,   // A: วันที่ส่งของ
-  BILL_DATE: 1,   // B: วันที่บิล
-  PACKAGES: 5,    // F: จำนวนห่อ
-  ROUTE_ABBR: 6,  // G: ตัวย่อ (ไม่ใช้จำแนกเส้นทางแล้ว เก็บไว้เผื่ออ้างอิง)
-  CARRIER: 7,     // H: ขนส่ง (ใช้คอลัมน์นี้จำแนกเส้นทางจริง)
-  PROVINCE: 12,   // M: จังหวัด
+  SHIP_DATE: 1,   // B: วันที่ส่งของ
+  BILL_DATE: 6,   // G: วันที่บิล
+  PACKAGES: 10,   // K: จำนวนห่อ
+  ROUTE_ABBR: 11, // L: ตัวย่อ (ไม่ใช้จำแนกเส้นทางแล้ว เก็บไว้เผื่ออ้างอิง)
+  CARRIER: 12,    // M: ขนส่ง (ใช้คอลัมน์นี้จำแนกเส้นทางจริง)
+  PROVINCE: 17,   // R: จังหวัด
 };
 
 // เส้นทางจำแนกจากชื่อขนส่งในคอลัมน์ H (ไม่ใช่รหัสย่อคอลัมน์ G) ตามแพทเทิร์นจริงในชีท:
@@ -1290,8 +1290,9 @@ function parseFlexibleDate(str){
   let m = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/);
   if (m){
     let d = Number(m[1]), mo = Number(m[2]), y = Number(m[3]);
-    if (y < 100) y += 2500;      // ปี พ.ศ. แบบ 2 หลัก เช่น 69 -> 2569
-    if (y > 2400) y -= 543;      // พ.ศ. -> ค.ศ.
+    // ชีทนี้ใช้ปี ค.ศ. ล้วน (เช่น 27/12/2025, 05/01/2026) — เลขปี 2 หลักจึงหมายถึง ค.ศ. เช่นกัน (26 = 2026, ไม่ใช่ พ.ศ.)
+    if (y < 100) y += 2000;
+    if (y > 2400) y -= 543;      // เผื่อกรณีมีเซลล์ปี พ.ศ. 4 หลักหลุดมาปนบ้าง
     const dt = new Date(y, mo - 1, d);
     return isNaN(dt) ? null : dt;
   }
@@ -2053,7 +2054,7 @@ function render(){
         <div class="lt-insight-card-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="13" r="8" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v5l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <div class="lt-insight-card-lbl">Lead Time เดือนล่าสุด เทียบเดือนก่อนหน้า</div>
         <div class="lt-insight-card-val">${trendValHtml}</div>
-        <div class="lt-insight-card-sub">${ltTrendPct === null ? 'ไม่มีเดือนก่อนหน้าให้เทียบ' : (trendGood ? 'ดีขึ้น — Lead Time เฉลี่ยลดลง' : trendBad ? 'แย่ลง — Lead Time เฉลี่ยเพิ่มขึ้น' : 'ใกล้เคียงเดือนก่อนหน้า')}</div>
+        <div class="lt-insight-card-sub">${ltTrendPct === null ? 'ไม่มีเดือนก่อนหน้าให้เทียบ' : (trendGood ? 'ดีขึ้น — Lead Time เฉลี่ยลดลง' : trendBad ? 'เฉลี่ยเพิ่มขึ้นจากเดือนที่แล้ว' : 'ใกล้เคียงเดือนก่อนหน้า')}</div>
       </div>`);
 
     ltInsightRowEl.innerHTML = ltInsights.join('');
@@ -2213,7 +2214,7 @@ function render(){
         : ltTrendPct > 0.5
         ? `<svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`
         : `<svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M5 12h14" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>`);
-      const verdictLbl = ltTrendPct === null ? 'ไม่มีข้อมูลเทียบ' : (ltTrendPct < -0.5 ? `ดีขึ้น ${fmt1(Math.abs(ltTrendPct))}%` : ltTrendPct > 0.5 ? `แย่ลง ${fmt1(Math.abs(ltTrendPct))}%` : 'ใกล้เคียงเดิม');
+      const verdictLbl = ltTrendPct === null ? 'ไม่มีข้อมูลเทียบ' : (ltTrendPct < -0.5 ? `ดีขึ้น ${fmt1(Math.abs(ltTrendPct))}%` : ltTrendPct > 0.5 ? `เฉลี่ยเพิ่มขึ้นจากเดือนที่แล้ว ${fmt1(Math.abs(ltTrendPct))}%` : 'ใกล้เคียงเดิม');
 
       reasonEl.innerHTML = `
         <div class="lt-reason">
