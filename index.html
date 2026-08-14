@@ -190,65 +190,46 @@
 
   /* ===== Layout ===== */
   .content{padding:22px 28px 50px; max-width:1520px; margin:0 auto;}
-  .kpi-row{display:grid; grid-template-columns:repeat(5,1fr); gap:20px; margin-bottom:24px;}
+  .kpi-row{display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-bottom:24px;}
   .kpi-card{
-    background:var(--card); border-radius:calc(var(--radius) + 3px); padding:25px 27px;
+    background:var(--card); border-radius:13px; padding:16px 18px 15px;
     box-shadow:var(--shadow); border:1px solid var(--line);
+    border-top:3px solid var(--kpi-accent-500, var(--teal-400));
     position:relative; overflow:hidden;
     transition:box-shadow .18s ease, transform .18s ease;
   }
   .kpi-card:hover{box-shadow:var(--shadow-hover); transform:translateY(-2px);}
-  .kpi-card .bar{position:absolute; left:0; top:0; bottom:0; width:5px; border-radius:0 4px 4px 0;}
-  .kpi-label{font-size:16px; color:var(--ink-500); font-weight:600; margin-bottom:12px; text-transform:uppercase; letter-spacing:.03em;}
-  .kpi-value{font-family:'Kanit',sans-serif; font-size:37px; font-weight:600; color:var(--ink-900); line-height:1;}
-  .kpi-unit{font-size:17px; color:var(--ink-500); font-weight:500; margin-left:4px;}
-  .kpi-sub{font-size:16px; margin-top:12px; color:var(--ink-500);}
-  .kpi-sub b{color:inherit;}
-  .kpi-substats{display:flex; align-items:stretch; gap:16px; margin-top:14px;}
-  .kpi-substat{display:flex; flex-direction:column; gap:5px;}
-  .kpi-substat-val{font-family:'Kanit',sans-serif; font-size:21px; font-weight:600; line-height:1;}
-  .kpi-substat-lbl{font-size:13.5px; color:var(--ink-500); text-transform:uppercase; letter-spacing:.04em; font-weight:600;}
-  .kpi-substat-divider{width:1px; align-self:stretch; background:var(--line);}
+  .kpi-card-head{display:flex; align-items:center; gap:9px; margin-bottom:12px;}
+  .kpi-icon{
+    width:30px; height:30px; border-radius:9px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--kpi-accent-100, var(--teal-100)); color:var(--kpi-accent-500, var(--teal-500));
+  }
+  .kpi-icon svg{width:16px; height:16px;}
+  .kpi-label{font-size:13.5px; color:var(--ink-700); font-weight:600; line-height:1.3;}
+  .kpi-value{font-family:'Kanit',sans-serif; font-size:27px; font-weight:700; color:var(--kpi-accent-500, var(--ink-900)); line-height:1;}
+  .kpi-unit{font-size:13.5px; color:var(--ink-500); font-weight:500; margin-left:4px;}
+  .kpi-sub{font-size:13px; margin-top:8px; color:var(--ink-500);}
+  .kpi-sub b{color:var(--kpi-accent-500, var(--ink-700)); font-weight:700;}
+
+  .kpi-card.accent-amber{ --kpi-accent-500:var(--amber-500); --kpi-accent-100:var(--amber-100); }
+  .kpi-card.accent-green{ --kpi-accent-500:var(--green-500); --kpi-accent-100:var(--green-100); }
+  .kpi-card.accent-blue{ --kpi-accent-500:#2f7dd9; --kpi-accent-100:#e3eefc; }
+  .kpi-card.accent-red{ --kpi-accent-500:var(--red-500); --kpi-accent-100:var(--red-100); }
+  .kpi-card.accent-teal{ --kpi-accent-500:var(--teal-500); --kpi-accent-100:var(--teal-100); }
 
   /* ===== Hero KPI (primary metric — Lead Time เฉลี่ย) ===== */
-  .kpi-hero{
-    background: var(--card);
-    border:1.5px solid var(--teal-400);
-    animation: heroGlow 2.8s ease-in-out infinite;
-  }
-  .kpi-hero:hover{ transform:translateY(-3px); }
-  .kpi-hero .bar{background:linear-gradient(180deg, var(--teal-400), var(--teal-500)) !important; width:5px;}
-  .kpi-hero .kpi-label{color:var(--teal-500); display:flex; align-items:center; gap:7px; padding-right:118px;}
-  .kpi-hero .kpi-label::before{
-    content:""; width:7px; height:7px; border-radius:50%; background:var(--teal-400);
-    box-shadow:0 0 0 4px rgba(23,179,164,.2); flex-shrink:0;
-    animation: heroDot 1.8s ease-in-out infinite;
-  }
-  .kpi-hero .kpi-value{color:var(--navy-900); font-size:46px;}
-  .kpi-hero .kpi-unit{color:var(--teal-500); font-weight:600;}
-  .kpi-hero .kpi-sub{color:var(--ink-500);}
-  .kpi-hero > *{position:relative; z-index:1;}
+  .kpi-hero{ border-top-width:3px; }
   .kpi-hero-badge{
-    position:absolute; top:18px; right:18px; z-index:2;
-    font-family:'Kanit',sans-serif; font-size:12.5px; font-weight:600; letter-spacing:.03em;
-    color:#fff; background:linear-gradient(120deg, var(--teal-500), var(--teal-400));
-    padding:6px 13px 6px 10px; border-radius:999px; display:flex; align-items:center; gap:5px;
-    box-shadow:0 2px 8px rgba(14,148,136,.35);
+    position:absolute; top:12px; right:12px; z-index:2;
+    font-family:'Kanit',sans-serif; font-size:10.5px; font-weight:600; letter-spacing:.02em;
+    color:var(--teal-500); background:var(--teal-100);
+    padding:3px 9px; border-radius:999px; display:flex; align-items:center; gap:4px;
   }
-  .kpi-hero-badge svg{width:13px; height:13px; flex-shrink:0;}
+  .kpi-hero-badge svg{width:10px; height:10px; flex-shrink:0; color:var(--teal-500);}
   @media (max-width:900px){
-    .kpi-hero-badge{position:static; margin-bottom:10px;}
-    .kpi-hero .kpi-label{padding-right:0;}
+    .kpi-hero-badge{display:none;}
   }
-  .kpi-hero-watermark{
-    position:absolute; right:-14px; bottom:-18px; width:144px; height:144px;
-    color:var(--teal-500); opacity:.07; pointer-events:none; z-index:0;
-  }
-  @keyframes heroGlow{
-    0%,100%{ box-shadow:var(--shadow), 0 0 0 1px rgba(23,179,164,.1), 0 14px 30px -16px rgba(23,179,164,.35); }
-    50%{ box-shadow:var(--shadow), 0 0 0 1px rgba(23,179,164,.26), 0 18px 38px -14px rgba(23,179,164,.6); }
-  }
-  @keyframes heroDot{0%,100%{opacity:1;} 50%{opacity:.4;}}
 
   .grid2{display:grid; grid-template-columns:1.3fr 1fr; gap:16px; margin-bottom:16px;}
   .grid2b{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;}
@@ -656,6 +637,14 @@
     box-shadow:0 4px 10px -3px rgba(23,179,164,.5);
   }
   .lt-reason-narrative-icon svg{width:16px; height:16px;}
+  .lt-reason-factor-list{list-style:none; margin:10px 0 0; padding:0; display:flex; flex-direction:column; gap:8px;}
+  .lt-reason-item{background:#fff; border:1px solid rgba(23,179,164,.18); border-radius:10px; padding:10px 13px;}
+  .lt-reason-item-top{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+  .lt-reason-item-top b{font-size:15.5px; color:var(--ink-900); font-weight:600;}
+  .lt-reason-item-pct{font-family:'Kanit',sans-serif; font-weight:700; font-size:12.5px; padding:2px 10px; border-radius:999px; white-space:nowrap; flex-shrink:0;}
+  .lt-reason-item-pct.up{background:var(--red-100); color:var(--red-500);}
+  .lt-reason-item-pct.down{background:var(--green-100); color:var(--green-500);}
+  .lt-reason-item-explain{font-size:13.5px; color:var(--ink-500); margin-top:4px; line-height:1.55;}
   .lt-reason-body{position:relative; z-index:1; display:grid; grid-template-columns:1fr 1fr; gap:0;}
   .lt-reason-col{padding:18px 20px 20px;}
   .lt-reason-col + .lt-reason-col{border-left:1px solid var(--line);}
@@ -1015,9 +1004,9 @@
       <div class="card">
         <div class="card-head">
           <div>
-            <div class="card-title">แนวโน้มรายเดือน — จำนวนออเดอร์ &amp; Lead Time เฉลี่ย</div>
+            <div class="card-title">แนวโน้มรายเดือน — จำนวนบิล &amp; Lead Time เฉลี่ย</div>
           </div>
-          <div class="card-note">แท่ง = จำนวนออเดอร์ · เส้น = LT เฉลี่ย (วัน)</div>
+          <div class="card-note">แท่ง = จำนวนบิล · เส้น = LT เฉลี่ย (วัน)</div>
         </div>
         <div class="chart-wrap tall" id="trendChart"></div>
       </div>
@@ -1122,7 +1111,7 @@
       <div class="card">
         <div class="card-head">
           <div class="card-title">จังหวัดที่มีปริมาณส่งสูงสุด (Top 12)</div>
-          <div class="card-note">แท่ง = จำนวนออเดอร์ · สี = LT เฉลี่ย</div>
+          <div class="card-note">แท่ง = จำนวนบิล · สี = LT เฉลี่ย</div>
         </div>
         <div class="chart-wrap" id="provinceBar"></div>
       </div>
@@ -1415,7 +1404,7 @@ function gvizTableToRows(table){
   );
 }
 
-// แปลงข้อมูลดิบ 1 แถวต่อ 1 ออเดอร์ ให้เป็นก้อนสรุปแบบเดียวกับที่ dashboard ต้องการ
+// แปลงข้อมูลดิบ 1 แถวต่อ 1 บิล ให้เป็นก้อนสรุปแบบเดียวกับที่ dashboard ต้องการ
 function buildRAW(rawRows){
   const detailMap = new Map();
   const carrierMap = new Map();
@@ -1640,7 +1629,7 @@ document.getElementById('resetBtn').onclick = () => {
   const avgLT = totalLT/totalShip;
   const el = document.getElementById('topbarStats');
   el.innerHTML = `
-    <div class="topbar-stat"><div class="num">${fmtInt(totalShip)}</div><div class="lbl">ออเดอร์ทั้งหมด</div></div>
+    <div class="topbar-stat"><div class="num">${fmtInt(totalShip)}</div><div class="lbl">บิลทั้งหมด</div></div>
     <div class="topbar-stat"><div class="num">${fmtInt(totalPkgAll)}</div><div class="lbl">ห่อทั้งหมด</div></div>
     <div class="topbar-stat"><div class="num">${fmt1(avgLT)} วัน</div><div class="lbl">LT เฉลี่ยรวม</div></div>
     <div class="topbar-stat"><div class="num">${months_display[months[0]]}–${months_display[months[months.length-1]]}</div><div class="lbl">ช่วงข้อมูล</div></div>
@@ -1750,7 +1739,7 @@ function renderTrendChart(containerId, labels, bars, line){
   svg += `</svg>`;
   el.innerHTML = `<div class="trend-svg-wrap">${svg}</div>
     <div class="trend-legend">
-      <span><i style="background:#1aa89c"></i>จำนวนออเดอร์</span>
+      <span><i style="background:#1aa89c"></i>จำนวนบิล</span>
       <span><i style="background:#ff7a3d"></i>LT เฉลี่ย (วัน)</span>
     </div>`;
 }
@@ -1790,7 +1779,7 @@ function renderDonut(containerId, entries){
         <span class="legend-text">${e.label}</span>
         <span class="legend-pct">${pct.toFixed(1)}%</span>
       </div>
-      <div class="legend-sub">${fmtInt(e.value)} ออเดอร์${e.packages!=null ? ' · '+fmtInt(e.packages)+' ห่อ' : ''}</div>
+      <div class="legend-sub">${fmtInt(e.value)} บิล${e.packages!=null ? ' · '+fmtInt(e.packages)+' ห่อ' : ''}</div>
       <div class="legend-bar">
         <div class="legend-bar-fill" style="width:${pct}%; background:${e.color}"></div>
         <div class="legend-bar-truck" style="left:${pct}%; border-color:${e.color};" title="${pct.toFixed(1)}%">
@@ -1818,7 +1807,7 @@ function renderDonut(containerId, entries){
               <circle cx="20.5" cy="17.5" r="2.3" stroke="currentColor" stroke-width="1.6"/>
             </svg>
             <div class="num" id="${containerId}_num">0</div>
-            <div class="lbl">ออเดอร์ทั้งหมด</div>
+            <div class="lbl">บิลทั้งหมด</div>
             <div class="lbl">${fmtInt(totalPkg)} ห่อ</div>
           </div>
         </div>
@@ -1896,58 +1885,63 @@ function render(){
     byStatus[d.status] = (byStatus[d.status]||0) + d.shipments;
     byStatusPkg[d.status] = (byStatusPkg[d.status]||0) + d.packages;
   });
-  const pctOn3 = totalShip ? byStatus['ส่งภายใน 3 วัน']/totalShip*100 : 0;
-  const pctOn7 = totalShip ? byStatus['ส่งภายใน 7 วัน']/totalShip*100 : 0;
-  const pctOver7 = totalShip ? byStatus['เกิน 7 วัน']/totalShip*100 : 0;
+  const pctOn3 = totalPkg ? byStatusPkg['ส่งภายใน 3 วัน']/totalPkg*100 : 0;
+  const pctOn7 = totalPkg ? byStatusPkg['ส่งภายใน 7 วัน']/totalPkg*100 : 0;
+  const pctOver7 = totalPkg ? byStatusPkg['เกิน 7 วัน']/totalPkg*100 : 0;
+
+  // ---- บิลเฉลี่ย/เดือน: เฉลี่ยจากจำนวนเดือนที่มีข้อมูลจริงในช่วงที่เลือก (เช่น เดือน 1–7 ก็หารด้วย 7) ----
+  const monthsInRows = [...new Set(rows.map(d => d.month))].sort();
+  const numMonthsInRows = monthsInRows.length;
+  const avgPkgPerMonth = numMonthsInRows ? totalPkg / numMonthsInRows : 0;
+  const monthsRangeLbl = numMonthsInRows
+    ? (numMonthsInRows === 1
+        ? months_display[monthsInRows[0]]
+        : `${months_display[monthsInRows[0]]}–${months_display[monthsInRows[numMonthsInRows-1]]}`)
+    : '';
 
   const kpiRow = document.getElementById('kpiRow');
   kpiRow.innerHTML = `
-    <div class="kpi-card"><div class="bar" style="background:#12897f"></div>
-      <div class="kpi-label">ออเดอร์ทั้งหมด</div>
-      <div class="kpi-substats">
-        <div class="kpi-substat"><div class="kpi-substat-val" style="color:#12897f;font-size:27px">${fmtInt(totalShip)}</div><div class="kpi-substat-lbl">ออเดอร์</div></div>
-        <div class="kpi-substat-divider"></div>
-        <div class="kpi-substat"><div class="kpi-substat-val" style="color:#6d5bd0;font-size:27px">${fmtInt(totalPkg)}</div><div class="kpi-substat-lbl">ห่อ</div></div>
+    <div class="kpi-card accent-amber">
+      <div class="kpi-card-head">
+        <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg></div>
+        <div class="kpi-label">ห่อเฉลี่ย/เดือน</div>
       </div>
+      <div class="kpi-value">${fmtInt(avgPkgPerMonth)}<span class="kpi-unit">ห่อ</span></div>
+      <div class="kpi-sub">เฉลี่ยจาก ${numMonthsInRows} เดือน (${monthsRangeLbl})</div>
     </div>
-    <div class="kpi-card"><div class="bar" style="background:#2f9e6e"></div>
-      <div class="kpi-label">ส่งภายใน 3 วัน</div>
-      <div class="kpi-value">${fmt1(pctOn3)}<span class="kpi-unit">%</span></div>
-      <div class="kpi-substats">
-        <div class="kpi-substat"><div class="kpi-substat-val" style="color:#2f9e6e">${fmtInt(byStatus['ส่งภายใน 3 วัน'])}</div><div class="kpi-substat-lbl">ออเดอร์</div></div>
-        <div class="kpi-substat-divider"></div>
-        <div class="kpi-substat"><div class="kpi-substat-val" style="color:#2f9e6e">${fmtInt(byStatusPkg['ส่งภายใน 3 วัน'])}</div><div class="kpi-substat-lbl">ห่อ</div></div>
+    <div class="kpi-card accent-green">
+      <div class="kpi-card-head">
+        <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg></div>
+        <div class="kpi-label">ส่งภายใน 3 วัน</div>
       </div>
+      <div class="kpi-value">${fmtInt(byStatusPkg['ส่งภายใน 3 วัน'])}<span class="kpi-unit">ห่อ</span></div>
+      <div class="kpi-sub"><b>${fmt1(pctOn3)}%</b> ของทั้งหมด</div>
     </div>
-    <div class="kpi-card"><div class="bar" style="background:#e8983a"></div>
-      <div class="kpi-label">ส่งภายใน 7 วัน</div>
-      <div class="kpi-value">${fmt1(pctOn7)}<span class="kpi-unit">%</span></div>
-      <div class="kpi-substats">
-        <div class="kpi-substat"><div class="kpi-substat-val" style="color:#e8983a">${fmtInt(byStatus['ส่งภายใน 7 วัน'])}</div><div class="kpi-substat-lbl">ออเดอร์</div></div>
-        <div class="kpi-substat-divider"></div>
-        <div class="kpi-substat"><div class="kpi-substat-val" style="color:#e8983a">${fmtInt(byStatusPkg['ส่งภายใน 7 วัน'])}</div><div class="kpi-substat-lbl">ห่อ</div></div>
+    <div class="kpi-card accent-blue">
+      <div class="kpi-card-head">
+        <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></div>
+        <div class="kpi-label">ส่งภายใน 7 วัน</div>
       </div>
+      <div class="kpi-value">${fmtInt(byStatusPkg['ส่งภายใน 7 วัน'])}<span class="kpi-unit">ห่อ</span></div>
+      <div class="kpi-sub" style="color:var(--amber-500)"><b style="color:var(--amber-500)">${fmt1(pctOn7)}%</b> <span style="color:var(--ink-500)">ของทั้งหมด</span></div>
     </div>
-    <div class="kpi-card"><div class="bar" style="background:#d9564a"></div>
-      <div class="kpi-label">เกิน 7 วัน</div>
-      <div class="kpi-value">${fmt1(pctOver7)}<span class="kpi-unit">%</span></div>
-      <div class="kpi-substats">
-        <div class="kpi-substat"><div class="kpi-substat-val" style="color:#d9564a">${fmtInt(byStatus['เกิน 7 วัน'])}</div><div class="kpi-substat-lbl">ออเดอร์</div></div>
-        <div class="kpi-substat-divider"></div>
-        <div class="kpi-substat"><div class="kpi-substat-val" style="color:#d9564a">${fmtInt(byStatusPkg['เกิน 7 วัน'])}</div><div class="kpi-substat-lbl">ห่อ</div></div>
+    <div class="kpi-card accent-red">
+      <div class="kpi-card-head">
+        <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12M6 21h12M7 3c0 4 3 5 5 6-2 1-5 2-5 6h10c0-4-3-5-5-6 2-1 5-2 5-6"/></svg></div>
+        <div class="kpi-label">เกิน 7 วัน</div>
       </div>
+      <div class="kpi-value">${fmtInt(byStatusPkg['เกิน 7 วัน'])}<span class="kpi-unit">ห่อ</span></div>
+      <div class="kpi-sub"><b>${fmt1(pctOver7)}%</b> ของทั้งหมด</div>
     </div>
-    <div class="kpi-card kpi-hero">
-      <svg class="kpi-hero-watermark" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <circle cx="12" cy="13" r="8" stroke="currentColor" stroke-width="1.5"/>
-        <path d="M12 8v5l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M9 2h6M12 2v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
+    <div class="kpi-card accent-teal kpi-hero">
       <div class="kpi-hero-badge">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l2.9 6.6 7.1.7-5.4 4.8 1.7 7-6.3-3.8-6.3 3.8 1.7-7L2 9.3l7.1-.7z" fill="currentColor"/></svg>
         ตัวชี้วัดหลัก
       </div>
-      <div class="kpi-label">Lead Time เฉลี่ย</div>
+      <div class="kpi-card-head">
+        <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v8H3z"/><path d="M14 10h4l3 3v2h-7v-5Z"/><circle cx="7" cy="17" r="1.6" stroke-width="1.5"/><circle cx="17.5" cy="17" r="1.6" stroke-width="1.5"/></svg></div>
+        <div class="kpi-label">Lead Time เฉลี่ย</div>
+      </div>
       <div class="kpi-value">${fmt1(avgLT)}<span class="kpi-unit">วัน</span></div>
       <div class="kpi-sub">ตามช่วงที่เลือก</div>
     </div>
@@ -1956,7 +1950,7 @@ function render(){
   // ---- Lead Time insight row (สรุปสำหรับผู้บริหาร) ----
   const ltInsightRowEl = document.getElementById('ltInsightRow');
   if (ltInsightRowEl){
-    // จังหวัดที่เร็วที่สุด / ควรเฝ้าระวัง (ตัดจังหวัดที่มีจำนวนออเดอร์น้อยเกินไปออก กันค่าผิดเพี้ยน)
+    // จังหวัดที่เร็วที่สุด / ควรเฝ้าระวัง (ตัดจังหวัดที่มีจำนวนบิลน้อยเกินไปออก กันค่าผิดเพี้ยน)
     const provLT = {};
     rows.forEach(d => {
       if (!provLT[d.province]) provLT[d.province] = { ship:0, lt:0 };
@@ -2025,7 +2019,7 @@ function render(){
           <div class="lt-insight-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="14" height="11"/><path d="M15 8h4l3 3v4h-7V8z"/><circle cx="5.5" cy="18" r="2"/><circle cx="17.5" cy="18" r="2"/></svg></div>
           <div class="lt-insight-card-lbl">สายขนส่งเร็วที่สุด</div>
           <div class="lt-insight-card-val"><b>${bestCarrier.name}</b></div>
-          <div class="lt-insight-card-sub">เฉลี่ย <b style="color:var(--ink-900)">${fmt1(bestCarrier.avgLT)} วัน</b> ต่อออเดอร์</div>
+          <div class="lt-insight-card-sub">เฉลี่ย <b style="color:var(--ink-900)">${fmt1(bestCarrier.avgLT)} วัน</b> ต่อบิล</div>
         </div>`);
     }
     ltInsights.push(`
@@ -2035,12 +2029,12 @@ function render(){
         <div class="lt-insight-split">
           <div class="lt-insight-split-item">
             <div class="lt-insight-split-num" style="color:var(--green-500)">${fmt1(onTimePct)}%</div>
-            <div class="lt-insight-split-lbl">ตรงเวลา (ภายใน 7 วัน) · ${fmtInt(onTimeCount)} ออเดอร์</div>
+            <div class="lt-insight-split-lbl">ตรงเวลา (ภายใน 7 วัน) · ${fmtInt(onTimeCount)} บิล</div>
           </div>
           <div class="lt-insight-split-div"></div>
           <div class="lt-insight-split-item">
             <div class="lt-insight-split-num" style="color:var(--red-500)">${fmt1(overPct)}%</div>
-            <div class="lt-insight-split-lbl">เกิน 7 วัน (ควรติดตาม) · ${fmtInt(overCount)} ออเดอร์</div>
+            <div class="lt-insight-split-lbl">เกิน 7 วัน (ควรติดตาม) · ${fmtInt(overCount)} บิล</div>
           </div>
         </div>
       </div>`);
@@ -2086,7 +2080,7 @@ function render(){
       const workDaysCur = Math.max(1, daysInCur - curHoliday.days);
       const workDaysPrev = Math.max(1, daysInPrev - prevHoliday.days);
 
-      // ---- ภาพรวมปริมาณออเดอร์ และจำนวนห่อรายเดือน ----
+      // ---- ภาพรวมปริมาณบิล และจำนวนห่อรายเดือน ----
       const monthPkgMap = new Map();
       detail.forEach(d => {
         if (!monthPkgMap.has(d.month)) monthPkgMap.set(d.month, 0);
@@ -2108,105 +2102,58 @@ function render(){
       const orderPerWorkDayPrev = volPrev / workDaysPrev;
       const orderPerWorkDayDeltaPct = orderPerWorkDayPrev > 0 ? ((orderPerWorkDayCur - orderPerWorkDayPrev) / orderPerWorkDayPrev * 100) : null;
 
-      const pros = [];
-      const cons = [];
-
-      // 1) ปัจจัยภาพรวมออเดอร์ (Order Volume) — เหตุ: ปริมาณงานเข้าระบบต่อเดือน / ผล: แรงกดดันต่อ Lead Time
-      if (volDeltaPct !== null){
-        const volUp = volDeltaPct > 0;
-        const volText = `<b>ภาพรวมออเดอร์:</b> เดือน ${monthLbl(latestSelectedMonth)} มี <b>${fmtInt(volCur)} ออเดอร์</b> ${volUp ? 'เพิ่มขึ้น' : 'ลดลง'} <span class="impact">${volUp ? '+' : ''}${fmt1(volDeltaPct)}%</span> (${volUp ? '+' : '-'}${fmtInt(Math.abs(volDeltaAbs))} ออเดอร์) จากเดือนก่อน (${fmtInt(volPrev)} ออเดอร์)`;
-        if (volUp && trendBad){
-          cons.push(`${volText} — สาเหตุหลักคือปริมาณงานที่เข้าระบบต่อเดือนสูงขึ้นเร็วกว่าที่ทีมขนส่งจะรองรับได้ทัน ทำให้เกิดการสะสมของงานค้าง (backlog) และเป็นแรงผลักดันสำคัญที่ทำให้ Lead Time เฉลี่ยเพิ่มขึ้นตามไปด้วย`);
-        } else if (volUp && trendGood){
-          pros.push(`${volText} — แม้ปริมาณงานเพิ่มขึ้นมาก แต่ Lead Time ยังดีขึ้นได้ เป็นผลจากการบริหารกำลังคนและรอบรถให้สอดคล้องกับปริมาณงานที่สูงขึ้น จึงไม่เกิดการสะสมของงานค้าง`);
-        } else if (!volUp && trendGood){
-          pros.push(`${volText} — ปริมาณงานที่ลดลงทำให้ภาระต่อวันของทีมขนส่งเบาลงโดยตรง เป็นสาเหตุหลักที่ทำให้จัดส่งได้เร็วขึ้นในเดือนนี้`);
-        } else if (!volUp && trendBad){
-          cons.push(`${volText} — ปริมาณออเดอร์ที่ลดลงกลับไม่ได้ทำให้ Lead Time ดีขึ้นตาม บ่งชี้ว่าสาเหตุหลักไม่ได้มาจากปริมาณงาน แต่น่าจะมาจากปัจจัยอื่น เช่น จำนวนวันทำการที่ลดลงหรือความหนาแน่นของพัสดุต่อออเดอร์ (ดูรายละเอียดในหัวข้อถัดไป)`);
-        } else if (volUp){
-          cons.push(`${volText} — ควรเฝ้าติดตามว่าปริมาณงานที่เพิ่มขึ้นนี้จะเริ่มกดดัน Lead Time ในเดือนถัดไปหรือไม่`);
-        } else {
-          pros.push(`${volText} — ปริมาณงานที่ลดลงเป็นปัจจัยหนุนให้ Lead Time ทรงตัวหรือดีขึ้นต่อเนื่อง`);
-        }
-      }
-
-      // 2) ปัจจัยภาพรวมจำนวนห่อ / ความหนาแน่นพัสดุต่อออเดอร์ — เหตุ: เวลาแพ็ค-ตรวจนับต่อออเดอร์ / ผล: Lead Time
-      if (pkgPerOrderDeltaPct !== null){
-        const densUp = pkgPerOrderDeltaPct > 0;
-        const densText = `<b>ภาพรวมจำนวนห่อ:</b> เดือน ${monthLbl(latestSelectedMonth)} จัดส่งรวม <b>${fmtInt(pkgCur)} ห่อ</b> เฉลี่ย <b>${fmt1(pkgPerOrderCur)} ห่อ/ออเดอร์</b> เทียบกับ ${fmt1(pkgPerOrderPrev)} ห่อ/ออเดอร์เดือนก่อน <span class="impact">${densUp ? '+' : ''}${fmt1(pkgPerOrderDeltaPct)}%</span>`;
-        if (densUp && trendBad){
-          cons.push(`${densText} — ความหนาแน่นของพัสดุต่อออเดอร์ที่เพิ่มขึ้นหมายถึงแต่ละออเดอร์ต้องใช้เวลาแพ็ค ตรวจนับ และขนถ่ายมากขึ้น จึงเป็นอีกปัจจัยเชิงโครงสร้างที่ผลักดันให้ Lead Time ยืดออกในเดือนนี้`);
-        } else if (densUp && trendGood){
-          pros.push(`${densText} — แม้แต่ละออเดอร์จะมีพัสดุมากขึ้น แต่ยังบริหารเวลาส่งได้ดี สะท้อนประสิทธิภาพของกระบวนการแพ็คและขนถ่ายที่รองรับความหนาแน่นได้ดี`);
-        } else if (!densUp && trendGood){
-          pros.push(`${densText} — พัสดุต่อออเดอร์ที่ลดลงช่วยให้ขั้นตอนแพ็คและตรวจนับต่อออเดอร์เร็วขึ้น เป็นอีกแรงหนุนที่ทำให้ Lead Time ดีขึ้นในเดือนนี้`);
-        } else if (!densUp && trendBad){
-          cons.push(`${densText} — แม้พัสดุต่อออเดอร์จะลดลง แต่ Lead Time กลับแย่ลง แสดงว่าความหนาแน่นพัสดุไม่ใช่สาเหตุหลักในเดือนนี้ ควรพิจารณาปัจจัยด้านปริมาณออเดอร์หรือวันทำการเป็นหลักแทน`);
-        } else {
-          pros.push(`${densText} — ระดับใกล้เคียงเดือนก่อน จึงไม่ได้เป็นแรงกดดันเพิ่มเติมต่อ Lead Time ในเดือนนี้`);
-        }
-      }
-
-      // 3) ปัจจัยภาพรวมวันหยุด/วันทำการ — เหตุ: จำนวนวันทำการที่หายไป / ผล: ภาระออเดอร์ต่อวันทำการ และ Lead Time
-      if (orderPerWorkDayDeltaPct !== null){
-        const wdUp = orderPerWorkDayDeltaPct > 0;
-        const holidayNote = curHoliday.days
-          ? `มี<b>${curHoliday.label}</b> ${curHoliday.days} วัน เหลือวันทำการจัดส่งจริง ${workDaysCur} วัน จากทั้งเดือน ${daysInCur} วัน`
-          : `ไม่มีวันหยุดพิเศษ มีวันทำการครบ ${workDaysCur} วัน จากทั้งเดือน ${daysInCur} วัน`;
-        const wdText = `<b>ภาพรวมวันหยุด/วันทำการ:</b> เดือน ${monthLbl(latestSelectedMonth)} ${holidayNote} ส่งผลให้ออเดอร์เฉลี่ยต่อวันทำการอยู่ที่ <b>${fmt1(orderPerWorkDayCur)} ออเดอร์/วัน</b> เทียบกับ ${fmt1(orderPerWorkDayPrev)} ออเดอร์/วันเดือนก่อน <span class="impact">${wdUp ? '+' : ''}${fmt1(orderPerWorkDayDeltaPct)}%</span>`;
-        if (wdUp && trendBad){
-          cons.push(`${wdText} — วันทำการที่ลดลงจากวันหยุดประกอบกับปริมาณงานที่ยังสูง ทำให้แต่ละวันทำการต้องแบกรับออเดอร์หนาแน่นขึ้นมาก เป็นปัจจัยเชิงโครงสร้างสำคัญที่ผลักดันให้ Lead Time เพิ่มขึ้นในเดือนนี้`);
-        } else if (wdUp && trendGood){
-          pros.push(`${wdText} — แม้ความหนาแน่นงานต่อวันทำการจะสูงขึ้น แต่ทีมขนส่งยังรักษา Lead Time ได้ดี สะท้อนการบริหารจัดการช่วงวันหยุด/วันทำการที่มีประสิทธิภาพ`);
-        } else if (!wdUp && trendGood){
-          pros.push(`${wdText} — วันทำการที่มากขึ้นหรือภาระงานต่อวันที่เบาลง ช่วยให้กระจายงานได้ดีขึ้น เป็นอีกสาเหตุหลักที่ทำให้ Lead Time ดีขึ้นในเดือนนี้`);
-        } else if (!wdUp && trendBad){
-          cons.push(`${wdText} — แม้ภาระงานต่อวันทำการจะเบาลง แต่ Lead Time กลับแย่ลง จึงควรตรวจสอบปัจจัยอื่นเพิ่มเติม เช่น เส้นทางหรือสายขนส่งเฉพาะจุดที่อาจเป็นคอขวด`);
-        } else {
-          pros.push(`${wdText} — ใกล้เคียงเดือนก่อน วันทำการจึงไม่ได้เป็นแรงกดดันเพิ่มเติมในเดือนนี้`);
-        }
-      }
-
-      if (!pros.length) pros.push('ยังไม่พบปัจจัยบวกที่ชัดเจนจากภาพรวมออเดอร์ จำนวนห่อ และวันทำการในช่วงที่เลือก — ลองขยายช่วงเดือนเพื่อดูแนวโน้มเพิ่มเติม');
-      if (!cons.length) cons.push('ไม่พบความเสี่ยงเด่นชัดจากภาพรวมออเดอร์ จำนวนห่อ หรือวันทำการในช่วงที่เลือก ควรติดตามต่อเนื่องเพื่อรักษาประสิทธิภาพการจัดส่ง');
-
-      // ---- ประโยคสรุปภาพรวมแบบ Pro: เปรียบเทียบทิศทางของทั้ง 3 ปัจจัยพร้อมกัน แล้วสรุปผลลัพธ์สุทธิต่อความเร็วการจัดส่ง ----
+      // ---- ปัจจัยหลัก 3 ตัวที่กระทบ Lead Time — เอา 2 ตัวที่กระทบแรงสุดมาพูดถึง พร้อมตัวเลข % และเหตุผลว่า "เพราะอะไร" (เข้าใจง่ายแต่เป็นมืออาชีพ) ----
       const factorSignals = [
-        { label: 'ปริมาณออเดอร์', short: 'ออเดอร์', pct: volDeltaPct },
-        { label: 'ความหนาแน่นพัสดุต่อออเดอร์', short: 'ห่อ/ออเดอร์', pct: pkgPerOrderDeltaPct },
-        { label: 'ภาระออเดอร์ต่อวันทำการ (ผลจากวันหยุด)', short: 'ภาระงาน/วันทำการ', pct: orderPerWorkDayDeltaPct },
+        {
+          pct: volDeltaPct,
+          up:   { title: 'ปริมาณบิลเพิ่มขึ้น', explain: 'ทีมต้องรองรับจำนวนบิลต่อวันมากขึ้น จึงใช้เวลาต่อบิลนานขึ้นตามภาระงานที่เพิ่ม' },
+          down: { title: 'ปริมาณบิลลดลง', explain: 'ภาระงานต่อวันเบาลง ทีมจึงจัดการและจัดส่งแต่ละบิลได้เร็วขึ้น' },
+        },
+        {
+          pct: pkgPerOrderDeltaPct,
+          up:   { title: 'จำนวนสินค้าต่อบิลเพิ่มขึ้น', explain: 'แต่ละบิลมีขั้นตอนหยิบ แพ็ค และตรวจนับสินค้ามากขึ้น ทำให้ใช้เวลาต่อบิลนานขึ้น' },
+          down: { title: 'จำนวนสินค้าต่อบิลลดลง', explain: 'ขั้นตอนหยิบและแพ็คต่อบิลใช้เวลาน้อยลง จึงจัดส่งได้เร็วขึ้น' },
+        },
+        {
+          pct: orderPerWorkDayDeltaPct,
+          up:   { title: 'วันหยุดมากขึ้น ทำให้วันทำงานเหลือน้อยลง', explain: 'ปริมาณงานต่อวันทำการสูงขึ้น เพราะมีวันให้กระจายงานน้อยลงกว่าเดิม' },
+          down: { title: 'วันทำงานมีมากขึ้น', explain: 'ทีมมีวันให้กระจายภาระงานมากขึ้น ช่วยลดความแออัดในการจัดส่งต่อวัน' },
+        },
       ].filter(x => x.pct !== null);
-      const topFactor = factorSignals.slice().sort((a,b) => Math.abs(b.pct) - Math.abs(a.pct))[0];
+      const topTwoFactors = factorSignals.slice().sort((a,b) => Math.abs(b.pct) - Math.abs(a.pct)).slice(0, 2);
 
-      const volDir = volDeltaPct === null ? null : volDeltaPct > 0;
-      const densDir = pkgPerOrderDeltaPct === null ? null : pkgPerOrderDeltaPct > 0;
-      const wdDir = orderPerWorkDayDeltaPct === null ? null : orderPerWorkDayDeltaPct > 0;
-      const allUp = volDir === true && densDir === true && wdDir === true;
-      const allDown = volDir === false && densDir === false && wdDir === false;
-
-      const factorLine = factorSignals
-        .map(f => `${f.short} <span class="impact">${f.pct > 0 ? '+' : ''}${fmt1(f.pct)}%</span>`)
-        .join(' · ');
-
-      let narrativeHtml = '';
-      if (ltTrendPct !== null){
-        if (allUp){
-          // กรณีที่ผู้ใช้ต้องเปรียบเทียบบ่อย: ออเดอร์ ห่อ และวันหยุด เพิ่มขึ้นพร้อมกันทั้ง 3 ด้าน — สรุปผลสุทธิว่าเฉลี่ยแล้วขนส่งเร็วขึ้นหรือช้าลง
-          narrativeHtml = trendBad
-            ? `<b>สรุปภาพรวม:</b> เดือนนี้ทั้ง 3 ปัจจัยเพิ่มขึ้นพร้อมกัน — ${factorLine} — ส่งผลสะสม (compounding effect) ทำให้การขนส่ง<b>โดยเฉลี่ยช้าลงจริง</b> Lead Time เพิ่มขึ้น ${fmt1(Math.abs(ltTrendPct))}% เทียบเดือนก่อน โดย <b>${topFactor.label}</b> เป็นปัจจัยที่ส่งผลมากที่สุด สรุปได้ว่าเมื่อปริมาณงาน ความหนาแน่นพัสดุ และวันหยุดเพิ่มขึ้นพร้อมกัน ระบบขนส่งไม่สามารถรองรับได้ทันจึงทำให้ภาพรวมช้าลงตามไปด้วย`
-            : `<b>สรุปภาพรวม:</b> แม้ทั้ง 3 ปัจจัยจะเพิ่มขึ้นพร้อมกัน — ${factorLine} — แต่การขนส่ง<b>โดยเฉลี่ยยังเร็วขึ้นหรือทรงตัวได้</b> (Lead Time ${ltTrendPct < 0 ? 'ลดลง' : 'ใกล้เคียงเดิม'} ${fmt1(Math.abs(ltTrendPct))}% เทียบเดือนก่อน) สะท้อนว่าโครงข่ายขนส่งยังมีขีดความสามารถรองรับแรงกดดันสะสมจากทั้ง 3 ด้านได้ดี`;
-        } else if (allDown){
-          narrativeHtml = trendGood
-            ? `<b>สรุปภาพรวม:</b> เดือนนี้ทั้ง 3 ปัจจัยลดลงพร้อมกัน — ${factorLine} — แรงกดดันต่อระบบขนส่งเบาลงรอบด้าน ทำให้การขนส่ง<b>โดยเฉลี่ยเร็วขึ้นชัดเจน</b> Lead Time ลดลง ${fmt1(Math.abs(ltTrendPct))}% เทียบเดือนก่อน`
-            : `<b>สรุปภาพรวม:</b> แม้ทั้ง 3 ปัจจัยจะลดลงพร้อมกัน — ${factorLine} — แต่การขนส่งโดยเฉลี่ยกลับ<b>ไม่ได้เร็วขึ้นตาม</b> (Lead Time ${trendBad ? 'เพิ่มขึ้น' : 'ใกล้เคียงเดิม'} ${fmt1(Math.abs(ltTrendPct))}%) จึงควรตรวจสอบปัจจัยอื่นนอกเหนือจากออเดอร์ ห่อ และวันหยุดเพิ่มเติม เช่น เส้นทางหรือสายขนส่งเฉพาะจุด`;
-        } else if (ltTrendPct < -0.5){
-          narrativeHtml = `<b>สรุปภาพรวม:</b> ปัจจัยทั้ง 3 เคลื่อนไหวคนละทิศทาง (${factorLine || 'ข้อมูลไม่เพียงพอสำหรับเปรียบเทียบ'}) แต่โดยรวมแรงหนุนมาจาก${topFactor ? ` <b>${topFactor.label}</b>เป็นหลัก` : 'หลายปัจจัยที่เอื้ออำนวยร่วมกัน'} ส่งผลให้ Lead Time เฉลี่ย<b>ลดลง</b> ${fmt1(Math.abs(ltTrendPct))}% เทียบเดือนก่อน — การขนส่งโดยเฉลี่ยเร็วขึ้น`;
-        } else if (ltTrendPct > 0.5){
-          narrativeHtml = `<b>สรุปภาพรวม:</b> ปัจจัยทั้ง 3 เคลื่อนไหวคนละทิศทาง (${factorLine || 'ข้อมูลไม่เพียงพอสำหรับเปรียบเทียบ'}) แต่แรงกดดันหลักมาจาก${topFactor ? ` <b>${topFactor.label}</b>` : 'หลายปัจจัยร่วมกัน'} ส่งผลให้ Lead Time เฉลี่ย<b>เพิ่มขึ้น</b> ${fmt1(Math.abs(ltTrendPct))}% เทียบเดือนก่อน — การขนส่งโดยเฉลี่ยช้าลง แม้บางปัจจัยจะช่วยพยุงไว้บางส่วน`;
-        } else {
-          narrativeHtml = `<b>สรุปภาพรวม:</b> Lead Time เฉลี่ยใกล้เคียงเดือนก่อนหน้า โดยภาพรวมออเดอร์ จำนวนห่อ และวันทำการไม่มีการเปลี่ยนแปลงอย่างมีนัยสำคัญในช่วงที่เลือก`;
-        }
+      // ---- เหตุผลสั้นๆ 2 ข้อ อธิบาย "เพราะอะไร" อย่างเป็นกลาง พร้อมตัวเลข % ประกอบ ไม่ตัดสิน ไม่โทษแผนกงาน ----
+      let reasonIntro = '';
+      let reasonItems = [];
+      if (ltTrendPct === null){
+        reasonIntro = 'ยังไม่มีเดือนก่อนหน้าให้เปรียบเทียบ';
+      } else if (topTwoFactors.length === 0){
+        reasonIntro = 'ยังไม่พบปัจจัยที่ส่งผลชัดเจนจากปริมาณบิล จำนวนสินค้าต่อบิล หรือวันทำการ';
+      } else if (trendBad){
+        reasonIntro = 'ปัจจัยหลักที่ส่งผลให้ Lead Time เดือนนี้เพิ่มขึ้น:';
+        reasonItems = topTwoFactors.map(f => {
+          const dir = f.pct > 0 ? f.up : f.down;
+          return { title: dir.title, explain: dir.explain, pctText: `${f.pct>0?'+':''}${fmt1(f.pct)}%`, up: f.pct > 0 };
+        });
+      } else if (trendGood){
+        reasonIntro = 'ปัจจัยหลักที่ส่งผลให้ Lead Time เดือนนี้ลดลง:';
+        reasonItems = topTwoFactors.map(f => {
+          const dir = f.pct > 0 ? f.up : f.down;
+          return { title: dir.title, explain: dir.explain, pctText: `${f.pct>0?'+':''}${fmt1(f.pct)}%`, up: f.pct > 0 };
+        });
+      } else {
+        reasonIntro = 'ยังไม่มีปัจจัยเปลี่ยนแปลงชัดเจน';
       }
+
+      // ---- ป้ายสรุป (วงกลม): เดิมโชว์เป็น % ซึ่งอ่านเข้าใจยาก เปลี่ยนเป็น "เพิ่ม/ลดกี่วัน" แทน ----
+      const ltTrendAbsDays = (curAvgLT !== null && prevAvgLT !== null) ? (curAvgLT - prevAvgLT) : null;
+      const dayWord = v => {
+        const a = Math.abs(v);
+        if (a < 0.05) return 'ไม่ถึง 0.1 วัน';
+        if (Math.abs(a - 0.5) < 0.05) return 'ครึ่งวัน';
+        if (Math.abs(a - 1) < 0.05) return '1 วัน';
+        return `${fmt1(a)} วัน`;
+      };
 
       const verdictCls = ltTrendPct === null ? 'flat' : (ltTrendPct < -0.5 ? 'good' : ltTrendPct > 0.5 ? 'bad' : 'flat');
       const verdictIcon = ltTrendPct === null ? '' : (ltTrendPct < -0.5
@@ -2214,7 +2161,15 @@ function render(){
         : ltTrendPct > 0.5
         ? `<svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`
         : `<svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M5 12h14" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>`);
-      const verdictLbl = ltTrendPct === null ? 'ไม่มีข้อมูลเทียบ' : (ltTrendPct < -0.5 ? `ดีขึ้น ${fmt1(Math.abs(ltTrendPct))}%` : ltTrendPct > 0.5 ? `เฉลี่ยเพิ่มขึ้นจากเดือนที่แล้ว ${fmt1(Math.abs(ltTrendPct))}%` : 'ใกล้เคียงเดิม');
+      const verdictLbl = ltTrendAbsDays === null ? 'ไม่มีข้อมูลเทียบ' : (ltTrendPct < -0.5 ? `เร็วขึ้น ${dayWord(ltTrendAbsDays)}` : ltTrendPct > 0.5 ? `ช้าลง ${dayWord(ltTrendAbsDays)}` : 'ใกล้เคียงเดิม');
+
+      const reasonBodyHtml = reasonItems.length
+        ? `<div><b>${reasonIntro}</b></div><ul class="lt-reason-factor-list">${reasonItems.map(it => `
+            <li class="lt-reason-item">
+              <div class="lt-reason-item-top"><b>${it.title}</b><span class="lt-reason-item-pct ${it.up ? 'up' : 'down'}">${it.pctText}</span></div>
+              <div class="lt-reason-item-explain">${it.explain}</div>
+            </li>`).join('')}</ul>`
+        : `<span>${reasonIntro}</span>`;
 
       reasonEl.innerHTML = `
         <div class="lt-reason">
@@ -2223,26 +2178,15 @@ function render(){
             <div class="lt-reason-head-left">
               <div class="lt-reason-head-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.5.4.8 1 .8 1.6v.5h5.4v-.5c0-.6.3-1.2.8-1.6A6 6 0 0 0 12 3z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
               <div>
-                <div class="lt-reason-head-title"><span class="live-dot"></span>สรุปเหตุผล: ทำไม Lead Time เดือน ${monthLbl(latestSelectedMonth)} ถึงเปลี่ยนแปลง<span class="lt-reason-pro-badge"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="11" height="11"><path d="M12 2l2.9 6.6 7.1.7-5.4 4.8 1.7 7-6.3-3.8-6.3 3.8 1.7-7L2 9.3l7.1-.7z" fill="currentColor"/></svg>Pro Insight</span></div>
-                <div class="lt-reason-head-sub">วิเคราะห์เชิงเหตุและผลจากภาพรวมออเดอร์ จำนวนห่อ และวันทำการ เทียบเดือน ${monthLbl(prevMonthKey)}</div>
+                <div class="lt-reason-head-title"><span class="live-dot"></span>ทำไม Lead Time เดือน ${monthLbl(latestSelectedMonth)} ถึงเปลี่ยนแปลง<span class="lt-reason-pro-badge"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="11" height="11"><path d="M12 2l2.9 6.6 7.1.7-5.4 4.8 1.7 7-6.3-3.8-6.3 3.8 1.7-7L2 9.3l7.1-.7z" fill="currentColor"/></svg>Pro Insight</span></div>
+                <div class="lt-reason-head-sub">เทียบกับเดือน ${monthLbl(prevMonthKey)}</div>
               </div>
             </div>
             <div class="lt-reason-verdict ${verdictCls}">${verdictIcon}${verdictLbl}</div>
           </div>
-          ${narrativeHtml ? `<div class="lt-reason-narrative"><span class="lt-reason-narrative-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.5.4.8 1 .8 1.6v.5h5.4v-.5c0-.6.3-1.2.8-1.6A6 6 0 0 0 12 3z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>${narrativeHtml}</span></div>` : ''}
-          <div class="lt-reason-body">
-            <div class="lt-reason-col pros">
-              <div class="lt-reason-col-head"><span class="badge"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>สาเหตุที่ลดลง — ปัจจัยที่ทำให้ Lead Time เร็วขึ้น</div>
-              <ul class="lt-reason-list">${pros.map(t => `<li class="lt-reason-item"><span class="dot"></span><span>${t}</span></li>`).join('')}</ul>
-            </div>
-            <div class="lt-reason-col cons">
-              <div class="lt-reason-col-head"><span class="badge"><svg viewBox="0 0 24 24" fill="none"><path d="M12 9v4M12 17h.01M10.3 3.9L2.7 18a2 2 0 0 0 1.7 3h15.2a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>สาเหตุที่เพิ่มขึ้น — ปัจจัยเสี่ยงที่ควรติดตาม</div>
-              <ul class="lt-reason-list">${cons.map(t => `<li class="lt-reason-item"><span class="dot"></span><span>${t}</span></li>`).join('')}</ul>
-            </div>
-          </div>
-          <div class="lt-reason-foot">
-            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 8v5M12 16h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-            วิเคราะห์อัตโนมัติจากข้อมูลการจัดส่งจริงในระบบ เทียบเดือนล่าสุดกับเดือนก่อนหน้า
+          <div class="lt-reason-narrative" style="margin:16px 20px 20px;">
+            <span class="lt-reason-narrative-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.5.4.8 1 .8 1.6v.5h5.4v-.5c0-.6.3-1.2.8-1.6A6 6 0 0 0 12 3z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            ${reasonBodyHtml}
           </div>
         </div>`;
     } else if (reasonEl) {
@@ -2487,9 +2431,9 @@ function renderDailyPackageSummary(byDay, years){
     </div>
     <div class="pkg-kpi accent-violet">
       <div class="pkg-kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
-      <div class="pkg-kpi-lbl">จำนวนออเดอร์รวม</div>
-      <div class="pkg-kpi-val">${fmtInt(totalShipments)}<span class="pkg-kpi-unit">ออเดอร์</span></div>
-      <div class="pkg-kpi-sub">เฉลี่ย ${fmt1(totalShipments ? totalPackages / totalShipments : 0)} ห่อ/ออเดอร์</div>
+      <div class="pkg-kpi-lbl">จำนวนบิลรวม</div>
+      <div class="pkg-kpi-val">${fmtInt(totalShipments)}<span class="pkg-kpi-unit">บิล</span></div>
+      <div class="pkg-kpi-sub">เฉลี่ย ${fmt1(totalShipments ? totalPackages / totalShipments : 0)} ห่อ/บิล</div>
     </div>
     <div class="pkg-kpi accent-amber">
       <div class="pkg-kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg></div>
@@ -2591,7 +2535,7 @@ function renderDailyPackageSummary(byDay, years){
     <table class="day-table">
       <thead><tr>
         <th>วันที่</th>
-        <th style="text-align:right">จำนวนออเดอร์</th>
+        <th style="text-align:right">จำนวนบิล</th>
         <th style="text-align:right">จำนวนห่อ</th>
       </tr></thead>
       <tbody>${rowsHtml}</tbody>
@@ -2741,7 +2685,7 @@ function renderAIInsights(detail, carrier, byDay, months, months_display){
         <div class="ai-lb-rank${medalCls}">${rank<=3 ? ['🥇','🥈','🥉'][rank-1] : rank}</div>
         <div class="ai-lb-body">
           <div class="ai-lb-name">${r.name}</div>
-          <div class="ai-lb-sub">${fmt1(r.avgLT)} วันเฉลี่ย · ${fmt1(r.onPct)}% ตรงเวลา · ${fmtInt(r.ship)} ออเดอร์</div>
+          <div class="ai-lb-sub">${fmt1(r.avgLT)} วันเฉลี่ย · ${fmt1(r.onPct)}% ตรงเวลา · ${fmtInt(r.ship)} บิล</div>
           <div class="ai-lb-bar-track"><div class="ai-lb-bar-fill" style="width:${r.score}%; background:${barColor}"></div></div>
         </div>
         <div class="ai-lb-score">${Math.round(r.score)}<span>คะแนน</span></div>
@@ -2849,7 +2793,7 @@ function renderAIInsights(detail, carrier, byDay, months, months_display){
     heatDays.forEach(d => cells.push(d));
     const cellsHtml = cells.map(d => {
       if (!d) return `<div class="ai-heatmap-cell" style="background:transparent"></div>`;
-      const label = `${d.day} ${THAI_MONTHS[d.month-1]} ${d.year} · ${fmtInt(d.packages)} ห่อ (${fmtInt(d.shipments)} ออเดอร์)`;
+      const label = `${d.day} ${THAI_MONTHS[d.month-1]} ${d.year} · ${fmtInt(d.packages)} ห่อ (${fmtInt(d.shipments)} บิล)`;
       return `<div class="ai-heatmap-cell" style="background:${heatColor(d.packages)}" title="${label}"></div>`;
     }).join('');
     heatEl.innerHTML = `
@@ -2895,7 +2839,7 @@ function renderAIInsights(detail, carrier, byDay, months, months_display){
       <div class="ai-whatif-grid">
         <div>
           <div class="ai-whatif-control">
-            <label>ปริมาณออเดอร์เปลี่ยนแปลง <span class="val" id="wfVolLbl">0%</span></label>
+            <label>ปริมาณบิลเปลี่ยนแปลง <span class="val" id="wfVolLbl">0%</span></label>
             <input type="range" id="wfVolSlider" min="-30" max="50" value="0" step="1">
           </div>
           <div class="ai-whatif-control">
@@ -2903,7 +2847,7 @@ function renderAIInsights(detail, carrier, byDay, months, months_display){
             <input type="range" id="wfHolSlider" min="0" max="10" value="0" step="1">
           </div>
           <div class="ai-forecast-note" style="border-top:none; padding-top:0;">
-            ฐานอ้างอิง: เดือน ${months_display[base.m]} — ${fmtInt(base.ship)} ออเดอร์ · Lead Time เฉลี่ย ${fmt1(base.avgLT)} วัน · วันทำการ ${base.workDays} วัน
+            ฐานอ้างอิง: เดือน ${months_display[base.m]} — ${fmtInt(base.ship)} บิล · Lead Time เฉลี่ย ${fmt1(base.avgLT)} วัน · วันทำการ ${base.workDays} วัน
           </div>
         </div>
         <div class="ai-whatif-result">
