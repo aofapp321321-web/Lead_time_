@@ -1893,11 +1893,15 @@ function render(){
   const monthsInRows = [...new Set(rows.map(d => d.month))].sort();
   const numMonthsInRows = monthsInRows.length;
   const avgPkgPerMonth = numMonthsInRows ? totalPkg / numMonthsInRows : 0;
+  const avgPkgOn3PerMonth = numMonthsInRows ? byStatusPkg['ส่งภายใน 3 วัน'] / numMonthsInRows : 0;
+  const avgPkgOn7PerMonth = numMonthsInRows ? byStatusPkg['ส่งภายใน 7 วัน'] / numMonthsInRows : 0;
+  const avgPkgOver7PerMonth = numMonthsInRows ? byStatusPkg['เกิน 7 วัน'] / numMonthsInRows : 0;
   const monthsRangeLbl = numMonthsInRows
     ? (numMonthsInRows === 1
         ? months_display[monthsInRows[0]]
         : `${months_display[monthsInRows[0]]}–${months_display[monthsInRows[numMonthsInRows-1]]}`)
     : '';
+  const monthsSubLbl = `เฉลี่ยจาก ${numMonthsInRows} เดือน (${monthsRangeLbl})`;
 
   const kpiRow = document.getElementById('kpiRow');
   kpiRow.innerHTML = `
@@ -1907,31 +1911,31 @@ function render(){
         <div class="kpi-label">ห่อเฉลี่ย/เดือน</div>
       </div>
       <div class="kpi-value">${fmtInt(avgPkgPerMonth)}<span class="kpi-unit">ห่อ</span></div>
-      <div class="kpi-sub">เฉลี่ยจาก ${numMonthsInRows} เดือน (${monthsRangeLbl})</div>
+      <div class="kpi-sub">${monthsSubLbl}</div>
     </div>
     <div class="kpi-card accent-green">
       <div class="kpi-card-head">
         <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg></div>
-        <div class="kpi-label">ส่งภายใน 3 วัน</div>
+        <div class="kpi-label">ส่งภายใน 3 วัน เฉลี่ย/เดือน</div>
       </div>
-      <div class="kpi-value">${fmtInt(byStatusPkg['ส่งภายใน 3 วัน'])}<span class="kpi-unit">ห่อ</span></div>
-      <div class="kpi-sub"><b>${fmt1(pctOn3)}%</b> ของทั้งหมด</div>
+      <div class="kpi-value">${fmtInt(avgPkgOn3PerMonth)}<span class="kpi-unit">ห่อ</span></div>
+      <div class="kpi-sub">${monthsSubLbl} · <b>${fmt1(pctOn3)}%</b> ของทั้งหมด</div>
     </div>
     <div class="kpi-card accent-blue">
       <div class="kpi-card-head">
         <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></div>
-        <div class="kpi-label">ส่งภายใน 7 วัน</div>
+        <div class="kpi-label">ส่งภายใน 7 วัน เฉลี่ย/เดือน</div>
       </div>
-      <div class="kpi-value">${fmtInt(byStatusPkg['ส่งภายใน 7 วัน'])}<span class="kpi-unit">ห่อ</span></div>
-      <div class="kpi-sub" style="color:var(--amber-500)"><b style="color:var(--amber-500)">${fmt1(pctOn7)}%</b> <span style="color:var(--ink-500)">ของทั้งหมด</span></div>
+      <div class="kpi-value">${fmtInt(avgPkgOn7PerMonth)}<span class="kpi-unit">ห่อ</span></div>
+      <div class="kpi-sub">${monthsSubLbl} · <b style="color:var(--amber-500)">${fmt1(pctOn7)}%</b> ของทั้งหมด</div>
     </div>
     <div class="kpi-card accent-red">
       <div class="kpi-card-head">
         <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12M6 21h12M7 3c0 4 3 5 5 6-2 1-5 2-5 6h10c0-4-3-5-5-6 2-1 5-2 5-6"/></svg></div>
-        <div class="kpi-label">เกิน 7 วัน</div>
+        <div class="kpi-label">เกิน 7 วัน เฉลี่ย/เดือน</div>
       </div>
-      <div class="kpi-value">${fmtInt(byStatusPkg['เกิน 7 วัน'])}<span class="kpi-unit">ห่อ</span></div>
-      <div class="kpi-sub"><b>${fmt1(pctOver7)}%</b> ของทั้งหมด</div>
+      <div class="kpi-value">${fmtInt(avgPkgOver7PerMonth)}<span class="kpi-unit">ห่อ</span></div>
+      <div class="kpi-sub">${monthsSubLbl} · <b>${fmt1(pctOver7)}%</b> ของทั้งหมด</div>
     </div>
     <div class="kpi-card accent-teal kpi-hero">
       <div class="kpi-hero-badge">
