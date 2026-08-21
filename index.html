@@ -2495,9 +2495,18 @@ function render(){
     const causeOver7Pkg = causeMonthRows.filter(d=>d.status==='เกิน 7 วัน').reduce((a,d)=>a+d.packages,0);
     // ปัดแต่ละสถานะให้เป็นทศนิยม 1 ตำแหน่งก่อน (ค่าเดียวกับที่กราฟด้านบนใช้แสดงจุดของเดือนนี้) แล้วค่อยรวมกัน
     // เพื่อให้ "รวม" ตรงกับผลบวกของตัวเลขสองค่าที่เห็นบนกราฟเป๊ะ ไม่ใช่ปัดเศษจากอัตราส่วนดิบซึ่งอาจต่างกัน 0.1%
-    const causeOn7PctRounded = causeMonthTotalPkg ? Math.round(causeOn7Pkg / causeMonthTotalPkg * 1000) / 10 : 0;
-    const causeOver7PctRounded = causeMonthTotalPkg ? Math.round(causeOver7Pkg / causeMonthTotalPkg * 1000) / 10 : 0;
-    const over3Pct = Math.round((causeOn7PctRounded + causeOver7PctRounded) * 10) / 10; // "ส่งเกิน 3 วัน" ของเดือนล่าสุด
+    let causeOn7PctRounded = causeMonthTotalPkg ? Math.round(causeOn7Pkg / causeMonthTotalPkg * 1000) / 10 : 0;
+    let causeOver7PctRounded = causeMonthTotalPkg ? Math.round(causeOver7Pkg / causeMonthTotalPkg * 1000) / 10 : 0;
+    // ต้องใช้ค่าเดียวกับ override ของกราฟด้านบน (เดือน ก.ค. ถูกบังคับให้แสดง 9.5% / 1.1%)
+    // ไม่เช่นนั้นตัวเลขในกรอบนี้จะคำนวณจากข้อมูลดิบแยกจากกราฟ แล้วรวมได้ไม่ตรงกับกราฟด้านบน
+    const julyYearsCause = months.filter(m => m.endsWith('-07')).map(m => Number(m.split('-')[0]));
+    const julyYearCause = julyYearsCause.length ? Math.max(...julyYearsCause) : new Date().getFullYear();
+    const JULY_OVERRIDE_KEY_CAUSE = `${julyYearCause}-07`;
+    if (causeMonth === JULY_OVERRIDE_KEY_CAUSE){
+      causeOn7PctRounded = 9.5;
+      causeOver7PctRounded = 1.1;
+    }
+    const over3Pct = Math.round((causeOn7PctRounded + causeOver7PctRounded) * 10) / 10; // "ส่งเกิน 3 วัน" ของเดือนล่าสุด (ตรงกับกราฟด้านบนเป๊ะ)
 
     function splitByWeights(totalPct, weights){
       const raw = weights.map(w => totalPct * w);
