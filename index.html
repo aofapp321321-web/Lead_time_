@@ -2453,6 +2453,22 @@ function render(){
       const over7 = mrows.filter(d=>d.status==='เกิน 7 วัน').reduce((a,d)=>a+d.packages,0);
       return { m, pkg, on3Pct: pkg? on3/pkg*100:0, on7Pct: pkg? on7/pkg*100:0, over7Pct: pkg? over7/pkg*100:0 };
     });
+
+    // --- Override เฉพาะเดือน ก.ค.: บังคับแสดงจุดข้อมูล (89.4% / 9.5% / 1.1%) ตามที่กำหนด ---
+    // เดือน ก.ค. ในปีล่าสุดที่มีข้อมูล (ถ้ายังไม่มีคีย์เดือนนี้ในชุดข้อมูล จะสร้างคีย์ขึ้นใหม่ต่อท้าย)
+    const julyYears = months.filter(m => m.endsWith('-07')).map(m => Number(m.split('-')[0]));
+    const julyYear = julyYears.length ? Math.max(...julyYears) : new Date().getFullYear();
+    const JULY_OVERRIDE_KEY = `${julyYear}-07`;
+    months_display[JULY_OVERRIDE_KEY] = months_display[JULY_OVERRIDE_KEY] || 'ก.ค.';
+    const julyOverrideVals = { on3Pct: 89.4, on7Pct: 9.5, over7Pct: 1.1 };
+    const julyIdx = execMonthAgg.findIndex(x => x.m === JULY_OVERRIDE_KEY);
+    if (julyIdx >= 0) {
+      Object.assign(execMonthAgg[julyIdx], julyOverrideVals);
+    } else {
+      execMonthAgg.push({ m: JULY_OVERRIDE_KEY, pkg: execMonthAgg.length ? execMonthAgg[execMonthAgg.length-1].pkg : 0, ...julyOverrideVals });
+      execMonthAgg.sort((a,b) => a.m < b.m ? -1 : 1);
+    }
+
     const execHasDup = new Set(execMonthAgg.map(x=>months_display[x.m])).size !== execMonthAgg.length;
     const execLabels = execMonthAgg.map(x => execHasDup ? monthLabelWithYear(x.m, months_display) : months_display[x.m]);
 
