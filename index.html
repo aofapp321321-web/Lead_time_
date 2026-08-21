@@ -1552,8 +1552,7 @@ function buildRAW(rawRows){
 
   rawRows.forEach(row => {
     const shipDate = parseFlexibleDate(row[COL.SHIP_DATE]);
-    const billDate = parseFlexibleDate(row[COL.BILL_DATE]);
-    if (!shipDate || !billDate) return; // ข้ามแถวที่วันที่อ่านไม่ออก (เช่นแถวว่าง)
+    if (!shipDate) return; // ข้ามแถวที่วันที่ส่งของอ่านไม่ออก (เช่นแถวว่าง)
 
     const packages = parseFloat(row[COL.PACKAGES]) || 0;
     const rawCarrierName = (row[COL.CARRIER] || '').trim() || 'ไม่ระบุ';
@@ -1561,16 +1560,15 @@ function buildRAW(rawRows){
     const carrierName = resolveCarrierLabel(rawCarrierName);
     const province = (row[COL.PROVINCE] || '').trim() || 'ไม่ระบุ';
 
-    const lt = Math.max(daysBetween(shipDate, billDate), 0);
-    const status = computeStatus(lt);
-
     const monthKey = `${shipDate.getFullYear()}-${String(shipDate.getMonth() + 1).padStart(2, '0')}`;
     monthsSet.add(monthKey);
     routesSet.add(route);
     provincesSet.add(province);
     yearsSet.add(shipDate.getFullYear());
 
-    // สรุปจำนวนห่อรายวัน (ตามวันที่ส่งของ) — ไม่แยกเส้นทาง/จังหวัด/สถานะ ใช้แค่ ปี-เดือน-วัน
+    // สรุปจำนวนห่อ/บิลรายวัน (ตามวันที่ส่งของเท่านั้น) — ไม่รอวันที่บิล
+    // เพราะของถูกส่งไปแล้วตั้งแต่วันที่ส่งของ ต่อให้ยังไม่ออกบิลก็ต้องนับ
+    // (แก้ปัญหาที่วันปัจจุบันซึ่งบิลยังออกไม่ครบแสดงจำนวนห่อต่ำผิดปกติ)
     const dateKey = `${shipDate.getFullYear()}-${String(shipDate.getMonth() + 1).padStart(2, '0')}-${String(shipDate.getDate()).padStart(2, '0')}`;
     if (!dayMap.has(dateKey)) {
       dayMap.set(dateKey, {
@@ -1580,6 +1578,14 @@ function buildRAW(rawRows){
     }
     const dy = dayMap.get(dateKey);
     dy.shipments += 1; dy.packages += packages;
+
+    // ส่วนที่เหลือ (Lead Time / สถานะการส่ง / ตาราง detail-carrier) ยังต้องรอวันที่บิล
+    // เพราะต้องใช้คำนวณ lt = ผลต่างวันที่บิล-วันที่ส่งของ ถ้ายังไม่บิลก็ยังคำนวณ lt จริงไม่ได้
+    const billDate = parseFlexibleDate(row[COL.BILL_DATE]);
+    if (!billDate) return;
+
+    const lt = Math.max(daysBetween(shipDate, billDate), 0);
+    const status = computeStatus(lt);
 
     const dKey = `${monthKey}|${route}|${province}|${status}`;
     if (!detailMap.has(dKey)) detailMap.set(dKey, { month: monthKey, route, province, status, shipments: 0, packages: 0, lt_sum: 0 });
