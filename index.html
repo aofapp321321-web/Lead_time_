@@ -2475,6 +2475,20 @@ function render(){
       execMonthAgg.sort((a,b) => a.m < b.m ? -1 : 1);
     }
 
+    // --- Override เฉพาะเดือน ส.ค.: บังคับแสดงจุดข้อมูล (88.9% / 8.6% / 2.5%) ตามที่กำหนด ---
+    const augYears = months.filter(m => m.endsWith('-08')).map(m => Number(m.split('-')[0]));
+    const augYear = augYears.length ? Math.max(...augYears) : julyYear;
+    const AUG_OVERRIDE_KEY = `${augYear}-08`;
+    months_display[AUG_OVERRIDE_KEY] = months_display[AUG_OVERRIDE_KEY] || 'ส.ค.';
+    const augOverrideVals = { on3Pct: 88.9, on7Pct: 8.6, over7Pct: 2.5 };
+    const augIdx = execMonthAgg.findIndex(x => x.m === AUG_OVERRIDE_KEY);
+    if (augIdx >= 0) {
+      Object.assign(execMonthAgg[augIdx], augOverrideVals);
+    } else {
+      execMonthAgg.push({ m: AUG_OVERRIDE_KEY, pkg: execMonthAgg.length ? execMonthAgg[execMonthAgg.length-1].pkg : 0, ...augOverrideVals });
+      execMonthAgg.sort((a,b) => a.m < b.m ? -1 : 1);
+    }
+
     const execHasDup = new Set(execMonthAgg.map(x=>months_display[x.m])).size !== execMonthAgg.length;
     const execLabels = execMonthAgg.map(x => execHasDup ? monthLabelWithYear(x.m, months_display) : months_display[x.m]);
 
@@ -2505,6 +2519,14 @@ function render(){
     if (causeMonth === JULY_OVERRIDE_KEY_CAUSE){
       causeOn7PctRounded = 9.5;
       causeOver7PctRounded = 1.1;
+    }
+    // ต้องใช้ค่าเดียวกับ override ของกราฟด้านบน (เดือน ส.ค. ถูกบังคับให้แสดง 8.6% / 2.5%)
+    const augYearsCause = months.filter(m => m.endsWith('-08')).map(m => Number(m.split('-')[0]));
+    const augYearCause = augYearsCause.length ? Math.max(...augYearsCause) : new Date().getFullYear();
+    const AUG_OVERRIDE_KEY_CAUSE = `${augYearCause}-08`;
+    if (causeMonth === AUG_OVERRIDE_KEY_CAUSE){
+      causeOn7PctRounded = 8.6;
+      causeOver7PctRounded = 2.5;
     }
     const over3Pct = Math.round((causeOn7PctRounded + causeOver7PctRounded) * 10) / 10; // "ส่งเกิน 3 วัน" ของเดือนล่าสุด (ตรงกับกราฟด้านบนเป๊ะ)
 
@@ -2575,6 +2597,14 @@ function render(){
     const lt = mrows.reduce((a,d)=>a+d.lt_sum,0);
     return { m, ship, avgLT: ship? lt/ship : 0 };
   });
+  // --- Override เฉพาะเดือน ส.ค.: บังคับแสดง Lead Time เฉลี่ยเป็น 2.5 วัน ตามที่กำหนด ---
+  const augYearsLT = months.filter(m => m.endsWith('-08')).map(m => Number(m.split('-')[0]));
+  const augYearLT = augYearsLT.length ? Math.max(...augYearsLT) : new Date().getFullYear();
+  const AUG_LT_OVERRIDE_KEY = `${augYearLT}-08`;
+  const augLTIdx = monthAgg.findIndex(x => x.m === AUG_LT_OVERRIDE_KEY);
+  if (augLTIdx >= 0) {
+    monthAgg[augLTIdx].avgLT = 2.5;
+  }
   // ถ้าเดือนที่จะแสดงมีชื่อไทยซ้ำกัน (คนละปี) ให้เติมปีต่อท้ายป้ายกำกับทุกอันเพื่อไม่ให้สับสน
   const trendMonthNames = monthAgg.map(x => months_display[x.m]);
   const hasDuplicateMonthName = new Set(trendMonthNames).size !== trendMonthNames.length;
