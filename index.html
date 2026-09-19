@@ -211,6 +211,8 @@
   .kpi-unit{font-size:13.5px; color:var(--ink-500); font-weight:500; margin-left:4px;}
   .kpi-sub{font-size:13px; margin-top:8px; color:var(--ink-500);}
   .kpi-sub b{color:var(--kpi-accent-500, var(--ink-700)); font-weight:700;}
+  .kpi-sub-route{font-size:12px; line-height:1.5; color:var(--ink-500);}
+  .kpi-sub-route b{color:var(--ink-700); font-weight:700;}
 
   .kpi-card.accent-amber{ --kpi-accent-500:var(--amber-500); --kpi-accent-100:var(--amber-100); }
   .kpi-card.accent-green{ --kpi-accent-500:var(--green-500); --kpi-accent-100:var(--green-100); }
@@ -254,7 +256,7 @@
   /* ===== Custom SVG trend chart ===== */
   .trend-svg-wrap{width:100%; height:100%;}
   .trend-svg-wrap svg{width:100%; height:100%; overflow:visible;}
-  .trend-bar-label{font-family:'Sarabun',sans-serif; font-size:15px; fill:var(--ink-500); text-anchor:middle;}
+  .trend-bar-label{font-family:'Sarabun',sans-serif; font-size:14.5px; font-weight:700; fill:var(--navy-800); text-anchor:middle;}
   .trend-line-label{font-family:'Sarabun',sans-serif; font-size:15.5px; font-weight:600; fill:var(--navy-800); text-anchor:middle;}
   .trend-axis-label{font-family:'Sarabun',sans-serif; font-size:15.5px; fill:var(--ink-500); text-anchor:middle;}
   .trend-legend{display:flex; gap:22px; justify-content:center; margin-top:14px; font-size:16.5px; color:var(--ink-500);}
@@ -511,6 +513,32 @@
   .pkg-kpi-sub{font-size:15px;}
   .pkg-insight-chip{font-size:16px; padding:11px 16px;}
   .pkg-sparkline-title{font-size:15.5px;}
+
+  /* ===== เปรียบเทียบระหว่างเดือน ===== */
+  .compare-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:4px;}
+  @media (max-width:760px){ .compare-grid{grid-template-columns:1fr;} }
+  .compare-col{border:1px solid var(--line); border-radius:12px; padding:14px 16px;}
+  .compare-col .compare-col-title{font-family:'Kanit',sans-serif; font-weight:600; font-size:15px; color:var(--ink-900); margin-bottom:10px;}
+  .compare-row{display:flex; align-items:center; justify-content:space-between; padding:6px 0; border-top:1px dashed var(--line); font-size:14px;}
+  .compare-row:first-of-type{border-top:none;}
+  .compare-row .lbl{color:var(--ink-500);}
+  .compare-row .val{font-weight:700; color:var(--ink-900); font-family:'Kanit',sans-serif;}
+  .compare-verdict{
+    margin-top:14px; padding:12px 16px; border-radius:12px; background:var(--teal-100);
+    color:var(--navy-900); font-size:14px; line-height:1.6;
+  }
+  .compare-verdict b{color:var(--teal-500);}
+  .compare-delta{font-size:12.5px; font-weight:700; padding:2px 8px; border-radius:999px;}
+  .compare-delta.up{color:var(--red-500); background:var(--red-100);}
+  .compare-delta.down{color:var(--green-500); background:var(--green-100);}
+  .compare-delta.flat{color:var(--ink-500); background:var(--line);}
+  .exec-compare-summary{
+    margin-top:14px; padding:12px 16px; border-radius:12px; background:#f6f8fc;
+    border:1px solid var(--line); color:var(--ink-700); font-size:13.5px; line-height:1.7;
+  }
+  .exec-compare-summary b{color:var(--navy-900);}
+  .exec-compare-summary .up{color:var(--red-500); font-weight:700;}
+  .exec-compare-summary .down{color:var(--green-500); font-weight:700;}
 
   /* ===== Lead Time — สรุป Lead Time (executive insight grid) ===== */
   .lt-summary-card{
@@ -949,7 +977,7 @@
     padding:4px 10px; border-radius:999px; background:var(--amber-100); color:#a4650f; letter-spacing:.02em;
   }
   .exec-cause-pro-badge svg{width:11px; height:11px; flex-shrink:0;}
-  .exec-cause-body{display:grid; grid-template-columns:1fr 1fr; gap:0;}
+  .exec-cause-body{display:grid; grid-template-columns:repeat(var(--cause-cols,1), 1fr); gap:0;}
   .exec-cause-col{padding:18px 22px 22px;}
   .exec-cause-col + .exec-cause-col{border-left:1px solid var(--line);}
   .exec-cause-col-head{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:14px; flex-wrap:wrap;}
@@ -994,15 +1022,71 @@
   .exec-cause-item-top{display:flex; align-items:baseline; justify-content:space-between; gap:10px;}
   .exec-cause-item-title{font-size:15px; font-weight:600; color:var(--ink-900); line-height:1.4;}
   .exec-cause-item-pct{font-family:'Kanit',sans-serif; font-weight:700; font-size:15px; flex-shrink:0; white-space:nowrap; font-variant-numeric:tabular-nums;}
+  .exec-cause-item-pct-sub{font-weight:400; font-size:12.5px; color:var(--ink-500); margin-left:2px;}
   .exec-cause-col.up .exec-cause-item-pct{color:var(--green-500);}
   .exec-cause-col.down .exec-cause-item-pct{color:var(--red-500);}
   .exec-cause-item-desc{font-size:13.5px; color:var(--ink-500); margin-top:3px; line-height:1.55;}
+
+  /* ===== รีดีไซน์: ribbon สรุปตัวการหลัก + เป้าหมายอนาคต ===== */
+  .exec-cause-ribbon{
+    margin:16px 22px 4px; padding:14px 16px; border-radius:12px;
+    background:linear-gradient(90deg, rgba(244,63,94,.07), rgba(244,63,94,.02));
+    border:1px solid rgba(244,63,94,.18); display:flex; gap:12px; align-items:flex-start;
+  }
+  .exec-cause-ribbon-icon{
+    width:30px; height:30px; border-radius:9px; background:var(--red-500); color:#fff;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .exec-cause-ribbon-icon svg{width:16px; height:16px;}
+  .exec-cause-ribbon-text{font-size:13.5px; color:var(--ink-700); line-height:1.65;}
+  .exec-cause-ribbon-text b{color:var(--navy-900);}
+  .exec-cause-goal{
+    margin:10px 22px 18px; padding:14px 16px; border-radius:12px;
+    background:linear-gradient(90deg, rgba(20,184,166,.08), rgba(20,184,166,.02));
+    border:1px solid rgba(20,184,166,.22); display:flex; gap:12px; align-items:flex-start;
+  }
+  .exec-cause-goal-icon{
+    width:30px; height:30px; border-radius:9px; background:var(--teal-500); color:#fff;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .exec-cause-goal-icon svg{width:16px; height:16px;}
+  .exec-cause-goal-text{font-size:13.5px; color:var(--ink-700); line-height:1.65;}
+  .exec-cause-goal-text b{color:var(--teal-600, var(--navy-900));}
+
+  /* ===== รายการสาเหตุ: ใช้ <details> เพื่อยุบรายละเอียดไว้ก่อน ลดความรกของหน้าจอ ===== */
+  .exec-cause-item{
+    display:block; padding:10px 6px; border-radius:10px; cursor:pointer;
+    transition:background .15s ease;
+  }
+  .exec-cause-item:hover{background:rgba(15,23,42,.03);}
+  .exec-cause-item[open]{background:rgba(15,23,42,.03);}
+  .exec-cause-item summary{list-style:none; display:flex; gap:10px; align-items:center; outline:none;}
+  .exec-cause-item summary::-webkit-details-marker{display:none;}
+  .exec-cause-item-icon{
+    width:30px; height:30px; border-radius:9px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px;
+  }
+  .exec-cause-item-icon svg{width:15px; height:15px;}
+  .exec-cause-item-main{flex:1; min-width:0;}
+  .exec-cause-item-top{display:flex; align-items:baseline; justify-content:space-between; gap:10px;}
+  .exec-cause-item-title{font-size:14.5px; font-weight:600; color:var(--ink-900); line-height:1.4;}
+  .exec-cause-item-right{display:flex; align-items:center; gap:6px; flex-shrink:0;}
+  .exec-cause-item-delta{font-size:11px; font-weight:700; padding:1px 6px; border-radius:999px; white-space:nowrap;}
+  .exec-cause-item-delta.up{color:var(--red-500); background:var(--red-100);}
+  .exec-cause-item-delta.down{color:var(--green-500); background:var(--green-100);}
+  .exec-cause-item-delta.flat{color:var(--ink-500); background:var(--line);}
+  .exec-cause-item-chevron{width:16px; height:16px; color:var(--ink-300); transition:transform .2s ease; flex-shrink:0;}
+  .exec-cause-item[open] .exec-cause-item-chevron{transform:rotate(180deg);}
+  .exec-cause-bar-track{height:6px; border-radius:999px; background:var(--line); margin-top:7px; overflow:hidden;}
+  .exec-cause-bar-fill{height:100%; border-radius:999px; width:0%; transition:width 1s cubic-bezier(.16,1,.3,1);}
+  .exec-cause-item-detail{padding:10px 4px 4px 40px; font-size:13px; color:var(--ink-500); line-height:1.6;}
+  .exec-cause-item-detail .fix-lbl{font-weight:700; color:var(--ink-700); margin-top:6px; display:block;}
   @media (max-width:1080px){
     .exec-compare-row{grid-template-columns:1fr 1fr;}
   }
   @media (max-width:900px){
     .exec-compare-row{grid-template-columns:1fr;}
-    .exec-cause-body{grid-template-columns:1fr;}
+    .exec-cause-body{grid-template-columns:1fr !important;}
     .exec-cause-col + .exec-cause-col{border-left:none; border-top:1px solid var(--line);}
   }
 
@@ -1115,9 +1199,9 @@
       <div class="card">
         <div class="card-head">
           <div>
-            <div class="card-title">แนวโน้มรายเดือน — จำนวนบิล &amp; Lead Time เฉลี่ย</div>
+            <div class="card-title">แนวโน้มรายเดือน — จำนวนห่อ &amp; Lead Time เฉลี่ย</div>
           </div>
-          <div class="card-note">แท่ง = จำนวนบิล · เส้น = LT เฉลี่ย (วัน)</div>
+          <div class="card-note">แท่ง = จำนวนห่อ · เส้น = LT เฉลี่ย (วัน)</div>
         </div>
         <div class="chart-wrap tall" id="trendChart"></div>
       </div>
@@ -1136,6 +1220,21 @@
       </div>
     </div>
 
+    <div class="card" id="monthCompareCard" style="margin-bottom:16px;">
+      <div class="card-head">
+        <div>
+          <div class="card-title">เปรียบเทียบระหว่างเดือน</div>
+          <div class="card-note">เลือก 2 เดือนเพื่อเทียบยอดห่อและ Lead Time โดยตรง</div>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          <select class="select-input" id="compareMonthA"></select>
+          <span style="color:var(--ink-300); font-weight:600;">เทียบกับ</span>
+          <select class="select-input" id="compareMonthB"></select>
+        </div>
+      </div>
+      <div id="monthCompareBody"></div>
+    </div>
+
     <div class="lt-summary-card">
       <div class="lt-summary-head">
         <span class="dot"></span>
@@ -1152,9 +1251,18 @@
           </div>
         </div>
         <div class="chart-wrap tall" id="execCompareChart"></div>
+        <div id="execCompareSummary"></div>
       </div>
 
-      <div id="ltReasonSummary"></div>
+      <div class="card exec-chart-card" style="margin:0 0 20px;">
+        <div class="card-head">
+          <div>
+            <div class="card-title">สรุป KPI Lead Time รายเดือน</div>
+            <div class="card-note">จำนวนห่อที่จัดส่งทั้งหมดของแต่ละเดือน แยกตามช่วง Lead Time — สำหรับนำเสนอผู้บริหาร</div>
+          </div>
+        </div>
+        <div id="monthlyKpiTableWrap" class="table-scroll" style="max-height:420px;"></div>
+      </div>
 
       <div class="exec-cause-card" style="margin-top:20px;">
         <div class="exec-cause-head">
@@ -1167,7 +1275,7 @@
           </div>
           <span class="exec-cause-pro-badge"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l2.9 6.6 7.1.7-5.4 4.8 1.7 7-6.3-3.8-6.3 3.8 1.7-7L2 9.3l7.1-.7z" fill="currentColor"/></svg>Pro Insight</span>
         </div>
-        <div class="exec-cause-body" id="execCauseBody" style="grid-template-columns:1fr;"></div>
+        <div class="exec-cause-body" id="execCauseBody"></div>
       </div>
     </div>
 
@@ -1433,6 +1541,17 @@ function daysBetween(a, b){
   return Math.round((a - b) / 86400000);
 }
 
+// แปลงข้อความตัวเลขจากชีทให้เป็น number อย่างปลอดภัย
+// รองรับกรณีเซลล์มี comma คั่นหลักพัน (เช่น "1,234") หรือช่องว่างปน ซึ่ง parseFloat() ตรงๆ
+// จะอ่านผิด (parseFloat("1,234") ได้แค่ 1) ทำให้ "จำนวนห่อ" รวมต่ำผิดปกติ
+function parseNum(str){
+  if (str === null || str === undefined) return 0;
+  const cleaned = String(str).trim().replace(/,/g, '');
+  if (cleaned === '') return 0;
+  const n = parseFloat(cleaned);
+  return isNaN(n) ? 0 : n;
+}
+
 // ป้ายเดือนแบบสั้น + ปี เช่น "ก.ค. 25" ใช้แยกกรณีข้อมูลคาบเกี่ยวข้ามปี
 // (เดือนเดียวกันชื่อซ้ำกันได้ถ้าข้อมูลมีมากกว่า 1 ปี เช่น ก.ค. 2025 กับ ก.ค. 2026)
 function monthLabelWithYear(monthKey, months_display){
@@ -1543,6 +1662,7 @@ function gvizTableToRows(table){
 // แปลงข้อมูลดิบ 1 แถวต่อ 1 บิล ให้เป็นก้อนสรุปแบบเดียวกับที่ dashboard ต้องการ
 function buildRAW(rawRows){
   const detailMap = new Map();
+  const totalMap = new Map(); // ยอดห่อ/บิล "จริง" ต่อเดือน+เส้นทาง+จังหวัด นับจากวันที่ส่งของอย่างเดียว ไม่รอวันที่บิล
   const carrierMap = new Map();
   const dayMap = new Map();
   const monthsSet = new Set();
@@ -1554,7 +1674,7 @@ function buildRAW(rawRows){
     const shipDate = parseFlexibleDate(row[COL.SHIP_DATE]);
     if (!shipDate) return; // ข้ามแถวที่วันที่ส่งของอ่านไม่ออก (เช่นแถวว่าง)
 
-    const packages = parseFloat(row[COL.PACKAGES]) || 0;
+    const packages = parseNum(row[COL.PACKAGES]);
     const rawCarrierName = (row[COL.CARRIER] || '').trim() || 'ไม่ระบุ';
     const route = resolveRoute(rawCarrierName);
     const carrierName = resolveCarrierLabel(rawCarrierName);
@@ -1578,6 +1698,14 @@ function buildRAW(rawRows){
     }
     const dy = dayMap.get(dateKey);
     dy.shipments += 1; dy.packages += packages;
+
+    // ยอดรวมจริงต่อเดือน+เส้นทาง+จังหวัด (นับทุกแถวที่มีวันที่ส่งของ ไม่ว่าจะออกบิลแล้วหรือยัง)
+    // ใช้เป็นตัวเลข "จำนวนห่อทั้งหมด" หลักของ dashboard เพื่อไม่ให้ตัวเลขรวมต่อเดือนต่ำผิดจริง
+    // จากการรอบิลที่ยังออกไม่ครบ (สาเหตุที่ทำให้ยอดรวมแต่ละเดือนดูไม่ตรงกันเมื่อเทียบข้าม view)
+    const tKey = `${monthKey}|${route}|${province}`;
+    if (!totalMap.has(tKey)) totalMap.set(tKey, { month: monthKey, route, province, shipments: 0, packages: 0 });
+    const t = totalMap.get(tKey);
+    t.shipments += 1; t.packages += packages;
 
     // ส่วนที่เหลือ (Lead Time / สถานะการส่ง / ตาราง detail-carrier) ยังต้องรอวันที่บิล
     // เพราะต้องใช้คำนวณ lt = ผลต่างวันที่บิล-วันที่ส่งของ ถ้ายังไม่บิลก็ยังคำนวณ lt จริงไม่ได้
@@ -1615,7 +1743,7 @@ function buildRAW(rawRows){
   const years = [...yearsSet].sort((a, b) => a - b);
   const byDay = [...dayMap.values()].sort((a, b) => a.dateKey < b.dateKey ? -1 : 1);
 
-  return { months, months_display, routes, provinces, statuses, years, byDay, detail: [...detailMap.values()], carrier: [...carrierMap.values()] };
+  return { months, months_display, routes, provinces, statuses, years, byDay, detail: [...detailMap.values()], totalDetail: [...totalMap.values()], carrier: [...carrierMap.values()] };
 }
 
 async function loadData(){
@@ -1667,9 +1795,10 @@ function setSyncState(kind, extra){
 let state = null;
 let pkgState = null;
 let sortState = null;
+let compareState = null;
 
 function renderDashboard(RAW){
-  const { months, months_display, routes, provinces, statuses, detail, carrier, byDay, years } = RAW;
+  const { months, months_display, routes, provinces, statuses, detail, totalDetail, carrier, byDay, years } = RAW;
 
   const STATUS_COLOR = {
   'ส่งภายใน 3 วัน': '#2f9e6e',
@@ -1766,7 +1895,9 @@ document.getElementById('resetBtn').onclick = () => {
 // ============ Top bar overall stats (unfiltered) ============
 (function initTopbarStats(){
   const totalShip = detail.reduce((a,d)=>a+d.shipments,0);
-  const totalPkgAll = detail.reduce((a,d)=>a+d.packages,0);
+  // "ห่อทั้งหมด" ใช้ totalDetail (นับจากวันที่ส่งของอย่างเดียว) แทน detail (ที่ต้องรอวันที่บิลด้วย)
+  // เพื่อให้ตัวเลขจริงตรงกับยอดส่งจริงทุกเดือน ไม่ต่ำผิดปกติจากบิลที่ยังออกไม่ครบ
+  const totalPkgAll = totalDetail.reduce((a,d)=>a+d.packages,0);
   const totalLT = detail.reduce((a,d)=>a+d.lt_sum,0);
   const avgLT = totalLT/totalShip;
   const el = document.getElementById('topbarStats');
@@ -1781,6 +1912,15 @@ document.getElementById('resetBtn').onclick = () => {
 // ============ Filtering helpers ============
 function filteredDetail(){
   return detail.filter(d =>
+    state.months.has(d.month) &&
+    (state.route === 'ALL' || d.route === state.route) &&
+    (state.province === 'ALL' || d.province === state.province)
+  );
+}
+// เหมือน filteredDetail() แต่ดึงจาก totalDetail (นับทุกแถวที่มีวันที่ส่งของ ไม่ว่าจะออกบิลแล้วหรือยัง)
+// ใช้เฉพาะจุดที่ต้องการ "จำนวนห่อ/บิลรวมจริง" โดยไม่สนสถานะ (3 วัน/7 วัน/เกิน 7 วัน) เพราะสถานะต้องรอบิล
+function filteredTotalDetail(){
+  return totalDetail.filter(d =>
     state.months.has(d.month) &&
     (state.route === 'ALL' || d.route === state.route) &&
     (state.province === 'ALL' || d.province === state.province)
@@ -1811,7 +1951,7 @@ function renderTrendChart(containerId, labels, bars, line){
   const n = Math.max(labels.length, 1);
   const colW = plotW / n;
   const barW = Math.min(colW * 0.46, 46);
-  const maxBar = Math.max(...bars, 1) * 1.55;
+  const maxBar = Math.max(...bars, 1) * 2.0; // เผื่อที่ว่างด้านบนแท่งให้พอสำหรับตัวเลขที่ย้ายมาวางเหนือแท่งเสมอ
 
   const xAt = i => mL + i * colW + colW / 2;
   const barY = v => mT + plotH - (v / maxBar) * plotH;
@@ -1851,13 +1991,10 @@ function renderTrendChart(containerId, labels, bars, line){
     const r = Math.min(8, barW/2);
     svg += `<path d="M${x},${y+r} a${r},${r} 0 0 1 ${r},-${r} h${barW-2*r} a${r},${r} 0 0 1 ${r},${r} v${h-r} h${-barW} Z" fill="url(#barGrad)"/>`;
 
-    // Number sits inside the bar (white, bold) when there's room; short bars
-    // fall back to just above the bar so the digits never spill outside it.
-    const insideBar = h > 30;
-    const barLabelY = insideBar ? y + 19 : y - 8;
-    const barLabelStyle = insideBar
-      ? 'fill:#ffffff;font-weight:700;'
-      : 'fill:var(--ink-700);font-weight:600;';
+    // ตัวเลขวางไว้เหนือแท่งเสมอ (ไม่ใช่ในตัวแท่ง) พร้อมขอบขาวรอบตัวอักษร (halo)
+    // กัน "กลืนไปกับพื้นหลัง/เส้นกริด" และกันตัวเลขหลักเยอะ (เช่น 45,695) ล้นออกนอกแท่งแคบๆ จนถูกบัง
+    const barLabelY = y - 9;
+    const barLabelStyle = 'fill:var(--navy-800); font-weight:700; paint-order:stroke; stroke:#ffffff; stroke-width:4; stroke-linejoin:round;';
     svg += `<text class="trend-bar-label" x="${xAt(i)}" y="${barLabelY}" style="${barLabelStyle}">${fmtInt(bars[i])}</text>`;
     svg += `<text class="trend-axis-label" x="${xAt(i)}" y="${H-10}">${lab}</text>`;
   });
@@ -1881,7 +2018,7 @@ function renderTrendChart(containerId, labels, bars, line){
   svg += `</svg>`;
   el.innerHTML = `<div class="trend-svg-wrap">${svg}</div>
     <div class="trend-legend">
-      <span><i style="background:#1aa89c"></i>จำนวนบิล</span>
+      <span><i style="background:#1aa89c"></i>จำนวนห่อ</span>
       <span><i style="background:#ff7a3d"></i>LT เฉลี่ย (วัน)</span>
     </div>`;
 }
@@ -1913,6 +2050,21 @@ function animatePercent(el, to, duration=850){
   requestAnimationFrame(tick);
 }
 
+// เหมือน animateCount แต่แสดงหน่วย "ห่อ" ต่อท้าย และคงป้ายกำกับย่อย (เช่น "(12.3%)") ที่แนบมาไว้ไม่ให้หาย
+function animatePkgCount(el, to, suffixHtml='', duration=850){
+  const startVal = 0;
+  const t0 = performance.now();
+  function tick(now){
+    const p = Math.min(1, (now - t0) / duration);
+    const eased = 1 - Math.pow(1 - p, 3);
+    const val = Math.round(startVal + (to - startVal) * eased);
+    el.innerHTML = `${fmtInt(val)} ห่อ${suffixHtml}`;
+    if (p < 1) requestAnimationFrame(tick);
+    else el.innerHTML = `${fmtInt(to)} ห่อ${suffixHtml}`;
+  }
+  requestAnimationFrame(tick);
+}
+
 function renderDonut(containerId, entries){
   const el = document.getElementById(containerId);
   // % ของโดนัทนี้คำนวณจากจำนวน "ห่อ" (packages) ไม่ใช่จำนวน "บิล" (shipments)
@@ -1938,7 +2090,7 @@ function renderDonut(containerId, entries){
         <span class="legend-text">${e.label}</span>
         <span class="legend-pct">${pct.toFixed(1)}%</span>
       </div>
-      <div class="legend-sub">${fmtInt(e.value)} บิล${e.packages!=null ? ' · '+fmtInt(e.packages)+' ห่อ' : ''}</div>
+      <div class="legend-sub">${e.packages!=null ? fmtInt(e.packages)+' ห่อ · ' : ''}${fmtInt(e.value)} บิล</div>
       <div class="legend-bar">
         <div class="legend-bar-fill" style="width:${pct}%; background:${e.color}"></div>
         <div class="legend-bar-truck" style="left:${pct}%; border-color:${e.color};" title="${pct.toFixed(1)}%">
@@ -1966,15 +2118,15 @@ function renderDonut(containerId, entries){
               <circle cx="20.5" cy="17.5" r="2.3" stroke="currentColor" stroke-width="1.6"/>
             </svg>
             <div class="num" id="${containerId}_num">0</div>
-            <div class="lbl">บิลทั้งหมด</div>
-            <div class="lbl">${fmtInt(rawTotalPkg)} ห่อ</div>
+            <div class="lbl">ห่อทั้งหมด</div>
+            <div class="lbl">${fmtInt(totalShip)} บิล</div>
           </div>
         </div>
       </div>
       <div class="donut-legend">${legend}</div>
     </div>`;
 
-  animateCount(document.getElementById(`${containerId}_num`), totalShip);
+  animateCount(document.getElementById(`${containerId}_num`), rawTotalPkg);
 }
 
 // ---- Horizontal bar list ----
@@ -2103,10 +2255,13 @@ function attachSort(tableId, sortKeyState, rerenderFn){
 // ============ Main render ============
 function render(){
   const rows = filteredDetail();
+  const totalRows = filteredTotalDetail(); // ยอดจริงของช่วงที่เลือก นับจากวันที่ส่งของอย่างเดียว ไม่รอบิล
 
   // ---- KPI ----
   const totalShip = rows.reduce((a,d)=>a+d.shipments,0);
-  const totalPkg = rows.reduce((a,d)=>a+d.packages,0);
+  // "จำนวนห่อทั้งหมด" ต้องใช้ totalRows (ของจริงตามวันที่ส่งของ) ไม่ใช่ rows (ที่ต้องรอวันที่บิลด้วย)
+  // ไม่เช่นนั้นเดือนที่บิลยังออกไม่ครบ (เช่นเดือนล่าสุด) จะโชว์จำนวนห่อต่ำผิดปกติ ไม่ตรงกับยอดจริง
+  const totalPkg = totalRows.reduce((a,d)=>a+d.packages,0);
   const totalLT = rows.reduce((a,d)=>a+d.lt_sum,0);
   const avgLT = totalShip ? totalLT/totalShip : 0;
   const byStatus = {}; STATUS_ORDER.forEach(s=>byStatus[s]=0);
@@ -2115,57 +2270,88 @@ function render(){
     byStatus[d.status] = (byStatus[d.status]||0) + d.shipments;
     byStatusPkg[d.status] = (byStatusPkg[d.status]||0) + d.packages;
   });
+  // ห่อที่ส่งแล้วจริงแต่ยังออกบิลไม่ครบ จึงยังไม่ทราบสถานะ 3/7 วัน (ผลต่างระหว่างยอดจริงกับยอดที่จัดสถานะได้แล้ว)
+  const pendingPkg = Math.max(0, totalPkg - (byStatusPkg['ส่งภายใน 3 วัน']+byStatusPkg['ส่งภายใน 7 วัน']+byStatusPkg['เกิน 7 วัน']));
   const pctOn3 = totalPkg ? byStatusPkg['ส่งภายใน 3 วัน']/totalPkg*100 : 0;
   const pctOn7 = totalPkg ? byStatusPkg['ส่งภายใน 7 วัน']/totalPkg*100 : 0;
   const pctOver7 = totalPkg ? byStatusPkg['เกิน 7 วัน']/totalPkg*100 : 0;
+  const pctPending = totalPkg ? pendingPkg/totalPkg*100 : 0;
 
-  // ---- บิลเฉลี่ย/เดือน: เฉลี่ยจากจำนวนเดือนที่มีข้อมูลจริงในช่วงที่เลือก (เช่น เดือน 1–7 ก็หารด้วย 7) ----
-  const monthsInRows = [...new Set(rows.map(d => d.month))].sort();
+  // ---- ยอดรวมจริงของช่วงที่เลือก (ไม่เฉลี่ย/เดือนแล้ว) ----
+  // ใช้ totalRows (ไม่ใช่ rows) ในการหาเดือนที่มีข้อมูลจริง เพราะเดือนล่าสุดอาจยังไม่มีบิลออกเลยสักใบ
+  // (จึงไม่ปรากฏใน rows) ทั้งที่มีการส่งของจริงแล้วและควรนับรวมอยู่ในช่วงที่แสดง
+  const monthsInRows = [...new Set(totalRows.map(d => d.month))].sort();
   const numMonthsInRows = monthsInRows.length;
-  const avgPkgPerMonth = numMonthsInRows ? totalPkg / numMonthsInRows : 0;
-  const avgPkgOn3PerMonth = numMonthsInRows ? byStatusPkg['ส่งภายใน 3 วัน'] / numMonthsInRows : 0;
-  const avgPkgOn7PerMonth = numMonthsInRows ? byStatusPkg['ส่งภายใน 7 วัน'] / numMonthsInRows : 0;
-  const avgPkgOver7PerMonth = numMonthsInRows ? byStatusPkg['เกิน 7 วัน'] / numMonthsInRows : 0;
   const monthsRangeLbl = numMonthsInRows
     ? (numMonthsInRows === 1
         ? months_display[monthsInRows[0]]
         : `${months_display[monthsInRows[0]]}–${months_display[monthsInRows[numMonthsInRows-1]]}`)
     : '';
-  const monthsSubLbl = `เฉลี่ยจาก ${numMonthsInRows} เดือน (${monthsRangeLbl})`;
+  const periodSubLbl = `ช่วงที่เลือก: ${monthsRangeLbl || '—'}`;
+
+  // ---- แยกยอดตาม "กลุ่มเส้นทาง" (กทม.ปริมณฑล / ขนส่ง / ต่างจังหวัด) เสมอ ----
+  // ใช้ตัวกรองเดือน + จังหวัดเหมือนการ์ด KPI หลัก แต่ไม่ผูกกับตัวกรอง "กลุ่มเส้นทาง" ด้านบน
+  // เพื่อให้เห็นครบทั้ง 3 เส้นทางพร้อมกันทุกครั้งที่เลือกช่วงเดือน ตามที่ต้องการ
+  const ROUTE_SHORT_LABEL = {
+    'กรุงเทพและปริมณฑล': 'กทม.ปริมณฑล',
+    'ขนส่ง': 'ขนส่ง',
+    'ต่างจังหวัด-รถบริษัท': 'ต่างจังหวัด',
+  };
+  const routeScopeRows = detail.filter(d =>
+    state.months.has(d.month) &&
+    (state.province === 'ALL' || d.province === state.province)
+  );
+  // สำหรับยอดรวมทุกสถานะ (ALL) ต้องใช้ totalDetail (ของจริงตามวันที่ส่งของ) ไม่ใช่ detail
+  // เพื่อให้ยอดรวมต่อเส้นทางไม่ตกหล่นห่อที่ส่งไปแล้วแต่ยังไม่ออกบิล
+  const routeScopeTotalRows = totalDetail.filter(d =>
+    state.months.has(d.month) &&
+    (state.province === 'ALL' || d.province === state.province)
+  );
+  const routesPresent = ROUTE_DISPLAY_ORDER.filter(r => routeScopeTotalRows.some(d => d.route === r));
+  function routeBreakdownHtml(statusFilter){
+    if (!routesPresent.length) return '';
+    const parts = routesPresent.map(r => {
+      const pkg = statusFilter === 'ALL'
+        ? routeScopeTotalRows.filter(d => d.route === r).reduce((a,d)=>a+d.packages,0)
+        : routeScopeRows.filter(d => d.route === r && d.status === statusFilter).reduce((a,d)=>a+d.packages,0);
+      return `${ROUTE_SHORT_LABEL[r] || r} <b>${fmtInt(pkg)}</b>`;
+    });
+    return parts.join(' · ');
+  }
 
   const kpiRow = document.getElementById('kpiRow');
   kpiRow.innerHTML = `
     <div class="kpi-card accent-amber">
       <div class="kpi-card-head">
         <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg></div>
-        <div class="kpi-label">ห่อเฉลี่ย/เดือน</div>
+        <div class="kpi-label">จำนวนห่อทั้งหมด</div>
       </div>
-      <div class="kpi-value">${fmtInt(avgPkgPerMonth)}<span class="kpi-unit">ห่อ</span></div>
-      <div class="kpi-sub">${monthsSubLbl}</div>
+      <div class="kpi-value">${fmtInt(totalPkg)}<span class="kpi-unit">ห่อ</span></div>
+      <div class="kpi-sub">${periodSubLbl}</div>
     </div>
     <div class="kpi-card accent-green">
       <div class="kpi-card-head">
         <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg></div>
-        <div class="kpi-label">ส่งภายใน 3 วัน เฉลี่ย/เดือน</div>
+        <div class="kpi-label">ส่งภายใน 3 วัน</div>
       </div>
-      <div class="kpi-value">${fmtInt(avgPkgOn3PerMonth)}<span class="kpi-unit">ห่อ</span></div>
-      <div class="kpi-sub">${monthsSubLbl} · <b>${fmt1(pctOn3)}%</b> ของทั้งหมด</div>
+      <div class="kpi-value">${fmtInt(byStatusPkg['ส่งภายใน 3 วัน'])}<span class="kpi-unit">ห่อ</span></div>
+      <div class="kpi-sub">${periodSubLbl} · <b>${fmt1(pctOn3)}%</b> ของทั้งหมด</div>
     </div>
     <div class="kpi-card accent-blue">
       <div class="kpi-card-head">
         <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></div>
-        <div class="kpi-label">ส่งภายใน 7 วัน เฉลี่ย/เดือน</div>
+        <div class="kpi-label">มากกว่า 3 วัน ไม่เกิน 7 วัน</div>
       </div>
-      <div class="kpi-value">${fmtInt(avgPkgOn7PerMonth)}<span class="kpi-unit">ห่อ</span></div>
-      <div class="kpi-sub">${monthsSubLbl} · <b style="color:var(--amber-500)">${fmt1(pctOn7)}%</b> ของทั้งหมด</div>
+      <div class="kpi-value">${fmtInt(byStatusPkg['ส่งภายใน 7 วัน'])}<span class="kpi-unit">ห่อ</span></div>
+      <div class="kpi-sub">${periodSubLbl} · <b style="color:var(--amber-500)">${fmt1(pctOn7)}%</b> ของทั้งหมด</div>
     </div>
     <div class="kpi-card accent-red">
       <div class="kpi-card-head">
         <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12M6 21h12M7 3c0 4 3 5 5 6-2 1-5 2-5 6h10c0-4-3-5-5-6 2-1 5-2 5-6"/></svg></div>
-        <div class="kpi-label">เกิน 7 วัน เฉลี่ย/เดือน</div>
+        <div class="kpi-label">เกิน 7 วัน</div>
       </div>
-      <div class="kpi-value">${fmtInt(avgPkgOver7PerMonth)}<span class="kpi-unit">ห่อ</span></div>
-      <div class="kpi-sub">${monthsSubLbl} · <b>${fmt1(pctOver7)}%</b> ของทั้งหมด</div>
+      <div class="kpi-value">${fmtInt(byStatusPkg['เกิน 7 วัน'])}<span class="kpi-unit">ห่อ</span></div>
+      <div class="kpi-sub">${periodSubLbl} · <b>${fmt1(pctOver7)}%</b> ของทั้งหมด</div>
     </div>
     <div class="kpi-card accent-teal kpi-hero">
       <div class="kpi-hero-badge">
@@ -2180,6 +2366,89 @@ function render(){
       <div class="kpi-sub">ตามช่วงที่เลือก</div>
     </div>
   `;
+
+  // ---- เปรียบเทียบระหว่างเดือน (เลือก 2 เดือนอิสระจากตัวกรองเดือนด้านบน แต่ยังเคารพตัวกรองเส้นทาง/จังหวัด) ----
+  (function renderMonthCompare(){
+    const selA = document.getElementById('compareMonthA');
+    const selB = document.getElementById('compareMonthB');
+    const bodyEl = document.getElementById('monthCompareBody');
+    if (!selA || !selB || !bodyEl || months.length < 1) return;
+
+    if (!compareState) compareState = { a: null, b: null };
+    if (!months.includes(compareState.a)) compareState.a = months[Math.max(0, months.length - 2)];
+    if (!months.includes(compareState.b)) compareState.b = months[months.length - 1];
+
+    const monthOptLabel = m => monthChipsHaveDup ? monthLabelWithYear(m, months_display) : months_display[m];
+    selA.innerHTML = months.map(m => `<option value="${m}"${m===compareState.a?' selected':''}>${monthOptLabel(m)}</option>`).join('');
+    selB.innerHTML = months.map(m => `<option value="${m}"${m===compareState.b?' selected':''}>${monthOptLabel(m)}</option>`).join('');
+    selA.onchange = () => { compareState.a = selA.value; render(); };
+    selB.onchange = () => { compareState.b = selB.value; render(); };
+
+    function statsFor(monthKey){
+      const monthRows = detail.filter(d =>
+        d.month === monthKey &&
+        (state.route === 'ALL' || d.route === state.route) &&
+        (state.province === 'ALL' || d.province === state.province)
+      );
+      // จำนวนห่อรวมต้องใช้ totalDetail (ยอดจริงตามวันที่ส่งของ) ไม่ใช่ detail (ที่ต้องรอวันที่บิลด้วย)
+      const monthTotalRows = totalDetail.filter(d =>
+        d.month === monthKey &&
+        (state.route === 'ALL' || d.route === state.route) &&
+        (state.province === 'ALL' || d.province === state.province)
+      );
+      const ship = monthRows.reduce((a,d)=>a+d.shipments,0);
+      const pkg = monthTotalRows.reduce((a,d)=>a+d.packages,0);
+      const ltSum = monthRows.reduce((a,d)=>a+d.lt_sum,0);
+      const byS = {}; STATUS_ORDER.forEach(s => byS[s] = monthRows.filter(d=>d.status===s).reduce((a,d)=>a+d.packages,0));
+      return { ship, pkg, avgLT: ship ? ltSum/ship : 0, byS };
+    }
+
+    const A = statsFor(compareState.a), B = statsFor(compareState.b);
+    const lblA = monthOptLabel(compareState.a), lblB = monthOptLabel(compareState.b);
+
+    function deltaBadge(curr, prev, lowerIsBetter){
+      if (!prev) return `<span class="compare-delta flat">—</span>`;
+      const pct = (curr - prev) / prev * 100;
+      const cls = Math.abs(pct) < 0.5 ? 'flat' : ((pct > 0) === !lowerIsBetter ? 'down' : 'up');
+      const icon = pct > 0.5 ? '▲' : pct < -0.5 ? '▼' : '►';
+      return `<span class="compare-delta ${cls}">${icon} ${pct>=0?'+':''}${fmt1(pct)}%</span>`;
+    }
+
+    function colHtml(lbl, S){
+      return `
+        <div class="compare-col">
+          <div class="compare-col-title">${lbl}</div>
+          <div class="compare-row"><span class="lbl">จำนวนห่อทั้งหมด</span><span class="val">${fmtInt(S.pkg)} ห่อ</span></div>
+          <div class="compare-row"><span class="lbl">ส่งภายใน 3 วัน</span><span class="val">${fmtInt(S.byS['ส่งภายใน 3 วัน'])} ห่อ</span></div>
+          <div class="compare-row"><span class="lbl">มากกว่า 3 – 7 วัน</span><span class="val">${fmtInt(S.byS['ส่งภายใน 7 วัน'])} ห่อ</span></div>
+          <div class="compare-row"><span class="lbl">เกิน 7 วัน</span><span class="val">${fmtInt(S.byS['เกิน 7 วัน'])} ห่อ</span></div>
+          <div class="compare-row"><span class="lbl">Lead Time เฉลี่ย</span><span class="val">${fmt1(S.avgLT)} วัน</span></div>
+        </div>`;
+    }
+
+    const pkgDeltaPct = A.pkg ? (B.pkg - A.pkg) / A.pkg * 100 : null;
+    const ltDeltaAbs = B.avgLT - A.avgLT;
+    const overDeltaPct = A.byS['เกิน 7 วัน'] ? (B.byS['เกิน 7 วัน'] - A.byS['เกิน 7 วัน']) / A.byS['เกิน 7 วัน'] * 100 : null;
+
+    const verdictParts = [];
+    if (pkgDeltaPct !== null){
+      verdictParts.push(`ปริมาณห่อ${pkgDeltaPct>=0?'เพิ่มขึ้น':'ลดลง'} <b>${fmt1(Math.abs(pkgDeltaPct))}%</b>`);
+    }
+    verdictParts.push(`Lead Time เฉลี่ย${ltDeltaAbs>=0?'ช้าลง':'เร็วขึ้น'} <b>${fmt1(Math.abs(ltDeltaAbs))} วัน</b>`);
+    if (overDeltaPct !== null){
+      verdictParts.push(`ยอดเกิน 7 วัน${overDeltaPct>=0?'เพิ่มขึ้น':'ลดลง'} <b>${fmt1(Math.abs(overDeltaPct))}%</b>`);
+    }
+
+    bodyEl.innerHTML = `
+      <div class="compare-grid">
+        ${colHtml(lblA, A)}
+        ${colHtml(lblB, B)}
+      </div>
+      <div class="compare-verdict">
+        📌 สรุป: เทียบ <b>${lblB}</b> กับ <b>${lblA}</b> — ${verdictParts.join(' · ')}
+        &nbsp; ${deltaBadge(B.avgLT, A.avgLT, true)}
+      </div>`;
+  })();
 
   // ---- Lead Time insight row (สรุปสำหรับผู้บริหาร) ----
   const ltInsightRowEl = document.getElementById('ltInsightRow');
@@ -2460,133 +2729,195 @@ function render(){
       return { m, pkg, on3Pct: pkg? on3/pkg*100:0, on7Pct: pkg? on7/pkg*100:0, over7Pct: pkg? over7/pkg*100:0 };
     });
 
-    // --- Override เฉพาะเดือน ก.ค.: บังคับแสดงจุดข้อมูล (89.4% / 9.5% / 1.1%) ตามที่กำหนด ---
-    // เดือน ก.ค. ในปีล่าสุดที่มีข้อมูล (ถ้ายังไม่มีคีย์เดือนนี้ในชุดข้อมูล จะสร้างคีย์ขึ้นใหม่ต่อท้าย)
-    const julyYears = months.filter(m => m.endsWith('-07')).map(m => Number(m.split('-')[0]));
-    const julyYear = julyYears.length ? Math.max(...julyYears) : new Date().getFullYear();
-    const JULY_OVERRIDE_KEY = `${julyYear}-07`;
-    months_display[JULY_OVERRIDE_KEY] = months_display[JULY_OVERRIDE_KEY] || 'ก.ค.';
-    const julyOverrideVals = { on3Pct: 89.4, on7Pct: 9.5, over7Pct: 1.1 };
-    const julyIdx = execMonthAgg.findIndex(x => x.m === JULY_OVERRIDE_KEY);
-    if (julyIdx >= 0) {
-      Object.assign(execMonthAgg[julyIdx], julyOverrideVals);
-    } else {
-      execMonthAgg.push({ m: JULY_OVERRIDE_KEY, pkg: execMonthAgg.length ? execMonthAgg[execMonthAgg.length-1].pkg : 0, ...julyOverrideVals });
-      execMonthAgg.sort((a,b) => a.m < b.m ? -1 : 1);
-    }
-
-    // --- Override เฉพาะเดือน ส.ค.: บังคับแสดงจุดข้อมูล (88.9% / 8.6% / 2.5%) ตามที่กำหนด ---
-    const augYears = months.filter(m => m.endsWith('-08')).map(m => Number(m.split('-')[0]));
-    const augYear = augYears.length ? Math.max(...augYears) : julyYear;
-    const AUG_OVERRIDE_KEY = `${augYear}-08`;
-    months_display[AUG_OVERRIDE_KEY] = months_display[AUG_OVERRIDE_KEY] || 'ส.ค.';
-    const augOverrideVals = { on3Pct: 88.9, on7Pct: 8.6, over7Pct: 2.5 };
-    const augIdx = execMonthAgg.findIndex(x => x.m === AUG_OVERRIDE_KEY);
-    if (augIdx >= 0) {
-      Object.assign(execMonthAgg[augIdx], augOverrideVals);
-    } else {
-      execMonthAgg.push({ m: AUG_OVERRIDE_KEY, pkg: execMonthAgg.length ? execMonthAgg[execMonthAgg.length-1].pkg : 0, ...augOverrideVals });
-      execMonthAgg.sort((a,b) => a.m < b.m ? -1 : 1);
-    }
-
     const execHasDup = new Set(execMonthAgg.map(x=>months_display[x.m])).size !== execMonthAgg.length;
     const execLabels = execMonthAgg.map(x => execHasDup ? monthLabelWithYear(x.m, months_display) : months_display[x.m]);
 
     renderExecCompareChart('execCompareChart', execLabels,
       execMonthAgg.map(x=>x.on3Pct), execMonthAgg.map(x=>x.on7Pct), execMonthAgg.map(x=>x.over7Pct));
+
+    // ---- ข้อความสรุปใต้กราฟ อ้างอิงจากข้อมูลจริงล้วนๆ (ไม่มีค่าคงที่ตายตัว) ----
+    const execSummaryEl = document.getElementById('execCompareSummary');
+    if (execSummaryEl){
+      if (execMonthAgg.length < 2){
+        execSummaryEl.innerHTML = execMonthAgg.length
+          ? `<div class="exec-compare-summary">มีข้อมูลเดือนเดียว (<b>${execLabels[0]}</b>) — ส่งภายใน 3 วัน <b>${fmt1(execMonthAgg[0].on3Pct)}%</b> · เกิน 7 วัน <b>${fmt1(execMonthAgg[0].over7Pct)}%</b> — เลือกอย่างน้อย 2 เดือนในตัวกรองด้านบนเพื่อดูแนวโน้ม</div>`
+          : `<div class="exec-compare-summary">ไม่พบข้อมูลตามตัวกรองที่เลือก</div>`;
+      } else {
+        const first = execMonthAgg[0], last = execMonthAgg[execMonthAgg.length - 1];
+        const firstLbl = execLabels[0], lastLbl = execLabels[execLabels.length - 1];
+        const on3Delta = last.on3Pct - first.on3Pct;
+        const over7Delta = last.over7Pct - first.over7Pct;
+        const on3Cls = on3Delta > 0.05 ? 'down' : on3Delta < -0.05 ? 'up' : '';
+        const over7Cls = over7Delta > 0.05 ? 'up' : over7Delta < -0.05 ? 'down' : '';
+        const on3Word = on3Delta > 0.05 ? 'ดีขึ้น' : on3Delta < -0.05 ? 'แย่ลง' : 'ใกล้เคียงเดิม';
+        const over7Word = over7Delta > 0.05 ? 'แย่ลง' : over7Delta < -0.05 ? 'ดีขึ้น' : 'ใกล้เคียงเดิม';
+        // เดือนที่ส่งภายใน 3 วันได้ % ต่ำสุด/สูงสุดในช่วงที่เลือก (จากข้อมูลจริง)
+        const bestOn3 = execMonthAgg.reduce((a,x,i) => (!a || x.on3Pct > a.v) ? {v:x.on3Pct, i} : a, null);
+        const worstOn3 = execMonthAgg.reduce((a,x,i) => (!a || x.on3Pct < a.v) ? {v:x.on3Pct, i} : a, null);
+        execSummaryEl.innerHTML = `
+          <div class="exec-compare-summary">
+            📌 เทียบ <b>${lastLbl}</b> กับ <b>${firstLbl}</b>: สัดส่วนส่งภายใน 3 วัน${on3Cls?` <span class="${on3Cls}">${on3Delta>=0?'+':''}${fmt1(on3Delta)} จุด</span>`:''} (${on3Word})
+            · สัดส่วนเกิน 7 วัน${over7Cls?` <span class="${over7Cls}">${over7Delta>=0?'+':''}${fmt1(over7Delta)} จุด</span>`:''} (${over7Word})<br>
+            เดือนที่ส่งภายใน 3 วันได้สัดส่วนสูงสุดในช่วงนี้คือ <b>${execLabels[bestOn3.i]}</b> (${fmt1(bestOn3.v)}%) ส่วนต่ำสุดคือ <b>${execLabels[worstOn3.i]}</b> (${fmt1(worstOn3.v)}%)
+          </div>`;
+      }
+    }
   }
 
-  // ---- สาเหตุที่ทำให้จัดส่งล่าช้า: แบ่งสัดส่วน % ของ "ส่งเกิน 3 วัน" (ไม่เกิน 7 วัน + เกิน 7 วัน) ออกเป็น 4 สาเหตุ ----
-  // ใช้ตัวเลขของ "เดือนล่าสุดที่เลือก" เดือนเดียว (จุดขวาสุดของกราฟเปรียบเทียบแนวโน้มด้านบน) เพื่อให้ % รวมตรงกับกราฟเป๊ะ
-  // เรียงลำดับสาเหตุจากสัดส่วน % สูงสุด → ต่ำสุด โดยกำหนดให้ "จำนวนรถไม่เพียงพอ" มีน้ำหนักต่ำสุดเสมอ จึงอยู่อันดับสุดท้ายเสมอ
+  // ---- สาเหตุที่ทำให้จัดส่งล่าช้า: แบ่งสัดส่วนจำนวนห่อของ "ส่งเกิน 3 วัน" (ไม่เกิน 7 วัน + เกิน 7 วัน) ออกเป็น 4 สาเหตุ ----
+  // ใช้ตัวเลขของ "เดือนล่าสุดที่เลือก" เดือนเดียว (จุดขวาสุดของกราฟเปรียบเทียบแนวโน้มด้านบน) เพื่อให้ตรงกับกราฟเป๊ะ
+  // เรียงลำดับสาเหตุจากมากไปน้อย โดยกำหนดให้ "จำนวนรถไม่เพียงพอ" มีน้ำหนักต่ำสุดเสมอ จึงอยู่อันดับสุดท้ายเสมอ
   const execCauseBodyEl = document.getElementById('execCauseBody');
   if (execCauseBodyEl){
     const causeMonths = months.filter(m => state.months.has(m)).sort();
     const causeMonth = causeMonths[causeMonths.length - 1];
     const causeMonthRows = causeMonth ? rows.filter(d => d.month === causeMonth) : rows;
-    const causeMonthTotalPkg = causeMonthRows.reduce((a,d)=>a+d.packages,0);
-    const causeOn7Pkg = causeMonthRows.filter(d=>d.status==='ส่งภายใน 7 วัน').reduce((a,d)=>a+d.packages,0);
-    const causeOver7Pkg = causeMonthRows.filter(d=>d.status==='เกิน 7 วัน').reduce((a,d)=>a+d.packages,0);
-    // ปัดแต่ละสถานะให้เป็นทศนิยม 1 ตำแหน่งก่อน (ค่าเดียวกับที่กราฟด้านบนใช้แสดงจุดของเดือนนี้) แล้วค่อยรวมกัน
-    // เพื่อให้ "รวม" ตรงกับผลบวกของตัวเลขสองค่าที่เห็นบนกราฟเป๊ะ ไม่ใช่ปัดเศษจากอัตราส่วนดิบซึ่งอาจต่างกัน 0.1%
-    let causeOn7PctRounded = causeMonthTotalPkg ? Math.round(causeOn7Pkg / causeMonthTotalPkg * 1000) / 10 : 0;
-    let causeOver7PctRounded = causeMonthTotalPkg ? Math.round(causeOver7Pkg / causeMonthTotalPkg * 1000) / 10 : 0;
-    // ต้องใช้ค่าเดียวกับ override ของกราฟด้านบน (เดือน ก.ค. ถูกบังคับให้แสดง 9.5% / 1.1%)
-    // ไม่เช่นนั้นตัวเลขในกรอบนี้จะคำนวณจากข้อมูลดิบแยกจากกราฟ แล้วรวมได้ไม่ตรงกับกราฟด้านบน
-    const julyYearsCause = months.filter(m => m.endsWith('-07')).map(m => Number(m.split('-')[0]));
-    const julyYearCause = julyYearsCause.length ? Math.max(...julyYearsCause) : new Date().getFullYear();
-    const JULY_OVERRIDE_KEY_CAUSE = `${julyYearCause}-07`;
-    if (causeMonth === JULY_OVERRIDE_KEY_CAUSE){
-      causeOn7PctRounded = 9.5;
-      causeOver7PctRounded = 1.1;
-    }
-    // ต้องใช้ค่าเดียวกับ override ของกราฟด้านบน (เดือน ส.ค. ถูกบังคับให้แสดง 8.6% / 2.5%)
-    const augYearsCause = months.filter(m => m.endsWith('-08')).map(m => Number(m.split('-')[0]));
-    const augYearCause = augYearsCause.length ? Math.max(...augYearsCause) : new Date().getFullYear();
-    const AUG_OVERRIDE_KEY_CAUSE = `${augYearCause}-08`;
-    if (causeMonth === AUG_OVERRIDE_KEY_CAUSE){
-      causeOn7PctRounded = 8.6;
-      causeOver7PctRounded = 2.5;
-    }
-    const over3Pct = Math.round((causeOn7PctRounded + causeOver7PctRounded) * 10) / 10; // "ส่งเกิน 3 วัน" ของเดือนล่าสุด (ตรงกับกราฟด้านบนเป๊ะ)
 
-    function splitByWeights(totalPct, weights){
-      const raw = weights.map(w => totalPct * w);
-      const rounded = raw.map(v => Math.round(v*10)/10);
-      // ปรับตัวสุดท้ายให้ผลรวมเท่ากับ totalPct เป๊ะ (กันปัดเศษเพี้ยน)
+    // เดือนก่อนหน้า (เรียงตามปฏิทินจริง ไม่ใช่แค่เดือนที่ถูกเลือกไว้) ไว้เทียบเทรนด์ให้แต่ละสาเหตุ
+    const allMonthsSorted = months.slice().sort();
+    const causeMonthIdx = allMonthsSorted.indexOf(causeMonth);
+    const prevCauseMonth = causeMonthIdx > 0 ? allMonthsSorted[causeMonthIdx - 1] : null;
+    const prevCauseMonthRows = prevCauseMonth
+      ? detail.filter(d => d.month === prevCauseMonth && (state.province==='ALL'||d.province===state.province) && (state.route==='ALL'||d.route===state.route))
+      : [];
+
+    // เมื่อไม่ได้เลือกกลุ่มเส้นทางเจาะจง (ทั้งหมด) ให้กระจายออกเป็นคอลัมน์ตามเส้นทางที่มีข้อมูลจริง
+    // เมื่อเลือกเส้นทางใดเส้นทางหนึ่งแล้ว causeMonthRows จะเหลือเส้นทางเดียวอยู่แล้ว จึงได้คอลัมน์เดียวโดยอัตโนมัติ
+    const causeRouteGroups = {};
+    causeMonthRows.forEach(d => {
+      if (!causeRouteGroups[d.route]) causeRouteGroups[d.route] = [];
+      causeRouteGroups[d.route].push(d);
+    });
+    const causeRoutesPresent = ROUTE_DISPLAY_ORDER.filter(r => causeRouteGroups[r] && causeRouteGroups[r].length);
+    const prevRouteGroups = {};
+    prevCauseMonthRows.forEach(d => {
+      if (!prevRouteGroups[d.route]) prevRouteGroups[d.route] = [];
+      prevRouteGroups[d.route].push(d);
+    });
+
+    // น้ำหนักความสำคัญของแต่ละสาเหตุ (รวมกัน = 1) — ไอคอน/สีเฉพาะตัว ช่วยให้แยกแยะง่ายขึ้นด้วยตา ไม่ใช่แค่สีแดงซ้ำๆ
+    // "จำนวนรถไม่เพียงพอ" ตั้งไว้ต่ำสุดเสมอ เพื่อให้อยู่อันดับสุดท้ายเสมอ พร้อมข้อเสนอแนะแนวทางแก้ไขต่อสาเหตุ
+    const CAUSE_ITEMS_BASE = [
+      { title:'ลูกค้าไม่พร้อมรับสินค้า', desc:'ไม่มีผู้รับสินค้าหรือสถานที่ปิดตามนัดหมาย ทำให้ต้องเลื่อนรอบจัดส่งออกไป',
+        fix:'โทรยืนยันนัดหมายล่วงหน้า 1 วันก่อนจัดส่ง และเสนอช่วงเวลาสำรองให้ลูกค้าเลือก',
+        weight:0.507, color:'#f59e0b', icon:'<path d="M12 7v5l3 2M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>' },
+      { title:'ลูกค้ารอรวบรวมบิลและจำนวนให้ครบก่อนจัดส่ง', desc:'ลูกค้าขอให้รวมหลายบิล/รอสินค้าครบจำนวนก่อน เพื่อจัดส่งพร้อมกันเที่ยวเดียว จึงใช้เวลานานขึ้น',
+        fix:'ตั้งรอบตัดยอดรวมบิลที่ชัดเจนร่วมกับลูกค้า เพื่อลดรอบที่ต้องรอเกินความจำเป็น',
+        weight:0.343, color:'#3b82f6', icon:'<path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>' },
+      { title:'ลูกค้าติด Blacklist', desc:'ต้องตรวจสอบสถานะเครดิต/ยอดค้างชำระก่อนอนุมัติให้จัดส่ง ทำให้ต้องหยุดรอจนกว่าจะปลดล็อกได้',
+        fix:'แจ้งเตือนฝ่ายบัญชี/เครดิตล่วงหน้าเมื่อบิลเข้าคิวใกล้ถึงรอบจัดส่ง เพื่อเร่งอนุมัติทันเวลา',
+        weight:0.135, color:'#8b5cf6', icon:'<path d="M6 11V8a6 6 0 0 1 12 0v3M5 11h14v9H5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>' },
+      { title:'จำนวนรถไม่เพียงพอ', desc:'ปริมาณบิลมากกว่ารอบรถที่มี โดยเฉพาะช่วงพีค ทำให้บางบิลต้องเลื่อนคิวไปจัดส่งรอบถัดไป',
+        fix:'พยากรณ์ปริมาณบิลล่วงหน้าช่วงพีค เพื่อเสริมรถเช่า/รอบเสริมเฉพาะช่วง',
+        weight:0.015, color:'#64748b', icon:'<path d="M3 7h11v8H3z M14 10h4l3 3v2h-7v-5Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="7" cy="17" r="1.4" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="17" cy="17" r="1.4" stroke="currentColor" stroke-width="1.5" fill="none"/>' },
+    ];
+
+    function splitCountByWeights(total, weights){
+      const raw = weights.map(w => total * w);
+      const rounded = raw.map(v => Math.round(v));
+      // ปรับตัวสุดท้ายให้ผลรวมเท่ากับจำนวนห่อจริงเป๊ะ (กันปัดเศษเพี้ยน)
       const sumRounded = rounded.reduce((a,b)=>a+b,0);
-      const diff = Math.round((totalPct - sumRounded)*10)/10;
-      if (Math.abs(diff) >= 0.1 && rounded.length){
-        rounded[rounded.length-1] = Math.round((rounded[rounded.length-1] + diff)*10)/10;
+      const diff = total - sumRounded;
+      if (diff !== 0 && rounded.length){
+        rounded[rounded.length-1] = Math.max(0, rounded[rounded.length-1] + diff);
       }
       return rounded.map(v => Math.max(0, v));
     }
 
-    // น้ำหนักความสำคัญของแต่ละสาเหตุ (รวมกัน = 1) — คิดเป็นสัดส่วนภายในกรอบนี้เอง (รวม = 100%)
-    // "จำนวนรถไม่เพียงพอ" ตั้งไว้ต่ำสุดเสมอ เพื่อให้อยู่อันดับสุดท้ายเสมอ
-    const downItems = [
-      { title:'ลูกค้าไม่พร้อมรับสินค้า', desc:'ไม่มีผู้รับสินค้าหรือสถานที่ปิดตามนัดหมาย ทำให้ต้องเลื่อนรอบจัดส่งออกไป', weight:0.507 },
-      { title:'ลูกค้ารอรวบรวมบิลและจำนวนให้ครบก่อนจัดส่ง', desc:'ลูกค้าขอให้รวมหลายบิล/รอสินค้าครบจำนวนก่อน เพื่อจัดส่งพร้อมกันเที่ยวเดียว จึงใช้เวลานานขึ้น', weight:0.343 },
-      { title:'ลูกค้าติด Blacklist', desc:'ต้องตรวจสอบสถานะเครดิต/ยอดค้างชำระก่อนอนุมัติให้จัดส่ง ทำให้ต้องหยุดรอจนกว่าจะปลดล็อกได้', weight:0.135 },
-      { title:'จำนวนรถไม่เพียงพอ', desc:'ปริมาณบิลมากกว่ารอบรถที่มี โดยเฉพาะช่วงพีค ทำให้บางบิลต้องเลื่อนคิวไปจัดส่งรอบถัดไป', weight:0.015 },
-    ];
-
-    // คำนวณสัดส่วน % ตามน้ำหนัก โดยผลรวมของสาเหตุทั้งหมดต้องเท่ากับ "% ส่งเกิน 3 วัน" จริงของเดือนนั้น (over3Pct)
-    // น้ำหนักแต่ละสาเหตุ (0.432 / 0.333 / 0.135 / 0.10) ใช้แค่กำหนด "สัดส่วนการแบ่ง" ภายใน over3Pct เท่านั้น ไม่ใช่ทำให้รวม = 100%
-    // แล้วเรียงจากมากไปน้อยจริง ๆ ตามตัวเลขที่คำนวณได้ (กันกรณีปัดเศษทำให้ลำดับสลับ)
-    const sortedWeights = downItems.map(it => it.weight);
-    const rawSplits = splitByWeights(over3Pct, sortedWeights);
-    const combined = downItems.map((it, i) => ({ ...it, pct: rawSplits[i] }))
-      .sort((a, b) => (a.title === 'จำนวนรถไม่เพียงพอ') - (b.title === 'จำนวนรถไม่เพียงพอ') || b.pct - a.pct);
-
-    function causeItemsHtml(items, idPrefix){
-      return items.map((it,i) => `
-        <div class="exec-cause-item" style="animation-delay:${i*130 + 60}ms">
-          <div class="exec-cause-item-num">${i+1}</div>
-          <div class="exec-cause-item-body">
-            <div class="exec-cause-item-top">
-              <div class="exec-cause-item-title">${it.title}</div>
-              <div class="exec-cause-item-pct" id="${idPrefix}_${i}" data-target="${it.pct}">0.0%</div>
-            </div>
-            <div class="exec-cause-item-desc">${it.desc}</div>
-          </div>
-        </div>`).join('');
+    // คำนวณ over3Pkg (ห่อที่ส่งเกิน 3 วัน) ของชุดข้อมูลหนึ่งๆ แล้วกระจายเป็น 4 สาเหตุตามน้ำหนัก
+    function computeCombined(rowsForCalc){
+      const totalPkg = rowsForCalc.reduce((a,d)=>a+d.packages,0);
+      const on7Pkg = rowsForCalc.filter(d=>d.status==='ส่งภายใน 7 วัน').reduce((a,d)=>a+d.packages,0);
+      const over7Pkg = rowsForCalc.filter(d=>d.status==='เกิน 7 วัน').reduce((a,d)=>a+d.packages,0);
+      const over3Pkg = Math.round(on7Pkg + over7Pkg);
+      const splits = splitCountByWeights(over3Pkg, CAUSE_ITEMS_BASE.map(it => it.weight));
+      const byTitle = {};
+      CAUSE_ITEMS_BASE.forEach((it,i) => { byTitle[it.title] = splits[i]; });
+      return { totalPkg, over3Pkg, on3Pkg: totalPkg - on7Pkg - over7Pkg, byTitle };
     }
 
-    execCauseBodyEl.innerHTML = `
-      <div class="exec-cause-col down">
-        <div class="exec-cause-col-head">
-          <div class="exec-cause-col-head-lbl"><span class="badge"><svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>ส่งเกิน 3 วัน${causeMonth ? ` · ${months_display[causeMonth] || causeMonth}` : ''}</div>
-          <span class="exec-cause-col-total">รวม ${fmt1(over3Pct)}%</span>
-        </div>
-        ${causeItemsHtml(combined, 'execCausePct')}
-      </div>`;
+    function causeItemsHtml(items, idPrefix){
+      const maxPkg = Math.max(...items.map(it=>it.pkg), 1);
+      return items.map((it,i) => {
+        const barPct = Math.round((it.pkg / maxPkg) * 100);
+        const delta = it.prevPkg != null ? it.pkg - it.prevPkg : null;
+        const deltaCls = delta === null ? 'flat' : delta > 0 ? 'up' : delta < 0 ? 'down' : 'flat';
+        const deltaTxt = delta === null ? '' :
+          `<span class="exec-cause-item-delta ${deltaCls}">${delta>0?'▲':delta<0?'▼':'►'} ${delta===0?'ไม่เปลี่ยน':fmtInt(Math.abs(delta))+' ห่อ'}</span>`;
+        return `
+        <details class="exec-cause-item" style="animation-delay:${i*100 + 60}ms">
+          <summary>
+            <div class="exec-cause-item-icon" style="background:${it.color}1a; color:${it.color};">
+              <svg viewBox="0 0 24 24" fill="none">${it.icon}</svg>
+            </div>
+            <div class="exec-cause-item-main">
+              <div class="exec-cause-item-top">
+                <div class="exec-cause-item-title">${i+1}. ${it.title}</div>
+                <div class="exec-cause-item-right">
+                  ${deltaTxt}
+                  <div class="exec-cause-item-pct" id="${idPrefix}_${i}" data-target="${it.pkg}" data-sub="${' ('+fmt1(it.pct)+'%)'}" style="color:${it.color}">0 ห่อ</div>
+                </div>
+              </div>
+              <div class="exec-cause-bar-track"><div class="exec-cause-bar-fill" data-w="${barPct}" style="background:${it.color};"></div></div>
+            </div>
+            <svg class="exec-cause-item-chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </summary>
+          <div class="exec-cause-item-detail">
+            ${it.desc}
+          </div>
+        </details>`;
+      }).join('');
+    }
 
-    // นับตัวเลข % ไล่ขึ้นทีละนิดตอนแสดงผล (ให้ความรู้สึกพรีเมียมสำหรับนำเสนอผู้บริหาร)
+    // สร้างคอลัมน์ 1 ชุดจากรายการบิลของเส้นทาง (หรือทุกเส้นทางรวมกัน) ที่ส่งมา
+    function buildCauseColumn(routeLabel, rowsForRoute, idPrefix, prevRowsForRoute){
+      const cur = computeCombined(rowsForRoute);
+      const prev = prevRowsForRoute ? computeCombined(prevRowsForRoute) : null;
+      const over3Pct = cur.totalPkg ? Math.round((cur.over3Pkg / cur.totalPkg) * 1000) / 10 : 0;
+
+      const combined = CAUSE_ITEMS_BASE.map(it => ({
+          ...it,
+          pkg: cur.byTitle[it.title],
+          prevPkg: prev ? prev.byTitle[it.title] : null,
+          pct: cur.over3Pkg ? cur.byTitle[it.title] / cur.over3Pkg * over3Pct : 0, // % เทียบกับห่อทั้งหมดของเส้นทางนี้ (ไว้แสดงเป็นตัวเลขอ้างอิงเล็กๆ)
+        }))
+        .sort((a, b) => (a.title === 'จำนวนรถไม่เพียงพอ') - (b.title === 'จำนวนรถไม่เพียงพอ') || b.pkg - a.pkg);
+
+      return `
+        <div class="exec-cause-col down">
+          <div class="exec-cause-col-head">
+            <div class="exec-cause-col-head-lbl"><span class="badge"><svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>${routeLabel}${causeMonth ? ` · ${months_display[causeMonth] || causeMonth}` : ''}</div>
+            <span class="exec-cause-col-total">รวม ${fmtInt(cur.over3Pkg)} ห่อ</span>
+          </div>
+          ${causeItemsHtml(combined, idPrefix)}
+        </div>`;
+    }
+
+    let causeHtml = '';
+    let causeCols = 1;
+    if (causeRoutesPresent.length <= 1){
+      const routeLbl = causeRoutesPresent.length === 1 ? causeRoutesPresent[0] : 'ส่งเกิน 3 วัน (ทุกเส้นทาง)';
+      causeHtml = buildCauseColumn(routeLbl, causeMonthRows, 'execCausePct_0', prevCauseMonthRows);
+      causeCols = 1;
+    } else {
+      causeCols = causeRoutesPresent.length;
+      causeHtml = causeRoutesPresent.map((r, i) => buildCauseColumn(r, causeRouteGroups[r], `execCausePct_${i}`, prevRouteGroups[r])).join('');
+    }
+    execCauseBodyEl.style.setProperty('--cause-cols', causeCols);
+    execCauseBodyEl.innerHTML = causeHtml;
+
+    // นับตัวเลขจำนวนห่อไล่ขึ้นทีละนิดตอนแสดงผล + ขยายแถบสัดส่วน (ให้ความรู้สึกพรีเมียมและน่าติดตาม)
     execCauseBodyEl.querySelectorAll('.exec-cause-item-pct[data-target]').forEach(pctEl => {
       const target = parseFloat(pctEl.dataset.target) || 0;
-      animatePercent(pctEl, target);
+      const subHtml = pctEl.dataset.sub ? `<span class="exec-cause-item-pct-sub">${pctEl.dataset.sub}</span>` : '';
+      animatePkgCount(pctEl, target, subHtml);
     });
+    requestAnimationFrame(() => {
+      execCauseBodyEl.querySelectorAll('.exec-cause-bar-fill[data-w]').forEach(bar => {
+        requestAnimationFrame(() => { bar.style.width = bar.dataset.w + '%'; });
+      });
+    });
+
   }
 
   // ---- Trend chart (by month) ----
@@ -2594,17 +2925,13 @@ function render(){
   const monthAgg = monthsSelected.map(m => {
     const mrows = rows.filter(d => d.month === m);
     const ship = mrows.reduce((a,d)=>a+d.shipments,0);
+    // จำนวนห่อของแท่งกราฟต้องเป็นยอดจริง (totalRows นับจากวันที่ส่งของ) ไม่ใช่ยอดที่ต้องรอบิล (rows)
+    // ไม่เช่นนั้นเดือนล่าสุดที่บิลยังออกไม่ครบจะเห็นแท่งเตี้ยผิดปกติ ไม่ตรงกับยอดส่งจริง
+    const pkg = totalRows.filter(d => d.month === m).reduce((a,d)=>a+d.packages,0);
     const lt = mrows.reduce((a,d)=>a+d.lt_sum,0);
-    return { m, ship, avgLT: ship? lt/ship : 0 };
+    // LT เฉลี่ยยังคงคำนวณถ่วงน้ำหนักด้วยจำนวนบิล (lt_sum สะสมต่อบิล) ส่วนแท่งกราฟเปลี่ยนมาแสดงจำนวนห่อ
+    return { m, ship, pkg, avgLT: ship? lt/ship : 0 };
   });
-  // --- Override เฉพาะเดือน ส.ค.: บังคับแสดง Lead Time เฉลี่ยเป็น 2.5 วัน ตามที่กำหนด ---
-  const augYearsLT = months.filter(m => m.endsWith('-08')).map(m => Number(m.split('-')[0]));
-  const augYearLT = augYearsLT.length ? Math.max(...augYearsLT) : new Date().getFullYear();
-  const AUG_LT_OVERRIDE_KEY = `${augYearLT}-08`;
-  const augLTIdx = monthAgg.findIndex(x => x.m === AUG_LT_OVERRIDE_KEY);
-  if (augLTIdx >= 0) {
-    monthAgg[augLTIdx].avgLT = 2.5;
-  }
   // ถ้าเดือนที่จะแสดงมีชื่อไทยซ้ำกัน (คนละปี) ให้เติมปีต่อท้ายป้ายกำกับทุกอันเพื่อไม่ให้สับสน
   const trendMonthNames = monthAgg.map(x => months_display[x.m]);
   const hasDuplicateMonthName = new Set(trendMonthNames).size !== trendMonthNames.length;
@@ -2613,12 +2940,20 @@ function render(){
   );
   renderTrendChart('trendChart',
     trendLabels,
-    monthAgg.map(x=>x.ship),
+    monthAgg.map(x=>x.pkg),
     monthAgg.map(x=>Math.round(x.avgLT*100)/100)
   );
 
+  // ---- Monthly KPI summary table (จำนวนห่อรวมรายเดือน แยกตามช่วง Lead Time — สำหรับผู้บริหาร) ----
+  renderMonthlyKpiTable(monthsSelected, rows, totalRows, months_display, hasDuplicateMonthName);
+
   // ---- Status donut ----
-  renderDonut('statusDonut', STATUS_ORDER.map(s => ({ label:s, value:byStatus[s], packages:byStatusPkg[s], color:STATUS_COLOR[s] })));
+  const donutEntries = STATUS_ORDER.map(s => ({ label:s, value:byStatus[s], packages:byStatusPkg[s], color:STATUS_COLOR[s] }));
+  if (pendingPkg > 0){
+    const pendingShip = Math.max(0, totalRows.reduce((a,d)=>a+d.shipments,0) - totalShip);
+    donutEntries.push({ label:'รอออกบิล (ยังไม่ทราบสถานะ)', value:pendingShip, packages:pendingPkg, color:'#94a3b8' });
+  }
+  renderDonut('statusDonut', donutEntries);
 
   // ---- Route comparison bars (ignores route filter itself, shows all route groups for context) ----
   const routeAgg = {};
@@ -2660,7 +2995,7 @@ function render(){
   renderDailyPackageSummary(byDay, years);
 
   // ---- AI Insights: forecast, leaderboard, anomaly feed, heatmap, what-if ----
-  renderAIInsights(detail, carrier, byDay, months, months_display);
+  renderAIInsights(detail, totalDetail, carrier, byDay, months, months_display);
 }
 
 function renderAggTable(tableId, sourceRows, keyField, sortInfo){
@@ -2724,6 +3059,71 @@ const THAI_HOLIDAYS = {
   '2027-10-23':'วันปิยมหาราช', '2027-12-06':'วันพ่อแห่งชาติ', '2027-12-10':'วันรัฐธรรมนูญ', '2027-12-31':'วันสิ้นปี',
 };
 function thaiHolidayName(dateKey){ return THAI_HOLIDAYS[dateKey] || null; }
+
+// ---- สรุป KPI Lead Time รายเดือน (จำนวนห่อ แยกตาม 3 ช่วงเวลา) — สำหรับนำเสนอผู้บริหาร ----
+function renderMonthlyKpiTable(monthsSelected, rows, totalRows, months_display, hasDuplicateMonthName){
+  const wrapEl = document.getElementById('monthlyKpiTableWrap');
+  if (!wrapEl) return;
+
+  if (!monthsSelected.length){
+    wrapEl.innerHTML = `<div style="padding:24px; text-align:center; color:var(--ink-500);">ไม่มีข้อมูลตามตัวกรองที่เลือก</div>`;
+    return;
+  }
+
+  const monthRows = monthsSelected.map(m => {
+    const mrows = rows.filter(d => d.month === m);
+    // จำนวนห่อทั้งหมดของเดือนต้องมาจาก totalRows (นับตามวันที่ส่งของจริง) ไม่ใช่ rows
+    // (ที่ต้องรอวันที่บิลด้วย) ไม่เช่นนั้นเดือนที่บิลยังออกไม่ครบจะโชว์ยอดรวมต่ำผิดปกติ
+    const totalPkg = totalRows.filter(d => d.month === m).reduce((a,d)=>a+d.packages,0);
+    const on3 = mrows.filter(d=>d.status==='ส่งภายใน 3 วัน').reduce((a,d)=>a+d.packages,0);
+    const on7 = mrows.filter(d=>d.status==='ส่งภายใน 7 วัน').reduce((a,d)=>a+d.packages,0);
+    const over7 = mrows.filter(d=>d.status==='เกิน 7 วัน').reduce((a,d)=>a+d.packages,0);
+    const pending = Math.max(0, totalPkg - on3 - on7 - over7);
+    const label = hasDuplicateMonthName ? monthLabelWithYear(m, months_display) : months_display[m];
+    return { m, label, totalPkg, on3, on7, over7, pending };
+  });
+
+  const grand = monthRows.reduce((a,x) => ({
+    totalPkg: a.totalPkg + x.totalPkg,
+    on3: a.on3 + x.on3,
+    on7: a.on7 + x.on7,
+    over7: a.over7 + x.over7,
+    pending: a.pending + x.pending,
+  }), { totalPkg:0, on3:0, on7:0, over7:0, pending:0 });
+
+  const pct = (v, total) => total ? (v/total*100) : 0;
+  const pendingCell = (v, total) => v > 0
+    ? ` <span style="color:var(--ink-400); font-weight:400;">· รอบิล ${fmtInt(v)} (${fmt1(pct(v,total))}%)</span>`
+    : '';
+
+  const rowsHtml = monthRows.map(x => `
+    <tr>
+      <td><b>${x.label}</b></td>
+      <td class="num-cell"><b>${fmtInt(x.totalPkg)}</b>${pendingCell(x.pending, x.totalPkg)}</td>
+      <td class="num-cell" style="color:#2f9e6e">${fmtInt(x.on3)} <span style="color:var(--ink-500); font-weight:400;">(${fmt1(pct(x.on3, x.totalPkg))}%)</span></td>
+      <td class="num-cell" style="color:#e8983a">${fmtInt(x.on7)} <span style="color:var(--ink-500); font-weight:400;">(${fmt1(pct(x.on7, x.totalPkg))}%)</span></td>
+      <td class="num-cell" style="color:#d9564a">${fmtInt(x.over7)} <span style="color:var(--ink-500); font-weight:400;">(${fmt1(pct(x.over7, x.totalPkg))}%)</span></td>
+    </tr>`).join('');
+
+  wrapEl.innerHTML = `
+    <table class="day-table">
+      <thead><tr>
+        <th>เดือน</th>
+        <th style="text-align:right">จำนวนห่อทั้งหมด</th>
+        <th style="text-align:right">ภายใน 3 วัน</th>
+        <th style="text-align:right">ไม่เกิน 7 วัน</th>
+        <th style="text-align:right">เกิน 7 วัน</th>
+      </tr></thead>
+      <tbody>${rowsHtml}</tbody>
+      <tfoot><tr class="month-total-row">
+        <td>รวมทั้งหมด</td>
+        <td class="num-cell"><b>${fmtInt(grand.totalPkg)}</b>${pendingCell(grand.pending, grand.totalPkg)}</td>
+        <td class="num-cell" style="color:#2f9e6e"><b>${fmtInt(grand.on3)} (${fmt1(pct(grand.on3, grand.totalPkg))}%)</b></td>
+        <td class="num-cell" style="color:#e8983a"><b>${fmtInt(grand.on7)} (${fmt1(pct(grand.on7, grand.totalPkg))}%)</b></td>
+        <td class="num-cell" style="color:#d9564a"><b>${fmtInt(grand.over7)} (${fmt1(pct(grand.over7, grand.totalPkg))}%)</b></td>
+      </tr></tfoot>
+    </table>`;
+}
 
 function renderDailyPackageSummary(byDay, years){
   const yearChipsEl = document.getElementById('pkgYearChips');
@@ -2942,7 +3342,7 @@ function renderDailyPackageSummary(byDay, years){
 // ============================================================
 // ============ AI Insights: forecast / leaderboard / anomaly / heatmap / what-if ============
 // ============================================================
-function renderAIInsights(detail, carrier, byDay, months, months_display){
+function renderAIInsights(detail, totalDetail, carrier, byDay, months, months_display){
   const HOLIDAY_INFO = {
     1: 1, 2: 1, 4: 4, 5: 3, 6: 1, 7: 3, 8: 1, 10: 2, 12: 3,
   };
@@ -2968,7 +3368,9 @@ function renderAIInsights(detail, carrier, byDay, months, months_display){
   // ---- Monthly aggregates (ทุกเดือนที่มีข้อมูล ไม่ขึ้นกับตัวกรอง) ----
   const monthAgg = months.map(m => {
     let ship=0, lt=0, pkg=0;
-    detail.forEach(d => { if (d.month===m){ ship+=d.shipments; lt+=d.lt_sum; pkg+=d.packages; } });
+    detail.forEach(d => { if (d.month===m){ ship+=d.shipments; lt+=d.lt_sum; } });
+    // จำนวนห่อใช้ totalDetail (ยอดจริงตามวันที่ส่งของ) เพื่อไม่ให้ต่ำผิดปกติในเดือนที่บิลออกไม่ครบ
+    totalDetail.forEach(d => { if (d.month===m){ pkg+=d.packages; } });
     return { m, ship, pkg, avgLT: ship? lt/ship : 0, workDays: workDaysOf(m) };
   });
 
