@@ -2949,10 +2949,6 @@ function render(){
 
   // ---- Status donut ----
   const donutEntries = STATUS_ORDER.map(s => ({ label:s, value:byStatus[s], packages:byStatusPkg[s], color:STATUS_COLOR[s] }));
-  if (pendingPkg > 0){
-    const pendingShip = Math.max(0, totalRows.reduce((a,d)=>a+d.shipments,0) - totalShip);
-    donutEntries.push({ label:'รอออกบิล (ยังไม่ทราบสถานะ)', value:pendingShip, packages:pendingPkg, color:'#94a3b8' });
-  }
   renderDonut('statusDonut', donutEntries);
 
   // ---- Route comparison bars (ignores route filter itself, shows all route groups for context) ----
