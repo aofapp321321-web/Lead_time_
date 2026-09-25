@@ -1122,7 +1122,7 @@
       </div>
       <div class="sidebar-brand-text">
         <div class="name">Transportation Department</div>
-        <div class="tag">Logistics Tracker</div>
+        <div class="tag">Executive Dashboard</div>
       </div>
     </div>
 
@@ -1155,6 +1155,10 @@
       <div>
         <p class="eyebrow" id="pageEyebrow">Logistics Performance</p>
         <h1 id="pageTitle">Lead Time การจัดส่งสินค้า</h1>
+        <span style="display:inline-flex; align-items:center; gap:6px; margin-top:6px; padding:4px 11px; border-radius:999px; background:rgba(23,179,164,.14); border:1px solid rgba(23,179,164,.35); color:var(--teal-400); font-family:'Kanit',sans-serif; font-size:11.5px; font-weight:600; letter-spacing:.03em;">
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none"><path d="M12 2l2.9 6.6 7.1.7-5.4 4.8 1.7 7-6.3-3.8-6.3 3.8 1.7-7L2 9.3l7.1-.7z" fill="currentColor"/></svg>
+          Prepared for Management Review
+        </span>
         <div class="sub" id="pageSub">แดชบอร์ดสรุประยะเวลาในการจัดส่งสินค้า — เลือกช่วงเวลา เส้นทาง และจังหวัดเพื่อดูข้อมูลเฉพาะส่วนที่สนใจ</div>
       </div>
       <div style="display:flex; flex-direction:column; align-items:flex-end; gap:10px;">
@@ -1220,21 +1224,6 @@
       </div>
     </div>
 
-    <div class="card" id="monthCompareCard" style="margin-bottom:16px;">
-      <div class="card-head">
-        <div>
-          <div class="card-title">เปรียบเทียบระหว่างเดือน</div>
-          <div class="card-note">เลือก 2 เดือนเพื่อเทียบยอดห่อและ Lead Time โดยตรง</div>
-        </div>
-        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-          <select class="select-input" id="compareMonthA"></select>
-          <span style="color:var(--ink-300); font-weight:600;">เทียบกับ</span>
-          <select class="select-input" id="compareMonthB"></select>
-        </div>
-      </div>
-      <div id="monthCompareBody"></div>
-    </div>
-
     <div class="lt-summary-card">
       <div class="lt-summary-head">
         <span class="dot"></span>
@@ -1252,16 +1241,6 @@
         </div>
         <div class="chart-wrap tall" id="execCompareChart"></div>
         <div id="execCompareSummary"></div>
-      </div>
-
-      <div class="card exec-chart-card" style="margin:0 0 20px;">
-        <div class="card-head">
-          <div>
-            <div class="card-title">สรุป KPI Lead Time รายเดือน</div>
-            <div class="card-note">จำนวนห่อที่จัดส่งทั้งหมดของแต่ละเดือน แยกตามช่วง Lead Time — สำหรับนำเสนอผู้บริหาร</div>
-          </div>
-        </div>
-        <div id="monthlyKpiTableWrap" class="table-scroll" style="max-height:420px;"></div>
       </div>
 
       <div class="exec-cause-card" style="margin-top:20px;">
@@ -1427,7 +1406,7 @@
 // ============ Sidebar view switching ============
 // ============================================================
 const VIEW_META = {
-  leadtime: { eyebrow:'Logistics Performance', title:'Lead Time การจัดส่งสินค้า', sub:'แดชบอร์ดสรุประยะเวลาในการจัดส่งสินค้า — เลือกช่วงเวลา เส้นทาง และจังหวัดเพื่อดูข้อมูลเฉพาะส่วนที่สนใจ' },
+  leadtime: { eyebrow:'Executive Performance Overview', title:'Lead Time การจัดส่งสินค้า', sub:'สรุประยะเวลาในการจัดส่งสินค้าสำหรับนำเสนอผู้บริหาร — เลือกช่วงเวลา เส้นทาง และจังหวัดเพื่อดูข้อมูลเฉพาะส่วนที่สนใจ' },
   daily:    { eyebrow:'Daily Shipment Volume', title:'จำนวนจัดส่งรายวัน', sub:'' },
   route:    { eyebrow:'Route & Province', title:'เส้นทาง & จังหวัด', sub:'เปรียบเทียบประสิทธิภาพการจัดส่งตามกลุ่มเส้นทางและจังหวัดปลายทาง' },
   ai:       { eyebrow:'AI-Powered Insights', title:'AI Insights & พยากรณ์', sub:'พยากรณ์แนวโน้ม จัดอันดับสายขนส่ง ตรวจจับความผิดปกติ และจำลองสถานการณ์ — วิเคราะห์อัตโนมัติจากข้อมูลจริงทั้งหมด' },
@@ -2367,89 +2346,6 @@ function render(){
     </div>
   `;
 
-  // ---- เปรียบเทียบระหว่างเดือน (เลือก 2 เดือนอิสระจากตัวกรองเดือนด้านบน แต่ยังเคารพตัวกรองเส้นทาง/จังหวัด) ----
-  (function renderMonthCompare(){
-    const selA = document.getElementById('compareMonthA');
-    const selB = document.getElementById('compareMonthB');
-    const bodyEl = document.getElementById('monthCompareBody');
-    if (!selA || !selB || !bodyEl || months.length < 1) return;
-
-    if (!compareState) compareState = { a: null, b: null };
-    if (!months.includes(compareState.a)) compareState.a = months[Math.max(0, months.length - 2)];
-    if (!months.includes(compareState.b)) compareState.b = months[months.length - 1];
-
-    const monthOptLabel = m => monthChipsHaveDup ? monthLabelWithYear(m, months_display) : months_display[m];
-    selA.innerHTML = months.map(m => `<option value="${m}"${m===compareState.a?' selected':''}>${monthOptLabel(m)}</option>`).join('');
-    selB.innerHTML = months.map(m => `<option value="${m}"${m===compareState.b?' selected':''}>${monthOptLabel(m)}</option>`).join('');
-    selA.onchange = () => { compareState.a = selA.value; render(); };
-    selB.onchange = () => { compareState.b = selB.value; render(); };
-
-    function statsFor(monthKey){
-      const monthRows = detail.filter(d =>
-        d.month === monthKey &&
-        (state.route === 'ALL' || d.route === state.route) &&
-        (state.province === 'ALL' || d.province === state.province)
-      );
-      // จำนวนห่อรวมต้องใช้ totalDetail (ยอดจริงตามวันที่ส่งของ) ไม่ใช่ detail (ที่ต้องรอวันที่บิลด้วย)
-      const monthTotalRows = totalDetail.filter(d =>
-        d.month === monthKey &&
-        (state.route === 'ALL' || d.route === state.route) &&
-        (state.province === 'ALL' || d.province === state.province)
-      );
-      const ship = monthRows.reduce((a,d)=>a+d.shipments,0);
-      const pkg = monthTotalRows.reduce((a,d)=>a+d.packages,0);
-      const ltSum = monthRows.reduce((a,d)=>a+d.lt_sum,0);
-      const byS = {}; STATUS_ORDER.forEach(s => byS[s] = monthRows.filter(d=>d.status===s).reduce((a,d)=>a+d.packages,0));
-      return { ship, pkg, avgLT: ship ? ltSum/ship : 0, byS };
-    }
-
-    const A = statsFor(compareState.a), B = statsFor(compareState.b);
-    const lblA = monthOptLabel(compareState.a), lblB = monthOptLabel(compareState.b);
-
-    function deltaBadge(curr, prev, lowerIsBetter){
-      if (!prev) return `<span class="compare-delta flat">—</span>`;
-      const pct = (curr - prev) / prev * 100;
-      const cls = Math.abs(pct) < 0.5 ? 'flat' : ((pct > 0) === !lowerIsBetter ? 'down' : 'up');
-      const icon = pct > 0.5 ? '▲' : pct < -0.5 ? '▼' : '►';
-      return `<span class="compare-delta ${cls}">${icon} ${pct>=0?'+':''}${fmt1(pct)}%</span>`;
-    }
-
-    function colHtml(lbl, S){
-      return `
-        <div class="compare-col">
-          <div class="compare-col-title">${lbl}</div>
-          <div class="compare-row"><span class="lbl">จำนวนห่อทั้งหมด</span><span class="val">${fmtInt(S.pkg)} ห่อ</span></div>
-          <div class="compare-row"><span class="lbl">ส่งภายใน 3 วัน</span><span class="val">${fmtInt(S.byS['ส่งภายใน 3 วัน'])} ห่อ</span></div>
-          <div class="compare-row"><span class="lbl">มากกว่า 3 – 7 วัน</span><span class="val">${fmtInt(S.byS['ส่งภายใน 7 วัน'])} ห่อ</span></div>
-          <div class="compare-row"><span class="lbl">เกิน 7 วัน</span><span class="val">${fmtInt(S.byS['เกิน 7 วัน'])} ห่อ</span></div>
-          <div class="compare-row"><span class="lbl">Lead Time เฉลี่ย</span><span class="val">${fmt1(S.avgLT)} วัน</span></div>
-        </div>`;
-    }
-
-    const pkgDeltaPct = A.pkg ? (B.pkg - A.pkg) / A.pkg * 100 : null;
-    const ltDeltaAbs = B.avgLT - A.avgLT;
-    const overDeltaPct = A.byS['เกิน 7 วัน'] ? (B.byS['เกิน 7 วัน'] - A.byS['เกิน 7 วัน']) / A.byS['เกิน 7 วัน'] * 100 : null;
-
-    const verdictParts = [];
-    if (pkgDeltaPct !== null){
-      verdictParts.push(`ปริมาณห่อ${pkgDeltaPct>=0?'เพิ่มขึ้น':'ลดลง'} <b>${fmt1(Math.abs(pkgDeltaPct))}%</b>`);
-    }
-    verdictParts.push(`Lead Time เฉลี่ย${ltDeltaAbs>=0?'ช้าลง':'เร็วขึ้น'} <b>${fmt1(Math.abs(ltDeltaAbs))} วัน</b>`);
-    if (overDeltaPct !== null){
-      verdictParts.push(`ยอดเกิน 7 วัน${overDeltaPct>=0?'เพิ่มขึ้น':'ลดลง'} <b>${fmt1(Math.abs(overDeltaPct))}%</b>`);
-    }
-
-    bodyEl.innerHTML = `
-      <div class="compare-grid">
-        ${colHtml(lblA, A)}
-        ${colHtml(lblB, B)}
-      </div>
-      <div class="compare-verdict">
-        📌 สรุป: เทียบ <b>${lblB}</b> กับ <b>${lblA}</b> — ${verdictParts.join(' · ')}
-        &nbsp; ${deltaBadge(B.avgLT, A.avgLT, true)}
-      </div>`;
-  })();
-
   // ---- Lead Time insight row (สรุปสำหรับผู้บริหาร) ----
   const ltInsightRowEl = document.getElementById('ltInsightRow');
   if (ltInsightRowEl){
@@ -2766,7 +2662,7 @@ function render(){
 
   // ---- สาเหตุที่ทำให้จัดส่งล่าช้า: แบ่งสัดส่วนจำนวนห่อของ "ส่งเกิน 3 วัน" (ไม่เกิน 7 วัน + เกิน 7 วัน) ออกเป็น 4 สาเหตุ ----
   // ใช้ตัวเลขของ "เดือนล่าสุดที่เลือก" เดือนเดียว (จุดขวาสุดของกราฟเปรียบเทียบแนวโน้มด้านบน) เพื่อให้ตรงกับกราฟเป๊ะ
-  // เรียงลำดับสาเหตุจากมากไปน้อย โดยกำหนดให้ "จำนวนรถไม่เพียงพอ" มีน้ำหนักต่ำสุดเสมอ จึงอยู่อันดับสุดท้ายเสมอ
+  // เรียงลำดับสาเหตุแบบตายตัวซ้าย→ขวา: ลูกค้าไม่พร้อมรับสินค้า → รอรวมบิล → ติด Blacklist → รถไม่พอ (ไม่สลับตามจำนวนห่อ)
   const execCauseBodyEl = document.getElementById('execCauseBody');
   if (execCauseBodyEl){
     const causeMonths = months.filter(m => state.months.has(m)).sort();
@@ -2875,13 +2771,14 @@ function render(){
       const prev = prevRowsForRoute ? computeCombined(prevRowsForRoute) : null;
       const over3Pct = cur.totalPkg ? Math.round((cur.over3Pkg / cur.totalPkg) * 1000) / 10 : 0;
 
+      // เรียงลำดับตายตัวตาม CAUSE_ITEMS_BASE เสมอ (ลูกค้าไม่พร้อมรับสินค้า → รอรวมบิล → ติด Blacklist → รถไม่พอ)
+      // ไม่สลับตามจำนวนห่อ เพื่อให้ลำดับซ้าย→ขวาคงที่ทุกโซน/ทุกเดือน ตรงกับรูปแบบที่ต้องการนำเสนอผู้บริหาร
       const combined = CAUSE_ITEMS_BASE.map(it => ({
           ...it,
           pkg: cur.byTitle[it.title],
           prevPkg: prev ? prev.byTitle[it.title] : null,
           pct: cur.over3Pkg ? cur.byTitle[it.title] / cur.over3Pkg * over3Pct : 0, // % เทียบกับห่อทั้งหมดของเส้นทางนี้ (ไว้แสดงเป็นตัวเลขอ้างอิงเล็กๆ)
-        }))
-        .sort((a, b) => (a.title === 'จำนวนรถไม่เพียงพอ') - (b.title === 'จำนวนรถไม่เพียงพอ') || b.pkg - a.pkg);
+        }));
 
       return `
         <div class="exec-cause-col down">
@@ -2943,9 +2840,6 @@ function render(){
     monthAgg.map(x=>x.pkg),
     monthAgg.map(x=>Math.round(x.avgLT*100)/100)
   );
-
-  // ---- Monthly KPI summary table (จำนวนห่อรวมรายเดือน แยกตามช่วง Lead Time — สำหรับผู้บริหาร) ----
-  renderMonthlyKpiTable(monthsSelected, rows, totalRows, months_display, hasDuplicateMonthName);
 
   // ---- Status donut ----
   const donutEntries = STATUS_ORDER.map(s => ({ label:s, value:byStatus[s], packages:byStatusPkg[s], color:STATUS_COLOR[s] }));
@@ -3055,71 +2949,6 @@ const THAI_HOLIDAYS = {
   '2027-10-23':'วันปิยมหาราช', '2027-12-06':'วันพ่อแห่งชาติ', '2027-12-10':'วันรัฐธรรมนูญ', '2027-12-31':'วันสิ้นปี',
 };
 function thaiHolidayName(dateKey){ return THAI_HOLIDAYS[dateKey] || null; }
-
-// ---- สรุป KPI Lead Time รายเดือน (จำนวนห่อ แยกตาม 3 ช่วงเวลา) — สำหรับนำเสนอผู้บริหาร ----
-function renderMonthlyKpiTable(monthsSelected, rows, totalRows, months_display, hasDuplicateMonthName){
-  const wrapEl = document.getElementById('monthlyKpiTableWrap');
-  if (!wrapEl) return;
-
-  if (!monthsSelected.length){
-    wrapEl.innerHTML = `<div style="padding:24px; text-align:center; color:var(--ink-500);">ไม่มีข้อมูลตามตัวกรองที่เลือก</div>`;
-    return;
-  }
-
-  const monthRows = monthsSelected.map(m => {
-    const mrows = rows.filter(d => d.month === m);
-    // จำนวนห่อทั้งหมดของเดือนต้องมาจาก totalRows (นับตามวันที่ส่งของจริง) ไม่ใช่ rows
-    // (ที่ต้องรอวันที่บิลด้วย) ไม่เช่นนั้นเดือนที่บิลยังออกไม่ครบจะโชว์ยอดรวมต่ำผิดปกติ
-    const totalPkg = totalRows.filter(d => d.month === m).reduce((a,d)=>a+d.packages,0);
-    const on3 = mrows.filter(d=>d.status==='ส่งภายใน 3 วัน').reduce((a,d)=>a+d.packages,0);
-    const on7 = mrows.filter(d=>d.status==='ส่งภายใน 7 วัน').reduce((a,d)=>a+d.packages,0);
-    const over7 = mrows.filter(d=>d.status==='เกิน 7 วัน').reduce((a,d)=>a+d.packages,0);
-    const pending = Math.max(0, totalPkg - on3 - on7 - over7);
-    const label = hasDuplicateMonthName ? monthLabelWithYear(m, months_display) : months_display[m];
-    return { m, label, totalPkg, on3, on7, over7, pending };
-  });
-
-  const grand = monthRows.reduce((a,x) => ({
-    totalPkg: a.totalPkg + x.totalPkg,
-    on3: a.on3 + x.on3,
-    on7: a.on7 + x.on7,
-    over7: a.over7 + x.over7,
-    pending: a.pending + x.pending,
-  }), { totalPkg:0, on3:0, on7:0, over7:0, pending:0 });
-
-  const pct = (v, total) => total ? (v/total*100) : 0;
-  const pendingCell = (v, total) => v > 0
-    ? ` <span style="color:var(--ink-400); font-weight:400;">· รอบิล ${fmtInt(v)} (${fmt1(pct(v,total))}%)</span>`
-    : '';
-
-  const rowsHtml = monthRows.map(x => `
-    <tr>
-      <td><b>${x.label}</b></td>
-      <td class="num-cell"><b>${fmtInt(x.totalPkg)}</b>${pendingCell(x.pending, x.totalPkg)}</td>
-      <td class="num-cell" style="color:#2f9e6e">${fmtInt(x.on3)} <span style="color:var(--ink-500); font-weight:400;">(${fmt1(pct(x.on3, x.totalPkg))}%)</span></td>
-      <td class="num-cell" style="color:#e8983a">${fmtInt(x.on7)} <span style="color:var(--ink-500); font-weight:400;">(${fmt1(pct(x.on7, x.totalPkg))}%)</span></td>
-      <td class="num-cell" style="color:#d9564a">${fmtInt(x.over7)} <span style="color:var(--ink-500); font-weight:400;">(${fmt1(pct(x.over7, x.totalPkg))}%)</span></td>
-    </tr>`).join('');
-
-  wrapEl.innerHTML = `
-    <table class="day-table">
-      <thead><tr>
-        <th>เดือน</th>
-        <th style="text-align:right">จำนวนห่อทั้งหมด</th>
-        <th style="text-align:right">ภายใน 3 วัน</th>
-        <th style="text-align:right">ไม่เกิน 7 วัน</th>
-        <th style="text-align:right">เกิน 7 วัน</th>
-      </tr></thead>
-      <tbody>${rowsHtml}</tbody>
-      <tfoot><tr class="month-total-row">
-        <td>รวมทั้งหมด</td>
-        <td class="num-cell"><b>${fmtInt(grand.totalPkg)}</b>${pendingCell(grand.pending, grand.totalPkg)}</td>
-        <td class="num-cell" style="color:#2f9e6e"><b>${fmtInt(grand.on3)} (${fmt1(pct(grand.on3, grand.totalPkg))}%)</b></td>
-        <td class="num-cell" style="color:#e8983a"><b>${fmtInt(grand.on7)} (${fmt1(pct(grand.on7, grand.totalPkg))}%)</b></td>
-        <td class="num-cell" style="color:#d9564a"><b>${fmtInt(grand.over7)} (${fmt1(pct(grand.over7, grand.totalPkg))}%)</b></td>
-      </tr></tfoot>
-    </table>`;
-}
 
 function renderDailyPackageSummary(byDay, years){
   const yearChipsEl = document.getElementById('pkgYearChips');
